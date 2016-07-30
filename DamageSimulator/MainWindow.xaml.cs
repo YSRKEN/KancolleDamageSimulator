@@ -20,6 +20,11 @@ namespace DamageSimulator {
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
+			DataContext = new { CriticalLabelString = "13.3%" };
+		}
+
+		private void slider_Critical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+			DataContext = new { CriticalLabelString = "" + (slider_Critical.Value / 10).ToString("0.0") + "%" };
 		}
 	}
 }
