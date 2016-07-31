@@ -346,5 +346,21 @@ namespace BindableWinFormsControl {
 				CalcHistogram();
 			}
 		}
+
+		private void NUD_AntiSubKammusu_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+
+		}
+
+		private void NUD_AntiSubKammusu_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_AntiSubWeapons_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
 	}
 }

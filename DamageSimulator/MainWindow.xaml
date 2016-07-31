@@ -68,10 +68,8 @@
 				<Grid x:Name="grid_AntiSub" Background="White">
 					<Label x:Name="label9" Content="素対潜" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
 					<Label x:Name="label10" Content="装備対潜" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,38,0,0"/>
-					<!--<TextBox x:Name="textBox_AntiSub_Kammusu" HorizontalAlignment="Left" Height="23" Margin="73,10,0,0" TextWrapping="Wrap" Text="94" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_AntiSub_Kammusu_TextChanged"/>
-					<TextBox x:Name="textBox_AntiSub_Weapons" HorizontalAlignment="Left" Height="23" Margin="73,38,0,0" TextWrapping="Wrap" Text="28" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_AntiSub_Weapons_TextChanged"/>-->
-					<my:BindableNumericUpDown Value="{Binding Path=AntiSubKammusuString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>
-					<my:BindableNumericUpDown Value="{Binding Path=AntiSubWeaponsString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>
+					<my:BindableNumericUpDown x:Name="NUD_AntiSubKammusu" Value="{Binding Path=AntiSubKammusuString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_AntiSubKammusu_PropertyChanged"/>
+					<my:BindableNumericUpDown x:Name="NUD_AntiSubWeapons" Value="{Binding Path=AntiSubWeaponsString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_AntiSubWeapons_PropertyChanged"/>
 					<Label x:Name="label11" Content="攻撃種別" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="123,10,0,0"/>
 					<ComboBox x:Name="comboBox_AntiSub" HorizontalAlignment="Left" Margin="186,10,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_AntiSub_SelectionChanged">
 						<ComboBoxItem Content="爆雷攻撃" HorizontalAlignment="Left" Width="118"/>
