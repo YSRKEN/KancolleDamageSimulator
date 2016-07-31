@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace BindableWinFormsControl {
 	using System.ComponentModel;
 	internal class TestBindObject : INotifyPropertyChanged {
-		private int antiSubKammusuString;
-		private int antiSubWeaponsString;
+		private int antiSubKammusu;
+		private int antiSubWeapons;
 		private int critical;
 		private int defense;
 		private int maxHP;
@@ -24,52 +24,51 @@ namespace BindableWinFormsControl {
 			set
 			{
 				critical = value;
-				NotifyPropertyChanged("Critical");
-				NotifyPropertyChanged("CriticalLabelString");
+				NotifyPropertyChanged("CriticalLabel");
 			}
 		}
 
-		public string CriticalLabelString {
+		public string CriticalLabel {
 			get { return (1.0 * critical / 10).ToString("0.0") + "%"; }
 		}
 
-		public int AntiSubKammusuString {
-			get { return antiSubKammusuString; }
+		public int AntiSubKammusu {
+			get { return antiSubKammusu; }
 			set {
-				antiSubKammusuString = value;
-				NotifyPropertyChanged("AntiSubKammusuString");
+				antiSubKammusu = value;
+				NotifyPropertyChanged("AntiSubKammusu");
 			}
 		}
 
-		public int AntiSubWeaponsString {
-			get { return antiSubWeaponsString; }
+		public int AntiSubWeapons {
+			get { return antiSubWeapons; }
 			set {
-				antiSubWeaponsString = value;
-				NotifyPropertyChanged("AntiSubWeaponsString");
+				antiSubWeapons = value;
+				NotifyPropertyChanged("AntiSubWeapons");
 			}
 		}
 
-		public int DefenseString {
+		public int Defense {
 			get { return defense; }
 			set {
 				defense = value;
-				NotifyPropertyChanged("DefenseString");
+				NotifyPropertyChanged("Defense");
 			}
 		}
 
-		public int MaxHPString {
+		public int MaxHP {
 			get { return maxHP; }
 			set {
 				maxHP = value;
-				NotifyPropertyChanged("MaxHPString");
+				NotifyPropertyChanged("MaxHP");
 			}
 		}
 
-		public int NowHPString {
+		public int NowHP {
 			get { return nowHP; }
 			set {
 				nowHP = value;
-				NotifyPropertyChanged("NowHPString");
+				NotifyPropertyChanged("NowHP");
 			}
 		}
 

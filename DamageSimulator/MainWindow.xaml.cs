@@ -41,11 +41,11 @@ namespace BindableWinFormsControl {
 			// BindableNumericUpDown用の初期設定
 			DataContext = new TestBindObject() {
 				Critical = 133,
-				AntiSubKammusuString = 94,
-				AntiSubWeaponsString = 23,
-				DefenseString = 21,
-				MaxHPString = 27,
-				NowHPString = 27,
+				AntiSubKammusu = 94,
+				AntiSubWeapons = 23,
+				Defense = 21,
+				MaxHP = 27,
+				NowHP = 27,
 				StatusMessage = ""
 			};
 		}
@@ -75,9 +75,9 @@ namespace BindableWinFormsControl {
 			var baseAttackValue = 0.0;
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
 				// 素対潜
-				baseAttackValue += Math.Sqrt(bindData.AntiSubKammusuString) * 2;
+				baseAttackValue += Math.Sqrt(bindData.AntiSubKammusu) * 2;
 				// 装備対潜
-				baseAttackValue += 1.5 * bindData.AntiSubWeaponsString;
+				baseAttackValue += 1.5 * bindData.AntiSubWeapons;
 				// 装備改修値
 				if(comboBox_AntiSub.SelectedIndex == 0) {
 					baseAttackValue += Math.Sqrt(comboBox_AntiSub_Level_0.SelectedIndex);
@@ -131,9 +131,9 @@ namespace BindableWinFormsControl {
 			double lastAttackValueWithCL = (int)lastAttackValueWithCL_;
 			// ダメージを算出し、ヒストグラムを取る
 			//初期設定
-			var defense = bindData.DefenseString;
-			var nowHP = bindData.NowHPString;
-			var maxHP = bindData.MaxHPString;
+			var defense = bindData.Defense;
+			var nowHP = bindData.NowHP;
+			var maxHP = bindData.MaxHP;
 			double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
 			var ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
 			//ループ
