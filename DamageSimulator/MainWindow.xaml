@@ -58,6 +58,12 @@
 			</Grid>
 		</GroupBox>
 		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="133" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="1" SelectionChanged="tabControl_SelectionChanged">
+			<TabItem Header="砲撃戦" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
+				<Grid Background="White"/>
+			</TabItem>
+			<TabItem Header="砲撃戦(空母)" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="80" Margin="-2,-2,-24,0">
+				<Grid Background="White"/>
+			</TabItem>
 			<TabItem Header="雷撃戦">
 				<Grid x:Name="grid_Torpedo" Background="White">
 					<Label x:Name="label14" Content="雷装値" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
@@ -117,6 +123,9 @@
 					</ComboBox>
 					<CheckBox x:Name="checkBox_FirstTorpedo" Content="開幕雷撃" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Checked="checkBox_AntiSubSynergy_Checked" Unchecked="checkBox_AntiSubSynergy_Unchecked"/>
 				</Grid>
+			</TabItem>
+			<TabItem Header="航空戦" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
+				<Grid Background="White"/>
 			</TabItem>
 			<TabItem Header="対潜攻撃">
 				<Grid x:Name="grid_AntiSub" Background="White">
@@ -184,6 +193,9 @@
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 				</Grid>
+			</TabItem>
+			<TabItem Header="夜戦" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
+				<Grid Background="White"/>
 			</TabItem>
 		</TabControl>
 		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="269,189,0,0" VerticalAlignment="Top" Width="313" Height="140">

@@ -27,9 +27,13 @@ namespace BindableWinFormsControl {
 		Chart chart;				//グラフ
 		SortedDictionary<int, int> sorted_hist;	//ヒストグラム
 		//定数
-		System.Random rand = new System.Random();			//乱数シード
-		const int TabIndexTorpedo = 0;						//雷撃戦
-		const int TabIndexAntiSub = 1;						//対潜攻撃
+		System.Random rand = new System.Random();	//乱数シード
+		const int TabIndexGun     = 0;	//砲撃戦
+		const int TabIndexGunAir  = 1;	//砲撃戦(空母)
+		const int TabIndexTorpedo = 2;	//雷撃戦
+		const int TabIndexAir     = 3;	//航空戦
+		const int TabIndexAntiSub = 4;	//対潜攻撃
+		const int TabIndexNight   = 5;	//夜戦
 		int[] loopCount = { 1000, 10000, 100000, 1000000 };	//ループカウント
 
 		/* メソッド */
