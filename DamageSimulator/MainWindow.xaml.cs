@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
@@ -228,7 +229,7 @@ namespace DamageSimulator {
 		}
 
 		/// <summary>
-		/// グラフを再描画する処理(中身はサンプル)
+		/// グラフを再描画する処理
 		/// </summary>
 		private void DrawGraph() {
 			// スケールの最大・最小値を計算する
@@ -287,6 +288,17 @@ namespace DamageSimulator {
 			if(a > max)
 				return max;
 			return a;
+		}
+
+		/// <summary>
+		/// ヒストグラムの文字列を作成する
+		/// </summary>
+		private string MakeHistText() {
+			string histText = "damage,count\n";
+			foreach(var pair in sorted_hist) {
+				histText += "" + pair.Key + "," + pair.Value + "\n";
+			}
+			return histText;
 		}
 
 		private void comboBox_Position_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -407,6 +419,38 @@ namespace DamageSimulator {
 			if(autoCalcFlg) {
 				CalcHistogram();
 			}
+		}
+
+		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
+			var histText = MakeHistText();
+			System.Windows.Clipboard.SetText(histText);
+		}
+
+		private void CopyHistPic_Click(object sender, RoutedEventArgs e) {
+
+		}
+
+		private void SaveHistText_Click(object sender, RoutedEventArgs e) {
+			var histText = MakeHistText();
+			var sfd = new SaveFileDialog();
+			sfd.FileName = "hist.csv";
+			sfd.Filter = "CSVファイル(*.csv)|*.csv|すべてのファイル(*.*)|*.*";
+			sfd.ShowDialog();
+			if(sfd.FileName != "") {
+				var stream = sfd.OpenFile();
+				if(stream != null) {
+					//ファイルに書き込む
+					var sw = new System.IO.StreamWriter(stream);
+					sw.Write(histText);
+					//閉じる
+					sw.Close();
+					stream.Close();
+				}
+			}
+		}
+
+		private void SaveHistPic_Click(object sender, RoutedEventArgs e) {
+
 		}
 	}
 }

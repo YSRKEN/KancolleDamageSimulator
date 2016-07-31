@@ -156,12 +156,12 @@
 					<Button.ContextMenu>
 						<ContextMenu>
 							<MenuItem Header="ヒストグラムをコピー">
-								<MenuItem Header="テキスト"/>
-								<MenuItem Header="画像"/>
+								<MenuItem x:Name="CopyHistText" Header="テキスト" Click="CopyHistText_Click"/>
+								<MenuItem x:Name="CopyHistPic" Header="画像" Click="CopyHistPic_Click"/>
 							</MenuItem>
 							<MenuItem Header="ヒストグラムを保存">
-								<MenuItem Header="テキスト"/>
-								<MenuItem Header="画像"/>
+								<MenuItem x:Name="SaveHistText" Header="テキスト" Click="SaveHistText_Click"/>
+								<MenuItem x:Name="SaveHistPic" Header="画像" Click="SaveHistPic_Click"/>
 							</MenuItem>
 						</ContextMenu>
 					</Button.ContextMenu>
