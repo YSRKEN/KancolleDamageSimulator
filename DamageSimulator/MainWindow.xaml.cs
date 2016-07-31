@@ -36,7 +36,7 @@ namespace BindableWinFormsControl {
 			chart = (Chart)windowsFormsHost1.Child;
 			chart.ChartAreas.Add("ChartArea");
 			// BindableNumericUpDown用の初期設定
-			DataContext = new TestBindObject() { Critical = 13, AntiSubKammusuString = 94, AntiSubWeaponsString = 23 };
+			DataContext = new TestBindObject() { Critical = 133, AntiSubKammusuString = 94, AntiSubWeaponsString = 23 };
 		}
 
 		/// <summary>

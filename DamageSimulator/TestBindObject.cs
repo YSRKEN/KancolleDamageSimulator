@@ -12,9 +12,9 @@ namespace BindableWinFormsControl {
 	internal class TestBindObject : INotifyPropertyChanged {
 		private int antiSubKammusuString;
 		private int antiSubWeaponsString;
-		private float critical;
+		private int critical;
 
-		public float Critical
+		public int Critical
 		{
 			get { return critical; }
 			set
@@ -26,7 +26,7 @@ namespace BindableWinFormsControl {
 		}
 
 		public string CriticalLabelString {
-			get { return (critical / 10).ToString("0.0") + "%"; }
+			get { return (1.0 * critical / 10).ToString("0.0") + "%"; }
 		}
 
 		public int AntiSubKammusuString {
