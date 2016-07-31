@@ -539,5 +539,83 @@ namespace BindableWinFormsControl {
 				CalcHistogram();
 			}
 		}
+
+		private void NUD_Torpedo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void checkBox_FirstTorpedo_Checked(object sender, RoutedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void checkBox_FirstTorpedo_Unchecked(object sender, RoutedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void comboBox_Torpedo_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void comboBox_Torpedo_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void comboBox_Torpedo_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void comboBox_Torpedo_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_Attack_Gun_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void comboBox_Watch_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void comboBox_Shell_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void checkBox_Sanshiki_Checked(object sender, RoutedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void checkBox_Sanshiki_Unchecked(object sender, RoutedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void comboBox_WG42_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
 	}
 }
