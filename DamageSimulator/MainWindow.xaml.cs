@@ -147,7 +147,9 @@ namespace DamageSimulator {
 					}
 					//艦娘で、更に現在耐久以上だった際の処理(大破ストッパー)
 					if(damage >= nowHP && (bool)checkBox_Kammusu.IsChecked) {
-						damage = (int)(nowHP * 0.5 + rand.Next(nowHP) * 0.3);
+						if(nowHP * 4 > maxHP) {
+							damage = (int)(nowHP * 0.5 + rand.Next(nowHP) * 0.3);
+						}
 					}
 					// ヒストグラムカウント
 					if(hist.ContainsKey(damage)) {
