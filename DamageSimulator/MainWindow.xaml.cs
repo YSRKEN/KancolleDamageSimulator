@@ -36,7 +36,14 @@ namespace BindableWinFormsControl {
 			chart = (Chart)windowsFormsHost1.Child;
 			chart.ChartAreas.Add("ChartArea");
 			// BindableNumericUpDown用の初期設定
-			DataContext = new TestBindObject() { Critical = 133, AntiSubKammusuString = 94, AntiSubWeaponsString = 23 };
+			DataContext = new TestBindObject() {
+				Critical = 133,
+				AntiSubKammusuString = 94,
+				AntiSubWeaponsString = 23,
+				DefenseString = 21,
+				MaxHPString = 27,
+				NowHPString = 27
+			};
 		}
 
 		/// <summary>
@@ -126,9 +133,9 @@ namespace BindableWinFormsControl {
 				// ダメージを算出し、ヒストグラムを取る
 				//初期設定
 				var hist = new Dictionary<int, int>();
-				var defense = int.Parse(textBox_Defense.Text);
-				var nowHP = int.Parse(textBox_NowHP.Text);
-				var maxHP = int.Parse(textBox_MaxHP.Text);
+				var defense = bindingData.DefenseString;
+				var nowHP = bindingData.NowHPString;
+				var maxHP = bindingData.MaxHPString;
 				double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
 				var ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
 				//ループ
@@ -358,6 +365,24 @@ namespace BindableWinFormsControl {
 		}
 
 		private void NUD_AntiSubWeapons_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_Defense_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_MaxHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_NowHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
 			if(autoCalcFlg) {
 				CalcHistogram();
 			}

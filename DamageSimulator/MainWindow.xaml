@@ -12,14 +12,11 @@
 		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Height="140" Width="129">
 			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="119" Margin="0,0,0,0">
 				<Label x:Name="label1" Content="敵装甲値" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-				<TextBox x:Name="textBox_Defense" HorizontalAlignment="Left" Height="23" Margin="73,10,0,0" TextWrapping="Wrap" Text="21" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_Defense_TextChanged"/>
-				<TextBox x:Name="textBox_MaxHP" HorizontalAlignment="Left" Height="23" Margin="73,38,0,0" TextWrapping="Wrap" Text="27" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_MaxHP_TextChanged"/>
-				<TextBox x:Name="textBox_NowHP" HorizontalAlignment="Left" Height="23" Margin="73,66,0,0" TextWrapping="Wrap" Text="27" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_NowHP_TextChanged"/>
-				<!--<my:BindableNumericUpDown Value="{Binding DefenseString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>
-				<my:BindableNumericUpDown Value="{Binding MaxHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>
-				<my:BindableNumericUpDown Value="{Binding NowHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>-->
 				<Label x:Name="label2" Content="最大耐久" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.638,1.308"/>
 				<Label x:Name="label3" Content="現在耐久" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,66,0,0"/>
+				<my:BindableNumericUpDown x:Name="NUD_Defense" Value="{Binding Path=DefenseString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Defense_PropertyChanged"/>
+				<my:BindableNumericUpDown x:Name="NUD_MaxHP" Value="{Binding Path=MaxHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_MaxHP_PropertyChanged"/>
+				<my:BindableNumericUpDown x:Name="NUD_NowHP" Value="{Binding Path=NowHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_NowHP_PropertyChanged"/>
 				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘ならチェック" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="checkBox_Kammusu_Checked" Unchecked="checkBox_Kammusu_Unchecked"/>
 			</Grid>
 		</GroupBox>

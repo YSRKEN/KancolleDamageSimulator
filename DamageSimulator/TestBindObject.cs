@@ -13,6 +13,9 @@ namespace BindableWinFormsControl {
 		private int antiSubKammusuString;
 		private int antiSubWeaponsString;
 		private int critical;
+		private int defense;
+		private int maxHP;
+		private int nowHP;
 
 		public int Critical
 		{
@@ -42,6 +45,30 @@ namespace BindableWinFormsControl {
 			set {
 				antiSubWeaponsString = value;
 				NotifyPropertyChanged("AntiSubWeaponsString");
+			}
+		}
+
+		public int DefenseString {
+			get { return defense; }
+			set {
+				defense = value;
+				NotifyPropertyChanged("DefenseString");
+			}
+		}
+
+		public int MaxHPString {
+			get { return maxHP; }
+			set {
+				maxHP = value;
+				NotifyPropertyChanged("MaxHPString");
+			}
+		}
+
+		public int NowHPString {
+			get { return nowHP; }
+			set {
+				nowHP = value;
+				NotifyPropertyChanged("NowHPString");
 			}
 		}
 
