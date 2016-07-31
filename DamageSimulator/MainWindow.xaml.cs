@@ -36,15 +36,14 @@ namespace BindableWinFormsControl {
 			chart = (Chart)windowsFormsHost1.Child;
 			chart.ChartAreas.Add("ChartArea");
 			// BindableNumericUpDown用の初期設定
-			DataContext = new TestBindObject() { CriticalLabelString = "13.3%", AntiSubKammusuString = 94, AntiSubWeaponsString = 23 };
+			DataContext = new TestBindObject() { Critical = 13, AntiSubKammusuString = 94, AntiSubWeaponsString = 23 };
 		}
 
 		/// <summary>
 		/// スライドバーを動かした際の処理
 		/// </summary>
 		private void slider_Critical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			var bindingData = DataContext as TestBindObject;
-			//bindingData.CriticalLabelString = "" + (slider_Critical.Value / 10).ToString("0.0") + "%";
+
 			if(autoCalcFlg) {
 				CalcHistogram();
 			}

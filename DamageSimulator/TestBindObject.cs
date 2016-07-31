@@ -10,16 +10,23 @@ using System.Threading.Tasks;
 namespace BindableWinFormsControl {
 	using System.ComponentModel;
 	internal class TestBindObject : INotifyPropertyChanged {
-		private string criticalLabelString;
 		private int antiSubKammusuString;
 		private int antiSubWeaponsString;
+		private float critical;
 
-		public string CriticalLabelString {
-			get { return criticalLabelString; }
-			set {
-				criticalLabelString = value;
+		public float Critical
+		{
+			get { return critical; }
+			set
+			{
+				critical = value;
+				NotifyPropertyChanged("Critical");
 				NotifyPropertyChanged("CriticalLabelString");
 			}
+		}
+
+		public string CriticalLabelString {
+			get { return (critical / 10).ToString("0.0") + "%"; }
 		}
 
 		public int AntiSubKammusuString {
