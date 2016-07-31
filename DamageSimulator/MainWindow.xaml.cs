@@ -175,7 +175,7 @@ namespace DamageSimulator {
 						++status[2];
 					}else if(nowHP2 * 4 > maxHP) {
 						++status[3];
-					}else if(nowHP2 != 0) {
+					}else if(nowHP2 > 0) {
 						++status[4];
 					}else {
 						++status[5];
