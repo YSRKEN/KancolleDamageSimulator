@@ -16,16 +16,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DamageSimulator {
+namespace BindableWinFormsControl {
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
 	public partial class MainWindow : Window {
 		/* メンバ変数 */
 		//変数
-		bool autoCalcFlg = false;   //自動再計算フラグ
-		string critical_label = "";	//クリティカル率表示用文字列
-		string status_message = "";	//ステータス表示用文字列
+		bool autoCalcFlg = false;	//自動再計算フラグ
 		Chart chart;				//グラフ
 		SortedDictionary<int, int> sorted_hist;	//ヒストグラム
 		//定数
@@ -40,15 +38,22 @@ namespace DamageSimulator {
 			var windowsFormsHost1 = (WindowsFormsHost)grid_Graph.Children[0];
 			chart = (Chart)windowsFormsHost1.Child;
 			chart.ChartAreas.Add("ChartArea");
-			DataContext = new { CriticalLabelString = critical_label, StatusMessageString = status_message };
+			// BindableNumericUpDown用の初期設定
+			DataContext = new TestBindObject() {
+				Critical = 133,
+				AntiSubKammusuString = 94,
+				AntiSubWeaponsString = 23,
+				DefenseString = 21,
+				MaxHPString = 27,
+				NowHPString = 27,
+				StatusMessage = ""
+			};
 		}
 
 		/// <summary>
 		/// スライドバーを動かした際の処理
 		/// </summary>
 		private void slider_Critical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			critical_label = "" + (slider_Critical.Value / 10).ToString("0.0") + "%";
-			DataContext = new { CriticalLabelString = critical_label, StatusMessageString = status_message };
 			if(autoCalcFlg) {
 				CalcHistogram();
 			}
@@ -65,13 +70,14 @@ namespace DamageSimulator {
 		/// 計算処理(分割後)
 		/// </summary>
 		private void CalcDataSlave(Dictionary<int, int> hist, int[] status, int type, int loops) {
+			var bindData = DataContext as TestBindObject;
 			// 基本攻撃力を算出する
 			var baseAttackValue = 0.0;
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
 				// 素対潜
-				baseAttackValue += Math.Sqrt(int.Parse(textBox_AntiSub_Kammusu.Text)) * 2;
+				baseAttackValue += Math.Sqrt(bindData.AntiSubKammusuString) * 2;
 				// 装備対潜
-				baseAttackValue += 1.5 * int.Parse(textBox_AntiSub_Weapons.Text);
+				baseAttackValue += 1.5 * bindData.AntiSubWeaponsString;
 				// 装備改修値
 				if(comboBox_AntiSub.SelectedIndex == 0) {
 					baseAttackValue += Math.Sqrt(comboBox_AntiSub_Level_0.SelectedIndex);
@@ -125,9 +131,9 @@ namespace DamageSimulator {
 			double lastAttackValueWithCL = (int)lastAttackValueWithCL_;
 			// ダメージを算出し、ヒストグラムを取る
 			//初期設定
-			var defense = int.Parse(textBox_Defense.Text);
-			var nowHP = int.Parse(textBox_NowHP.Text);
-			var maxHP = int.Parse(textBox_MaxHP.Text);
+			var defense = bindData.DefenseString;
+			var nowHP = bindData.NowHPString;
+			var maxHP = bindData.MaxHPString;
 			double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
 			var ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
 			//ループ
@@ -207,13 +213,13 @@ namespace DamageSimulator {
 			//ソート
 			sorted_hist = new SortedDictionary<int, int>(hist);
 			//状態messageの更新
-			status_message = "無傷率：" + Math.Round(100.0 * status[0] / count, 1) + "%\n";
-			status_message += "カスダメ率：" + Math.Round(100.0 * status[1] / count, 1) + "%\n";
-			status_message += "小破率：" + Math.Round(100.0 * status[2] / count, 1) + "%\n";
-			status_message += "中破率：" + Math.Round(100.0 * status[3] / count, 1) + "%\n";
-			status_message += "大破率：" + Math.Round(100.0 * status[4] / count, 1) + "%\n";
-			status_message += "撃沈率：" + Math.Round(100.0 * status[5] / count, 1) + "%";
-			DataContext = new { CriticalLabelString = critical_label, StatusMessageString = status_message };
+			var bindData = DataContext as TestBindObject;
+			bindData.StatusMessage = "無傷率：" + Math.Round(100.0 * status[0] / count, 1) + "%\n";
+			bindData.StatusMessage += "カスダメ率：" + Math.Round(100.0 * status[1] / count, 1) + "%\n";
+			bindData.StatusMessage += "小破率：" + Math.Round(100.0 * status[2] / count, 1) + "%\n";
+			bindData.StatusMessage += "中破率：" + Math.Round(100.0 * status[3] / count, 1) + "%\n";
+			bindData.StatusMessage += "大破率：" + Math.Round(100.0 * status[4] / count, 1) + "%\n";
+			bindData.StatusMessage += "撃沈率：" + Math.Round(100.0 * status[5] / count, 1) + "%";
 		}
 
 		/// <summary>
@@ -450,7 +456,40 @@ namespace DamageSimulator {
 		}
 
 		private void SaveHistPic_Click(object sender, RoutedEventArgs e) {
+		}
 
+		private void NUD_AntiSubKammusu_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+
+		}
+
+		private void NUD_AntiSubKammusu_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_AntiSubWeapons_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_Defense_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_MaxHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
+		}
+
+		private void NUD_NowHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(autoCalcFlg) {
+				CalcHistogram();
+			}
 		}
 	}
 }

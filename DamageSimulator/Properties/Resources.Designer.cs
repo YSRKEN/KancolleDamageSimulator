@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DamageSimulator.Properties {
+namespace BindableWinFormsControl.Properties {
 
 
 	/// <summary>

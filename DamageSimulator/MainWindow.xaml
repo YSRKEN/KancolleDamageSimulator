@@ -1,25 +1,22 @@
-﻿<Window x:Class="DamageSimulator.MainWindow"
+﻿<Window x:Class="BindableWinFormsControl.MainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:my="clr-namespace:BindableWinFormsControl"
 		xmlns:wfc="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:DamageSimulator"
+		xmlns:local="clr-namespace:BindableWinFormsControl"
 		mc:Ignorable="d"
 		Title="DamageSimulator" Height="370" Width="600">
 	<Grid ToolTip="{Binding StatusMessageString}">
 		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Height="140" Width="129">
 			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="119" Margin="0,0,0,0">
 				<Label x:Name="label1" Content="敵装甲値" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-				<TextBox x:Name="textBox_Defense" HorizontalAlignment="Left" Height="23" Margin="73,10,0,0" TextWrapping="Wrap" Text="21" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_Defense_TextChanged"/>
-				<TextBox x:Name="textBox_MaxHP" HorizontalAlignment="Left" Height="23" Margin="73,38,0,0" TextWrapping="Wrap" Text="27" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_MaxHP_TextChanged"/>
-				<TextBox x:Name="textBox_NowHP" HorizontalAlignment="Left" Height="23" Margin="73,66,0,0" TextWrapping="Wrap" Text="27" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_NowHP_TextChanged"/>
-				<!--<my:BindableNumericUpDown Value="{Binding DefenseString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>
-				<my:BindableNumericUpDown Value="{Binding MaxHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>
-				<my:BindableNumericUpDown Value="{Binding NowHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>-->
 				<Label x:Name="label2" Content="最大耐久" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.638,1.308"/>
 				<Label x:Name="label3" Content="現在耐久" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,66,0,0"/>
+				<my:BindableNumericUpDown x:Name="NUD_Defense" Value="{Binding Path=DefenseString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Defense_PropertyChanged"/>
+				<my:BindableNumericUpDown x:Name="NUD_MaxHP" Value="{Binding Path=MaxHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_MaxHP_PropertyChanged"/>
+				<my:BindableNumericUpDown x:Name="NUD_NowHP" Value="{Binding Path=NowHPString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_NowHP_PropertyChanged"/>
 				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘ならチェック" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="checkBox_Kammusu_Checked" Unchecked="checkBox_Kammusu_Unchecked"/>
 			</Grid>
 		</GroupBox>
@@ -56,7 +53,7 @@
 				<Label x:Name="label6" Content="損傷状態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Label x:Name="label7" Content="弾薬残量" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,91,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Label x:Name="label8" Content="クリティカル" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,117,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="62,121,0,0" VerticalAlignment="Top" Width="74" Maximum="150" Value="133" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
+				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="62,121,0,0" VerticalAlignment="Top" Width="74" Maximum="150" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
 				<Label x:Name="label_Critical" Content="{Binding CriticalLabelString}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="136,118,0,0" RenderTransformOrigin="0.5,-0.962"/>
 			</Grid>
 		</GroupBox>
@@ -68,10 +65,8 @@
 				<Grid x:Name="grid_AntiSub" Background="White">
 					<Label x:Name="label9" Content="素対潜" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
 					<Label x:Name="label10" Content="装備対潜" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,38,0,0"/>
-					<TextBox x:Name="textBox_AntiSub_Kammusu" HorizontalAlignment="Left" Height="23" Margin="73,10,0,0" TextWrapping="Wrap" Text="94" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_AntiSub_Kammusu_TextChanged"/>
-					<TextBox x:Name="textBox_AntiSub_Weapons" HorizontalAlignment="Left" Height="23" Margin="73,38,0,0" TextWrapping="Wrap" Text="28" VerticalAlignment="Top" Width="30" RenderTransformOrigin="0.733,0.913" TextChanged="textBox_AntiSub_Weapons_TextChanged"/>
-					<!--<my:BindableNumericUpDown Value="{Binding AntiSubKammusuString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>
-					<my:BindableNumericUpDown Value="{Binding AntiSubWeaponsString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913"/>-->
+					<my:BindableNumericUpDown x:Name="NUD_AntiSubKammusu" Value="{Binding Path=AntiSubKammusuString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_AntiSubKammusu_PropertyChanged"/>
+					<my:BindableNumericUpDown x:Name="NUD_AntiSubWeapons" Value="{Binding Path=AntiSubWeaponsString}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_AntiSubWeapons_PropertyChanged"/>
 					<Label x:Name="label11" Content="攻撃種別" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="123,10,0,0"/>
 					<ComboBox x:Name="comboBox_AntiSub" HorizontalAlignment="Left" Margin="186,10,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_AntiSub_SelectionChanged">
 						<ComboBoxItem Content="爆雷攻撃" HorizontalAlignment="Left" Width="118"/>
