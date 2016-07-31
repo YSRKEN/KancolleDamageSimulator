@@ -21,12 +21,16 @@ namespace DamageSimulator {
 	/// </summary>
 	public partial class MainWindow : Window {
 		/* メンバ変数 */
-		Chart chart;
-		SortedDictionary<int, int> sorted_hist;
-		System.Random rand = new System.Random();
-		bool autoCalcFlg = false;
-		const int TabIndexAntiSub = 1;
-		int[] loopCount = { 1000, 10000, 100000, 1000000 };
+		//変数
+		bool autoCalcFlg = false;   //自動再計算フラグ
+		string critical_label = "";	//クリティカル率表示用文字列
+		string status_message = "";	//ステータス表示用文字列
+		Chart chart;				//グラフ
+		SortedDictionary<int, int> sorted_hist;	//ヒストグラム
+		//定数
+		System.Random rand = new System.Random();			//乱数シード
+		const int TabIndexAntiSub = 1;						//対潜攻撃
+		int[] loopCount = { 1000, 10000, 100000, 1000000 };	//ループカウント
 
 		/* メソッド */
 		public MainWindow() {
@@ -35,14 +39,15 @@ namespace DamageSimulator {
 			var windowsFormsHost1 = (WindowsFormsHost)grid_Graph.Children[0];
 			chart = (Chart)windowsFormsHost1.Child;
 			chart.ChartAreas.Add("ChartArea");
-			DataContext = new { CriticalLabelString = "13.3%"};
+			DataContext = new { CriticalLabelString = critical_label, StatusMessageString = status_message };
 		}
 
 		/// <summary>
 		/// スライドバーを動かした際の処理
 		/// </summary>
 		private void slider_Critical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			DataContext = new { CriticalLabelString = "" + (slider_Critical.Value / 10).ToString("0.0") + "%"};
+			critical_label = "" + (slider_Critical.Value / 10).ToString("0.0") + "%";
+			DataContext = new { CriticalLabelString = critical_label, StatusMessageString = status_message };
 			if(autoCalcFlg) {
 				CalcHistogram();
 			}
@@ -124,13 +129,15 @@ namespace DamageSimulator {
 				// ダメージを算出し、ヒストグラムを取る
 				//初期設定
 				var hist = new Dictionary<int, int>();
+				int[] status = { 0, 0, 0, 0, 0, 0 };
 				var defense = int.Parse(textBox_Defense.Text);
 				var nowHP = int.Parse(textBox_NowHP.Text);
 				var maxHP = int.Parse(textBox_MaxHP.Text);
 				double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
 				var ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
 				//ループ
-				for(int i = 0; i < loopCount[comboBox_TryCount.SelectedIndex]; ++i) {
+				var count = loopCount[comboBox_TryCount.SelectedIndex];
+				for(int i = 0; i < count; ++i) {
 					// ダメージ計算
 					var defenseValue = defense * 0.7 + rand.Next(defense) * 0.6;
 					int damage;
@@ -147,6 +154,7 @@ namespace DamageSimulator {
 					}
 					//艦娘で、更に現在耐久以上だった際の処理(大破ストッパー)
 					if(damage >= nowHP && (bool)checkBox_Kammusu.IsChecked) {
+						//大破：最大耐久の25％「以下」
 						if(nowHP * 4 > maxHP) {
 							damage = (int)(nowHP * 0.5 + rand.Next(nowHP) * 0.3);
 						}
@@ -157,9 +165,32 @@ namespace DamageSimulator {
 					} else {
 						hist[damage] = 1;
 					}
+					// 状態カウント
+					var nowHP2 = nowHP - damage;
+					if(nowHP == nowHP2) {
+						++status[0];
+					}else if(nowHP2 * 4 > maxHP) {
+						++status[1];
+					}else if(nowHP2 * 2 > maxHP) {
+						++status[2];
+					}else if(nowHP2 * 4 > maxHP) {
+						++status[3];
+					}else if(nowHP2 != 0) {
+						++status[4];
+					}else {
+						++status[5];
+					}
 				}
 				//ソート
 				sorted_hist = new SortedDictionary<int, int>(hist);
+				//状態messageの更新
+				status_message = "無傷率：" + Math.Round(100.0 * status[0] / count, 1) + "%\n";
+				status_message += "カスダメ率：" + Math.Round(100.0 * status[1] / count, 1) + "%\n";
+				status_message += "小破率：" + Math.Round(100.0 * status[2] / count, 1) + "%\n";
+				status_message += "中破率：" + Math.Round(100.0 * status[3] / count, 1) + "%\n";
+				status_message += "大破率：" + Math.Round(100.0 * status[4] / count, 1) + "%\n";
+				status_message += "撃沈率：" + Math.Round(100.0 * status[5] / count, 1) + "%";
+				DataContext = new { CriticalLabelString = critical_label, StatusMessageString = status_message };
 				// ヒストグラムを描画させる
 				DrawGraph();
 			} catch { }

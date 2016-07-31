@@ -8,7 +8,7 @@
 		xmlns:local="clr-namespace:DamageSimulator"
 		mc:Ignorable="d"
 		Title="DamageSimulator" Height="370" Width="600">
-	<Grid>
+	<Grid ToolTip="{Binding StatusMessageString}">
 		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Height="140" Width="129">
 			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="119" Margin="0,0,0,0">
 				<Label x:Name="label1" Content="敵装甲値" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
@@ -137,8 +137,9 @@
 		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="269,189,0,0" VerticalAlignment="Top" Width="313" Height="140">
 			<Grid x:Name="grid_Graph" HorizontalAlignment="Left" Height="118" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="293">
 				<WindowsFormsHost Margin="0,0,0,0">
-					<wfc:Chart Name="Chart_Histogram"/>
+					<wfc:Chart Name="Chart_Histogram" />
 				</WindowsFormsHost>
+				<StackPanel HorizontalAlignment="Left" Height="118" VerticalAlignment="Top" Width="293"/>
 			</Grid>
 		</GroupBox>
 		<GroupBox x:Name="groupBox3" Header="計算条件" HorizontalAlignment="Left" Margin="144,188,0,0" VerticalAlignment="Top" Height="141" Width="120">
