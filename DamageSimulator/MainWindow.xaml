@@ -30,8 +30,8 @@
 					<ComboBoxItem Content="反航戦" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="丁字有利" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="丁字不利" HorizontalAlignment="Left" Width="118"/>
-					<!--<ComboBoxItem Content="彩雲有り" HorizontalAlignment="Left" Width="118"/>
-					<ComboBoxItem Content="彩雲無し" HorizontalAlignment="Left" Width="118"/>-->
+					<ComboBoxItem Content="彩雲有り" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="彩雲無し" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
 				<ComboBox x:Name="comboBox_Formation" HorizontalAlignment="Left" Margin="73,37,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="comboBox_Formation_SelectionChanged">
 					<ComboBoxItem Content="単縦陣" HorizontalAlignment="Left" Width="118"/>
@@ -152,7 +152,20 @@
 					<ComboBoxItem Content="1000000" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
 				<CheckBox x:Name="checkBox_AutoCalc" Content="自動で再計算" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.589,2.4" Checked="checkBox_AutoCalc_Checked" Unchecked="checkBox_AutoCalc_Unchecked"/>
-				<Button x:Name="button_Run" Content="計算開始" HorizontalAlignment="Left" Margin="10,78,0,10" Width="90" RenderTransformOrigin="0.48,-0.1" Click="button_Run_Click"/>
+				<Button x:Name="button_Run" Content="計算開始" HorizontalAlignment="Left" Margin="10,78,0,10" Width="90" RenderTransformOrigin="0.48,-0.1" Click="button_Run_Click">
+					<Button.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="ヒストグラムをコピー">
+								<MenuItem Header="テキスト"/>
+								<MenuItem Header="画像"/>
+							</MenuItem>
+							<MenuItem Header="ヒストグラムを保存">
+								<MenuItem Header="テキスト"/>
+								<MenuItem Header="画像"/>
+							</MenuItem>
+						</ContextMenu>
+					</Button.ContextMenu>
+				</Button>
 			</Grid>
 		</GroupBox>
 	</Grid>
