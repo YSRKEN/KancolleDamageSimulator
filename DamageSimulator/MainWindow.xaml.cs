@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DamageSimulator {
+namespace BindableWinFormsControl {
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
@@ -35,14 +35,16 @@ namespace DamageSimulator {
 			var windowsFormsHost1 = (WindowsFormsHost)grid_Graph.Children[0];
 			chart = (Chart)windowsFormsHost1.Child;
 			chart.ChartAreas.Add("ChartArea");
-			DataContext = new { CriticalLabelString = "13.3%"};
+			// BindableNumericUpDown用の初期設定
+			DataContext = new TestBindObject() { CriticalLabelString = "13.3%", AntiSubKammusuString = 94, AntiSubWeaponsString = 23 };
 		}
 
 		/// <summary>
 		/// スライドバーを動かした際の処理
 		/// </summary>
 		private void slider_Critical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			DataContext = new { CriticalLabelString = "" + (slider_Critical.Value / 10).ToString("0.0") + "%"};
+			var bindingData = DataContext as TestBindObject;
+			//bindingData.CriticalLabelString = "" + (slider_Critical.Value / 10).ToString("0.0") + "%";
 			if(autoCalcFlg) {
 				CalcHistogram();
 			}
@@ -60,13 +62,14 @@ namespace DamageSimulator {
 		/// </summary>
 		private void CalcHistogram() {
 			try {
+				var bindingData = DataContext as TestBindObject;
 				// 基本攻撃力を算出する
 				var baseAttackValue = 0.0;
 				if(tabControl.SelectedIndex == TabIndexAntiSub) {
 					// 素対潜
-					baseAttackValue += Math.Sqrt(int.Parse(textBox_AntiSub_Kammusu.Text)) * 2;
+					baseAttackValue += Math.Sqrt(bindingData.AntiSubKammusuString) * 2;
 					// 装備対潜
-					baseAttackValue += 1.5 * int.Parse(textBox_AntiSub_Weapons.Text);
+					baseAttackValue += 1.5 * bindingData.AntiSubWeaponsString;
 					// 装備改修値
 					if(comboBox_AntiSub.SelectedIndex == 0) {
 						baseAttackValue += Math.Sqrt(comboBox_AntiSub_Level_0.SelectedIndex);
