@@ -86,7 +86,7 @@
 						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<Label x:Name="label20" Content="装備改修" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,72,0,0"/>
-					<ComboBox x:Name="comboBox_Attack_Gun_Level_0" HorizontalAlignment="Left" Margin="75,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Level_0" HorizontalAlignment="Left" Margin="75,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Level_0_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -99,7 +99,7 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Attack_Gun_Level_1" HorizontalAlignment="Left" Margin="140,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Level_1" HorizontalAlignment="Left" Margin="140,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Level_1_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -112,7 +112,7 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Attack_Gun_Level_2" HorizontalAlignment="Left" Margin="205,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Level_2" HorizontalAlignment="Left" Margin="205,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Level_2_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -125,7 +125,7 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Attack_Gun_Level_3" HorizontalAlignment="Left" Margin="270,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Level_3" HorizontalAlignment="Left" Margin="270,103,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Level_3_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -138,22 +138,22 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Attack_Gun_Type_0" HorizontalAlignment="Left" Margin="75,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Type_0" HorizontalAlignment="Left" Margin="75,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Type_0_SelectionChanged">
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Attack_Gun_Type_1" HorizontalAlignment="Left" Margin="145,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Type_1" HorizontalAlignment="Left" Margin="145,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Type_1_SelectionChanged">
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Attack_Gun_Type_2" HorizontalAlignment="Left" Margin="215,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Type_2" HorizontalAlignment="Left" Margin="215,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Type_2_SelectionChanged">
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Attack_Gun_Type_3" HorizontalAlignment="Left" Margin="285,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227">
+					<ComboBox x:Name="comboBox_Attack_Gun_Type_3" HorizontalAlignment="Left" Margin="285,74,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Attack_Gun_Type_3_SelectionChanged">
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
