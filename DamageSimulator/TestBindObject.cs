@@ -17,6 +17,7 @@ namespace BindableWinFormsControl {
 		private int maxHP;
 		private int nowHP;
 		private string statusMessage;
+		private int torpedo;
 
 		public int Critical
 		{
@@ -77,6 +78,14 @@ namespace BindableWinFormsControl {
 			set {
 				statusMessage = value;
 				NotifyPropertyChanged("StatusMessage");
+			}
+		}
+
+		public int Torpedo {
+			get { return torpedo; }
+			set {
+				torpedo = value;
+				NotifyPropertyChanged("Torpedo");
 			}
 		}
 

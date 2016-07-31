@@ -28,6 +28,7 @@ namespace BindableWinFormsControl {
 		SortedDictionary<int, int> sorted_hist;	//ヒストグラム
 		//定数
 		System.Random rand = new System.Random();			//乱数シード
+		const int TabIndexTorpedo = 0;						//雷撃戦
 		const int TabIndexAntiSub = 1;						//対潜攻撃
 		int[] loopCount = { 1000, 10000, 100000, 1000000 };	//ループカウント
 
@@ -46,7 +47,8 @@ namespace BindableWinFormsControl {
 				Defense = 21,
 				MaxHP = 27,
 				NowHP = 27,
-				StatusMessage = ""
+				StatusMessage = "",
+				Torpedo = 78
 			};
 		}
 
@@ -73,7 +75,18 @@ namespace BindableWinFormsControl {
 			var bindData = DataContext as TestBindObject;
 			// 基本攻撃力を算出する
 			var baseAttackValue = 0.0;
-			if(tabControl.SelectedIndex == TabIndexAntiSub) {
+			switch(tabControl.SelectedIndex) {
+			case TabIndexTorpedo:
+				baseAttackValue = bindData.Torpedo + 5;
+				// 装備改修値
+				if(comboBox_AntiSub.SelectedIndex == 0) {
+					baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_0.SelectedIndex);
+					baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_1.SelectedIndex);
+					baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_2.SelectedIndex);
+					baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_3.SelectedIndex);
+				}
+				break;
+			case TabIndexAntiSub:
 				// 素対潜
 				baseAttackValue += Math.Sqrt(bindData.AntiSubKammusu) * 2;
 				// 装備対潜
@@ -87,6 +100,7 @@ namespace BindableWinFormsControl {
 				}
 				// 対潜定数
 				baseAttackValue += (comboBox_AntiSub.SelectedIndex == 0 ? 13 : 8);
+				break;
 			}
 			// キャップ前攻撃力を出す
 			var attackValueBeforeCap = baseAttackValue;
@@ -99,9 +113,15 @@ namespace BindableWinFormsControl {
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
 				double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3 };
 				attackValueBeforeCap *= param[comboBox_Formation.SelectedIndex];
+			}else {
+				double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6 };
+				attackValueBeforeCap *= param[comboBox_Formation.SelectedIndex];
 			}
 			//損傷補正
-			if(tabControl.SelectedIndex == TabIndexAntiSub) {
+			if(tabControl.SelectedIndex == TabIndexTorpedo && (bool)checkBox_FirstTorpedo.IsChecked) {
+				double[] param = { 1, 0.8, 0.0 };
+				attackValueBeforeCap *= param[comboBox_Damage.SelectedIndex];
+			} else {
 				double[] param = { 1, 0.7, 0.4 };
 				attackValueBeforeCap *= param[comboBox_Damage.SelectedIndex];
 			}
@@ -111,22 +131,25 @@ namespace BindableWinFormsControl {
 				attackValueBeforeCap *= param[type];
 			}
 			// キャップ後攻撃力を出す
-			var attackValueAfterCap = attackValueBeforeCap;
+			var attackValueAfterCap = 0.0;
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
-				if(attackValueAfterCap > 100.0)
-					attackValueAfterCap = 100.0 + Math.Sqrt(attackValueAfterCap - 100.0);
+				attackValueAfterCap = CalcCap(attackValueBeforeCap, 100.0);
+			}else {
+				attackValueAfterCap = CalcCap(attackValueBeforeCap, 150.0);
 			}
 			// 最終攻撃力を出す
 			double lastAttackValueWithoutCL = (int)attackValueAfterCap;
 			var lastAttackValueWithCL_ = (int)attackValueAfterCap * 1.5;
-			if(comboBox_AntiSub.SelectedIndex == 1) {
-				// 熟練度補正
-				var airLevelWeight = 1.0;
-				airLevelWeight += Limit(comboBox_AntiSub_Level_0.SelectedIndex, 0, 7) * 0.2 / 7;
-				airLevelWeight += Limit(comboBox_AntiSub_Level_1.SelectedIndex, 0, 7) * 0.1 / 7;
-				airLevelWeight += Limit(comboBox_AntiSub_Level_2.SelectedIndex, 0, 7) * 0.1 / 7;
-				airLevelWeight += Limit(comboBox_AntiSub_Level_3.SelectedIndex, 0, 7) * 0.1 / 7;
-				lastAttackValueWithCL_ *= airLevelWeight;
+			if(tabControl.SelectedIndex == TabIndexAntiSub) {
+				if(comboBox_AntiSub.SelectedIndex == 1) {
+					// 熟練度補正
+					var airLevelWeight = 1.0;
+					airLevelWeight += Limit(comboBox_AntiSub_Level_0.SelectedIndex, 0, 7) * 0.2 / 7;
+					airLevelWeight += Limit(comboBox_AntiSub_Level_1.SelectedIndex, 0, 7) * 0.1 / 7;
+					airLevelWeight += Limit(comboBox_AntiSub_Level_2.SelectedIndex, 0, 7) * 0.1 / 7;
+					airLevelWeight += Limit(comboBox_AntiSub_Level_3.SelectedIndex, 0, 7) * 0.1 / 7;
+					lastAttackValueWithCL_ *= airLevelWeight;
+				}
 			}
 			double lastAttackValueWithCL = (int)lastAttackValueWithCL_;
 			// ダメージを算出し、ヒストグラムを取る
@@ -295,6 +318,17 @@ namespace BindableWinFormsControl {
 				return max;
 			return a;
 		}
+
+		/// <summary>
+		/// キャップ計算
+		/// </summary>
+		private double CalcCap(double x, double cap) {
+			if(x < cap)
+				return x;
+			else
+				return cap + Math.Sqrt(x - cap);
+		}
+
 
 		/// <summary>
 		/// ヒストグラムの文字列を作成する

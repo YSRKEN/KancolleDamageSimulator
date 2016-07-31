@@ -59,7 +59,64 @@
 		</GroupBox>
 		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="133" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="1" SelectionChanged="tabControl_SelectionChanged">
 			<TabItem Header="雷撃戦">
-				<Grid x:Name="grid_Torpedo" Background="White"/>
+				<Grid x:Name="grid_Torpedo" Background="White">
+					<Label x:Name="label14" Content="雷装値" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
+					<local:BindableNumericUpDown x:Name="NUD_Torpedo" Value="{Binding Torpedo}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_AntiSubKammusu_PropertyChanged"/>
+					<Label x:Name="label15" Content="装備改修" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,58,0,0"/>
+					<ComboBox x:Name="comboBox_Torpedo_Level_0" HorizontalAlignment="Left" Margin="73,62,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_AntiSub_Level_0_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_Torpedo_Level_1" HorizontalAlignment="Left" Margin="138,62,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_AntiSub_Level_1_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_Torpedo_Level_2" HorizontalAlignment="Left" Margin="203,62,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_AntiSub_Level_2_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_Torpedo_Level_3" HorizontalAlignment="Left" Margin="268,62,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_AntiSub_Level_3_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<CheckBox x:Name="checkBox_FirstTorpedo" Content="開幕雷撃" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Checked="checkBox_AntiSubSynergy_Checked" Unchecked="checkBox_AntiSubSynergy_Unchecked"/>
+				</Grid>
 			</TabItem>
 			<TabItem Header="対潜攻撃">
 				<Grid x:Name="grid_AntiSub" Background="White">
