@@ -433,7 +433,10 @@ namespace BindableWinFormsControl {
 		}
 
 		private void CopyHistPic_Click(object sender, RoutedEventArgs e) {
-
+			var stream = new System.IO.MemoryStream();
+			chart.SaveImage(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+			var bmp = new System.Drawing.Bitmap(stream);
+			System.Windows.Clipboard.SetDataObject(bmp);
 		}
 
 		private void SaveHistText_Click(object sender, RoutedEventArgs e) {
@@ -456,6 +459,13 @@ namespace BindableWinFormsControl {
 		}
 
 		private void SaveHistPic_Click(object sender, RoutedEventArgs e) {
+			var sfd = new SaveFileDialog();
+			sfd.FileName = "hist.png";
+			sfd.Filter = "PNGファイル(*.png)|*.png|すべてのファイル(*.*)|*.*";
+			sfd.ShowDialog();
+			if(sfd.FileName != "") {
+				chart.SaveImage(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
+			}
 		}
 
 		private void NUD_AntiSubKammusu_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
