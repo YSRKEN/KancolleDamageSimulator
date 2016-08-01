@@ -36,7 +36,7 @@ namespace BindableWinFormsControl {
 		const int TabIndexNight   = 5;	//夜戦
 		int[] loopCount = { 1000, 10000, 100000, 1000000 };	//ループカウント
 
-		/* メソッド */
+		/* コンストラクタ */
 		public MainWindow() {
 			InitializeComponent();
 			// チャート用の初期設定
@@ -45,39 +45,342 @@ namespace BindableWinFormsControl {
 			chart.ChartAreas.Add("ChartArea");
 			// BindableNumericUpDown用の初期設定
 			DataContext = new TestBindObject() {
-				Critical = 133,
+				AttackGun = 50,
+				Torpedo = 78,
 				AntiSubKammusu = 94,
 				AntiSubWeapons = 23,
 				Defense = 21,
 				MaxHP = 27,
 				NowHP = 27,
+				Critical = 133,
 				StatusMessage = "",
-				Torpedo = 78
 			};
 		}
 
+		/* ヒストグラム関係 */
+		/// <summary>
+		/// ヒストグラムの計算処理
+		/// </summary>
+		private void DrawHistogram() {
+			try {
+				// 計算処理
+				CalcData();
+				// ヒストグラムを描画させる
+				DrawGraph();
+			} catch { }
+		}
+		/// <summary>
+		/// グラフを再描画する処理
+		/// </summary>
+		private void DrawGraph() {
+			// スケールの最大・最小値を計算する
+			double axisX_Max = double.MinValue, axisX_Min = double.MaxValue, axisY_Max = double.MinValue, axisY_Min = double.MaxValue;
+			foreach(var pair in sorted_hist) {
+				var valuePer = 100.0 * pair.Value / loopCount[comboBox_TryCount.SelectedIndex];
+				axisX_Max = Math.Max(axisX_Max, pair.Key);
+				axisX_Min = Math.Min(axisX_Min, pair.Key);
+				axisY_Max = Math.Max(axisY_Max, valuePer);
+				axisY_Min = Math.Min(axisY_Min, valuePer);
+			}
+			axisX_Min = Math.Floor(axisX_Min);
+			axisX_Max = Math.Ceiling(axisX_Max);
+			axisY_Min = Math.Floor(axisY_Min);
+			axisY_Max = Math.Ceiling(axisY_Max);
+			// チャートにグラフを追加する
+			chart.Series.Clear();
+			var seriesHist = new Series();
+			seriesHist.ChartType = SeriesChartType.Line;
+			seriesHist.MarkerStyle = MarkerStyle.Circle;
+			foreach(var pair in sorted_hist) {
+				// 値を取得しつつ、スケールの最大・最小値を計算する
+				var valuePer = 100.0 * pair.Value / loopCount[comboBox_TryCount.SelectedIndex];
+				seriesHist.Points.AddXY(pair.Key, valuePer);
+			}
+			chart.Series.Add(seriesHist);
+			chart.ChartAreas[0].AxisX.Minimum = axisX_Min;
+			chart.ChartAreas[0].AxisX.Maximum = axisX_Max;
+			chart.ChartAreas[0].AxisY.Minimum = 0.0;
+			chart.ChartAreas[0].AxisY.Maximum = axisY_Max;
+		}
+		/// <summary>
+		/// ヒストグラムの文字列を作成する
+		/// </summary>
+		private string MakeHistText() {
+			string histText = "damage,count\n";
+			foreach(var pair in sorted_hist) {
+				histText += "" + pair.Key + "," + pair.Value + "\n";
+			}
+			return histText;
+		}
+
+		/* クリック時の動作 */
 		/// <summary>
 		/// スライドバーを動かした際の処理
 		/// </summary>
 		private void slider_Critical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			if(autoCalcFlg) {
-				CalcHistogram();
-			}
+			AutoDrawHistogram();
 		}
-
 		/// <summary>
 		/// 「計算開始」ボタンを押した際の処理
 		/// </summary>
 		private void button_Run_Click(object sender, RoutedEventArgs e) {
-			CalcHistogram();
+			DrawHistogram();
+		}
+		/// <summary>
+		/// 「自動再計算」チェックを付けた際の処理
+		/// </summary>
+		private void checkBox_AutoCalc_Checked(object sender, RoutedEventArgs e) {
+			autoCalcFlg = true;
+			AutoDrawHistogram();
+		}
+		/// <summary>
+		/// 「自動再計算」チェックを外した際の処理
+		/// </summary>
+		private void checkBox_AutoCalc_Unchecked(object sender, RoutedEventArgs e) {
+			autoCalcFlg = false;
 		}
 
+		/* 右クリック時の操作 */
+		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
+			var histText = MakeHistText();
+			System.Windows.Clipboard.SetText(histText);
+		}
+		private void CopyHistPic_Click(object sender, RoutedEventArgs e) {
+			var stream = new System.IO.MemoryStream();
+			chart.SaveImage(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+			var bmp = new System.Drawing.Bitmap(stream);
+			System.Windows.Clipboard.SetDataObject(bmp);
+		}
+		private void SaveHistText_Click(object sender, RoutedEventArgs e) {
+			var histText = MakeHistText();
+			var sfd = new SaveFileDialog();
+			sfd.FileName = "hist.csv";
+			sfd.Filter = "CSVファイル(*.csv)|*.csv|すべてのファイル(*.*)|*.*";
+			sfd.ShowDialog();
+			if(sfd.FileName != "") {
+				var stream = sfd.OpenFile();
+				if(stream != null) {
+					//ファイルに書き込む
+					var sw = new System.IO.StreamWriter(stream);
+					sw.Write(histText);
+					//閉じる
+					sw.Close();
+					stream.Close();
+				}
+			}
+		}
+		private void SaveHistPic_Click(object sender, RoutedEventArgs e) {
+			var sfd = new SaveFileDialog();
+			sfd.FileName = "hist.png";
+			sfd.Filter = "PNGファイル(*.png)|*.png|すべてのファイル(*.*)|*.*";
+			sfd.ShowDialog();
+			if(sfd.FileName != "") {
+				chart.SaveImage(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
+			}
+		}
+
+		/* 自動再計算用に同一の内容が書かれている */
+		private void AutoDrawHistogram() {
+			if(autoCalcFlg)
+				DrawHistogram();
+		}
+		//防御用・シミュレーション用設定
+		private void NUD_Defense_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_MaxHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_NowHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_Kammusu_Checked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_Kammusu_Unchecked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_TryCount_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		//攻撃用設定(共通)
+		private void comboBox_Position_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Formation_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Damage_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_AmmoPer_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		//攻撃用設定(砲撃戦)
+		private void NUD_Attack_Gun_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Watch_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Shell_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_Sanshiki_Checked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_Sanshiki_Unchecked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_WG42_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Type_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Type_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Type_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Type_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Attack_Gun_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		//攻撃用設定(雷撃)
+		private void NUD_Torpedo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_FirstTorpedo_Checked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_FirstTorpedo_Unchecked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Torpedo_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Torpedo_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Torpedo_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Torpedo_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		//攻撃用設定(対潜)
+		private void textBox_AntiSub_Kammusu_TextChanged(object sender, TextChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void textBox_AntiSub_Weapons_TextChanged(object sender, TextChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_AntiSub_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_AntiSubSynergy_Checked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void checkBox_AntiSubSynergy_Unchecked(object sender, RoutedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_AntiSub_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_AntiSub_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_AntiSub_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_AntiSub_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_AntiSubKammusu_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_AntiSubKammusu_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_AntiSubWeapons_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+
+		/* 計算用各種関数 */
+		/// <summary>
+		/// 計算処理
+		/// </summary>
+		private void CalcData() {
+			// 「彩雲有り」「彩雲無し」のため、処理を分割する
+			var hist = new Dictionary<int, int>();  //ヒストグラム(元)
+			int[] status = { 0, 0, 0, 0, 0, 0 };    //状態カウント
+													//彩雲が絡む場合、確率毎に按分する
+													//「彩雲有り」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：40：15：0
+													//「彩雲無し」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：30：15：10
+			var count = loopCount[comboBox_TryCount.SelectedIndex];
+			switch(comboBox_Position.SelectedIndex) {
+			case 4:
+				CalcDataSlave(0, hist, status, count * 45 / 100);
+				CalcDataSlave(1, hist, status, count * 40 / 100);
+				CalcDataSlave(2, hist, status, count * 15 / 100);
+				break;
+			case 5:
+				CalcDataSlave(0, hist, status, count * 45 / 100);
+				CalcDataSlave(1, hist, status, count * 30 / 100);
+				CalcDataSlave(2, hist, status, count * 15 / 100);
+				CalcDataSlave(3, hist, status, count * 10 / 100);
+				break;
+			default:
+				CalcDataSlave(comboBox_Position.SelectedIndex, hist, status, count);
+				break;
+			}
+			//ソート
+			sorted_hist = new SortedDictionary<int, int>(hist);
+			//状態messageの更新
+			var bindData = DataContext as TestBindObject;
+			bindData.StatusMessage = "無傷率：" + Math.Round(100.0 * status[0] / count, 1) + "%\n";
+			bindData.StatusMessage += "カスダメ率：" + Math.Round(100.0 * status[1] / count, 1) + "%\n";
+			bindData.StatusMessage += "小破率：" + Math.Round(100.0 * status[2] / count, 1) + "%\n";
+			bindData.StatusMessage += "中破率：" + Math.Round(100.0 * status[3] / count, 1) + "%\n";
+			bindData.StatusMessage += "大破率：" + Math.Round(100.0 * status[4] / count, 1) + "%\n";
+			bindData.StatusMessage += "撃沈率：" + Math.Round(100.0 * status[5] / count, 1) + "%";
+		}
 		/// <summary>
 		/// 計算処理(分割後)
 		/// </summary>
-		private void CalcDataSlave(Dictionary<int, int> hist, int[] status, int type, int loops) {
-			var bindData = DataContext as TestBindObject;
+		private void CalcDataSlave(int type, Dictionary<int, int> hist, int[] status, int loops) {
 			// 基本攻撃力を算出する
+			var baseAttackValue = CalcBaseAttack();
+			// キャップ前攻撃力を出す
+			var attackValueBeforeCap = CalcAttackBeforeCap(baseAttackValue, type);
+			// キャップ後攻撃力を出す
+			var attackValueAfterCap = CalcAttackAfterCap(attackValueBeforeCap);
+			// 最終攻撃力を出す
+			var lastAttackValue = CalcLastAttack(attackValueAfterCap);
+			// ダメージを算出し、ヒストグラムを取る
+			CalcHistogram(lastAttackValue, hist, status, loops);
+		}
+		/// <summary>
+		/// 基本攻撃力を出す
+		/// </summary>
+		private double CalcBaseAttack() {
+			var bindData = DataContext as TestBindObject;
 			var baseAttackValue = 0.0;
 			switch(tabControl.SelectedIndex) {
 			case TabIndexTorpedo:
@@ -106,7 +409,13 @@ namespace BindableWinFormsControl {
 				baseAttackValue += (comboBox_AntiSub.SelectedIndex == 0 ? 13 : 8);
 				break;
 			}
-			// キャップ前攻撃力を出す
+			return baseAttackValue;
+		}
+		/// <summary>
+		/// キャップ前攻撃力を出す
+		/// </summary>
+		private double CalcAttackBeforeCap(double baseAttackValue, int type) {
+			var bindData = DataContext as TestBindObject;
 			var attackValueBeforeCap = baseAttackValue;
 			//対潜シナジー補正
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
@@ -117,7 +426,7 @@ namespace BindableWinFormsControl {
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
 				double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3 };
 				attackValueBeforeCap *= param[comboBox_Formation.SelectedIndex];
-			}else {
+			} else {
 				double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6 };
 				attackValueBeforeCap *= param[comboBox_Formation.SelectedIndex];
 			}
@@ -134,14 +443,24 @@ namespace BindableWinFormsControl {
 				double[] param = { 1, 0.8, 1.2, 0.6 };
 				attackValueBeforeCap *= param[type];
 			}
-			// キャップ後攻撃力を出す
+			return attackValueBeforeCap;
+		}
+		/// <summary>
+		/// キャップ後攻撃力を出す
+		/// </summary>
+		private double CalcAttackAfterCap(double attackValueBeforeCap) {
 			var attackValueAfterCap = 0.0;
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
 				attackValueAfterCap = CalcCap(attackValueBeforeCap, 100.0);
-			}else {
+			} else {
 				attackValueAfterCap = CalcCap(attackValueBeforeCap, 150.0);
 			}
-			// 最終攻撃力を出す
+			return attackValueAfterCap;
+		}
+		/// <summary>
+		/// 最終攻撃力を出す
+		/// </summary>
+		private double[] CalcLastAttack(double attackValueAfterCap) {
 			double lastAttackValueWithoutCL = (int)attackValueAfterCap;
 			var lastAttackValueWithCL_ = (int)attackValueAfterCap * 1.5;
 			if(tabControl.SelectedIndex == TabIndexAntiSub) {
@@ -156,7 +475,15 @@ namespace BindableWinFormsControl {
 				}
 			}
 			double lastAttackValueWithCL = (int)lastAttackValueWithCL_;
-			// ダメージを算出し、ヒストグラムを取る
+			return new double[] { lastAttackValueWithoutCL , lastAttackValueWithCL };
+		}
+		/// <summary>
+		/// ヒストグラムを出す
+		/// </summary>
+		private void CalcHistogram(double[] lastAttackValue, Dictionary<int, int> hist, int[] status, int loops) {
+			var bindData = DataContext as TestBindObject;
+			var lastAttackValueWithoutCL = lastAttackValue[0];
+			var lastAttackValueWithCL = lastAttackValue[1];
 			//初期設定
 			var defense = bindData.Defense;
 			var nowHP = bindData.NowHP;
@@ -209,109 +536,6 @@ namespace BindableWinFormsControl {
 				}
 			}
 		}
-
-		/// <summary>
-		/// 計算処理
-		/// </summary>
-		private void CalcData() {
-			// 「彩雲有り」「彩雲無し」のため、処理を分割する
-			var hist = new Dictionary<int, int>();	//ヒストグラム(元)
-			int[] status = { 0, 0, 0, 0, 0, 0 };    //状態カウント
-			//彩雲が絡む場合、確率毎に按分する
-			//「彩雲有り」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：40：15：0
-			//「彩雲無し」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：30：15：10
-			var count = loopCount[comboBox_TryCount.SelectedIndex];
-			switch(comboBox_Position.SelectedIndex) {
-			case 4:
-				CalcDataSlave(hist, status, 0, count * 45 / 100);
-				CalcDataSlave(hist, status, 1, count * 40 / 100);
-				CalcDataSlave(hist, status, 2, count * 15 / 100);
-				break;
-			case 5:
-				CalcDataSlave(hist, status, 0, count * 45 / 100);
-				CalcDataSlave(hist, status, 1, count * 30 / 100);
-				CalcDataSlave(hist, status, 2, count * 15 / 100);
-				CalcDataSlave(hist, status, 3, count * 10 / 100);
-				break;
-			default:
-				CalcDataSlave(hist, status, comboBox_Position.SelectedIndex, count);
-				break;
-			}
-			//ソート
-			sorted_hist = new SortedDictionary<int, int>(hist);
-			//状態messageの更新
-			var bindData = DataContext as TestBindObject;
-			bindData.StatusMessage = "無傷率：" + Math.Round(100.0 * status[0] / count, 1) + "%\n";
-			bindData.StatusMessage += "カスダメ率：" + Math.Round(100.0 * status[1] / count, 1) + "%\n";
-			bindData.StatusMessage += "小破率：" + Math.Round(100.0 * status[2] / count, 1) + "%\n";
-			bindData.StatusMessage += "中破率：" + Math.Round(100.0 * status[3] / count, 1) + "%\n";
-			bindData.StatusMessage += "大破率：" + Math.Round(100.0 * status[4] / count, 1) + "%\n";
-			bindData.StatusMessage += "撃沈率：" + Math.Round(100.0 * status[5] / count, 1) + "%";
-		}
-
-		/// <summary>
-		/// ヒストグラムの計算処理
-		/// </summary>
-		private void CalcHistogram() {
-			try {
-				// 計算処理
-				CalcData();
-				// ヒストグラムを描画させる
-				DrawGraph();
-			} catch { }
-		}
-
-		/// <summary>
-		/// グラフを再描画する処理
-		/// </summary>
-		private void DrawGraph() {
-			// スケールの最大・最小値を計算する
-			double axisX_Max = double.MinValue, axisX_Min = double.MaxValue, axisY_Max = double.MinValue, axisY_Min = double.MaxValue;
-			foreach(var pair in sorted_hist) {
-				var valuePer = 100.0 * pair.Value / loopCount[comboBox_TryCount.SelectedIndex];
-				axisX_Max = Math.Max(axisX_Max, pair.Key);
-				axisX_Min = Math.Min(axisX_Min, pair.Key);
-				axisY_Max = Math.Max(axisY_Max, valuePer);
-				axisY_Min = Math.Min(axisY_Min, valuePer);
-			}
-			axisX_Min = Math.Floor(axisX_Min);
-			axisX_Max = Math.Ceiling(axisX_Max);
-			axisY_Min = Math.Floor(axisY_Min);
-			axisY_Max = Math.Ceiling(axisY_Max);
-			// チャートにグラフを追加する
-			chart.Series.Clear();
-			var seriesHist = new Series();
-			seriesHist.ChartType = SeriesChartType.Line;
-			seriesHist.MarkerStyle = MarkerStyle.Circle;
-			foreach(var pair in sorted_hist) {
-				// 値を取得しつつ、スケールの最大・最小値を計算する
-				var valuePer = 100.0 * pair.Value / loopCount[comboBox_TryCount.SelectedIndex];
-				seriesHist.Points.AddXY(pair.Key, valuePer);
-			}
-			chart.Series.Add(seriesHist);
-			chart.ChartAreas[0].AxisX.Minimum = axisX_Min;
-			chart.ChartAreas[0].AxisX.Maximum = axisX_Max;
-			chart.ChartAreas[0].AxisY.Minimum = 0.0;
-			chart.ChartAreas[0].AxisY.Maximum = axisY_Max;
-		}
-
-		/// <summary>
-		/// 「自動再計算」チェックを付けた際の処理
-		/// </summary>
-		private void checkBox_AutoCalc_Checked(object sender, RoutedEventArgs e) {
-			autoCalcFlg = true;
-			if(autoCalcFlg) {
-				CalcHistogram();
-			}
-		}
-
-		/// <summary>
-		/// 「自動再計算」チェックを外した際の処理
-		/// </summary>
-		private void checkBox_AutoCalc_Unchecked(object sender, RoutedEventArgs e) {
-			autoCalcFlg = false;
-		}
-
 		/// <summary>
 		/// 値を制限する
 		/// </summary>
@@ -322,7 +546,6 @@ namespace BindableWinFormsControl {
 				return max;
 			return a;
 		}
-
 		/// <summary>
 		/// キャップ計算
 		/// </summary>
@@ -331,199 +554,6 @@ namespace BindableWinFormsControl {
 				return x;
 			else
 				return cap + Math.Sqrt(x - cap);
-		}
-
-
-		/// <summary>
-		/// ヒストグラムの文字列を作成する
-		/// </summary>
-		private string MakeHistText() {
-			string histText = "damage,count\n";
-			foreach(var pair in sorted_hist) {
-				histText += "" + pair.Key + "," + pair.Value + "\n";
-			}
-			return histText;
-		}
-
-		/* 右クリック時の操作 */
-		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
-			var histText = MakeHistText();
-			System.Windows.Clipboard.SetText(histText);
-		}
-		private void CopyHistPic_Click(object sender, RoutedEventArgs e) {
-			var stream = new System.IO.MemoryStream();
-			chart.SaveImage(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-			var bmp = new System.Drawing.Bitmap(stream);
-			System.Windows.Clipboard.SetDataObject(bmp);
-		}
-		private void SaveHistText_Click(object sender, RoutedEventArgs e) {
-			var histText = MakeHistText();
-			var sfd = new SaveFileDialog();
-			sfd.FileName = "hist.csv";
-			sfd.Filter = "CSVファイル(*.csv)|*.csv|すべてのファイル(*.*)|*.*";
-			sfd.ShowDialog();
-			if(sfd.FileName != "") {
-				var stream = sfd.OpenFile();
-				if(stream != null) {
-					//ファイルに書き込む
-					var sw = new System.IO.StreamWriter(stream);
-					sw.Write(histText);
-					//閉じる
-					sw.Close();
-					stream.Close();
-				}
-			}
-		}
-		private void SaveHistPic_Click(object sender, RoutedEventArgs e) {
-			var sfd = new SaveFileDialog();
-			sfd.FileName = "hist.png";
-			sfd.Filter = "PNGファイル(*.png)|*.png|すべてのファイル(*.*)|*.*";
-			sfd.ShowDialog();
-			if(sfd.FileName != "") {
-				chart.SaveImage(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
-			}
-		}
-
-		/* 以下、自動再計算用に同一の内容が書かれている */
-		private void AutoCalcHistogram() {
-			if(autoCalcFlg) CalcHistogram();
-		}
-		//防御用・シミュレーション用設定
-		private void NUD_Defense_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void NUD_MaxHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void NUD_NowHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_Kammusu_Checked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_Kammusu_Unchecked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_TryCount_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		//攻撃用設定(共通)
-		private void comboBox_Position_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Formation_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Damage_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_AmmoPer_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		//攻撃用設定(対潜)
-		private void textBox_AntiSub_Kammusu_TextChanged(object sender, TextChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void textBox_AntiSub_Weapons_TextChanged(object sender, TextChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_AntiSub_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_AntiSubSynergy_Checked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_AntiSubSynergy_Unchecked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_AntiSub_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_AntiSub_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_AntiSub_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_AntiSub_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void NUD_AntiSubKammusu_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void NUD_AntiSubKammusu_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void NUD_AntiSubWeapons_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		//攻撃用設定(雷撃)
-		private void NUD_Torpedo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_FirstTorpedo_Checked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_FirstTorpedo_Unchecked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Torpedo_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Torpedo_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Torpedo_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Torpedo_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		//攻撃用設定(攻撃)
-		private void NUD_Attack_Gun_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Watch_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Shell_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_Sanshiki_Checked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void checkBox_Sanshiki_Unchecked(object sender, RoutedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_WG42_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoCalcHistogram();
 		}
 	}
 }

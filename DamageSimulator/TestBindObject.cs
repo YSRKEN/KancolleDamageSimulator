@@ -10,29 +10,28 @@ using System.Threading.Tasks;
 namespace BindableWinFormsControl {
 	using System.ComponentModel;
 	internal class TestBindObject : INotifyPropertyChanged {
-		private int antiSubKammusu;
-		private int antiSubWeapons;
-		private int critical;
-		private int defense;
-		private int maxHP;
-		private int nowHP;
-		private string statusMessage;
-		private int torpedo;
-
-		public int Critical
-		{
-			get { return critical; }
-			set
-			{
-				critical = value;
-				NotifyPropertyChanged("CriticalLabel");
+		/* çUåÇë§ê›íË(ñCåÇêÌ) */
+		private int attackGun;
+		public int AttackGun {
+			get { return attackGun; }
+			set {
+				attackGun = value;
+				NotifyPropertyChanged("AttackGun");
 			}
 		}
 
-		public string CriticalLabel {
-			get { return (1.0 * critical / 10).ToString("0.0") + "%"; }
+		/* çUåÇë§ê›íË(óãåÇ) */
+		private int torpedo;
+		public int Torpedo {
+			get { return torpedo; }
+			set {
+				torpedo = value;
+				NotifyPropertyChanged("Torpedo");
+			}
 		}
 
+		/* çUåÇë§ê›íË(ëŒêˆçUåÇ) */
+		private int antiSubKammusu;
 		public int AntiSubKammusu {
 			get { return antiSubKammusu; }
 			set {
@@ -40,7 +39,7 @@ namespace BindableWinFormsControl {
 				NotifyPropertyChanged("AntiSubKammusu");
 			}
 		}
-
+		private int antiSubWeapons;
 		public int AntiSubWeapons {
 			get { return antiSubWeapons; }
 			set {
@@ -49,6 +48,8 @@ namespace BindableWinFormsControl {
 			}
 		}
 
+		/* ñhå‰ópê›íË */
+		private int defense;
 		public int Defense {
 			get { return defense; }
 			set {
@@ -56,7 +57,7 @@ namespace BindableWinFormsControl {
 				NotifyPropertyChanged("Defense");
 			}
 		}
-
+		private int maxHP;
 		public int MaxHP {
 			get { return maxHP; }
 			set {
@@ -64,7 +65,7 @@ namespace BindableWinFormsControl {
 				NotifyPropertyChanged("MaxHP");
 			}
 		}
-
+		private int nowHP;
 		public int NowHP {
 			get { return nowHP; }
 			set {
@@ -73,19 +74,24 @@ namespace BindableWinFormsControl {
 			}
 		}
 
+		/* ÇªÇÃëº */
+		private int critical;
+		public int Critical {
+			get { return critical; }
+			set {
+				critical = value;
+				NotifyPropertyChanged("CriticalLabel");
+			}
+		}
+		public string CriticalLabel {
+			get { return (1.0 * critical / 10).ToString("0.0") + "%"; }
+		}
+		private string statusMessage;
 		public string StatusMessage {
 			get { return statusMessage; }
 			set {
 				statusMessage = value;
 				NotifyPropertyChanged("StatusMessage");
-			}
-		}
-
-		public int Torpedo {
-			get { return torpedo; }
-			set {
-				torpedo = value;
-				NotifyPropertyChanged("Torpedo");
 			}
 		}
 
