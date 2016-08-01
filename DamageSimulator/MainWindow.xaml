@@ -58,23 +58,26 @@
 			</Grid>
 		</GroupBox>
 		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="163" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="tabControl_SelectionChanged">
-			<TabItem Header="砲撃戦" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
+			<TabItem Header="砲撃戦">
 				<Grid Background="White">
 					<Label x:Name="label16" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
 					<local:BindableNumericUpDown x:Name="NUD_Attack_Gun" Value="{Binding AttackGun}" HorizontalAlignment="Left" Height="23" Width="45" Margin="49,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Attack_Gun_PropertyChanged"/>
 					<Label x:Name="label17" Content="弾着観測" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="99,10,0,0"/>
 					<ComboBox x:Name="comboBox_Watch" HorizontalAlignment="Left" Margin="162,12,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="comboBox_Watch_SelectionChanged" RenderTransformOrigin="0.591,-0.318">
 						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(主主)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(主徹)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(主電)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(主副)" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="連撃" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<Label x:Name="label18" Content="徹甲弾特効" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="5,41,0,0"/>
 					<ComboBox x:Name="comboBox_Shell" HorizontalAlignment="Left" Margin="75,43,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.591,-0.318" SelectionChanged="comboBox_Shell_SelectionChanged">
 						<ComboBoxItem Content="無し" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="有り" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="副砲" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="電探" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="副砲電探" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="+副砲" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="+電探" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="+副砲電探" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<CheckBox x:Name="checkBox_Sanshiki" Content="三式弾有" HorizontalAlignment="Left" Margin="168,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="checkBox_Sanshiki_Checked" Unchecked="checkBox_Sanshiki_Unchecked"/>
 					<Label x:Name="label19" Content="WG42所持数" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="236,41,0,0"/>
@@ -160,7 +163,7 @@
 					</ComboBox>
 				</Grid>
 			</TabItem>
-			<TabItem Header="砲撃戦(空母)" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="80" Margin="-2,-2,-24,0">
+			<TabItem Header="砲撃戦(空母)">
 				<Grid Background="White"/>
 			</TabItem>
 			<TabItem Header="雷撃戦">
@@ -223,7 +226,7 @@
 					<CheckBox x:Name="checkBox_FirstTorpedo" Content="開幕雷撃" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Checked="checkBox_FirstTorpedo_Checked" Unchecked="checkBox_FirstTorpedo_Unchecked"/>
 				</Grid>
 			</TabItem>
-			<TabItem Header="航空戦" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
+			<TabItem Header="航空戦">
 				<Grid Background="White"/>
 			</TabItem>
 			<TabItem Header="対潜攻撃">
@@ -293,7 +296,7 @@
 					</ComboBox>
 				</Grid>
 			</TabItem>
-			<TabItem Header="夜戦" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
+			<TabItem Header="夜戦">
 				<Grid Background="White"/>
 			</TabItem>
 		</TabControl>
