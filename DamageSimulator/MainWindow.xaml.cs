@@ -190,9 +190,13 @@ namespace BindableWinFormsControl {
 			AutoDrawHistogram();
 		}
 		private void NUD_MaxHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            var bindData = DataContext as TestBindObject;
+            if (bindData.NowHP > bindData.MaxHP) bindData.NowHP = bindData.MaxHP;
 			AutoDrawHistogram();
 		}
 		private void NUD_NowHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            var bindData = DataContext as TestBindObject;
+            if (bindData.NowHP > bindData.MaxHP) bindData.MaxHP = bindData.NowHP;
 			AutoDrawHistogram();
 		}
 		private void checkBox_Kammusu_Checked(object sender, RoutedEventArgs e) {
