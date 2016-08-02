@@ -164,7 +164,108 @@
 				</Grid>
 			</TabItem>
 			<TabItem Header="砲撃戦(空母)">
-				<Grid Background="White"/>
+				<Grid Background="White">
+					<Label x:Name="label21" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
+					<local:BindableNumericUpDown x:Name="NUD_Attack_GunAir" Value="{Binding AttackGunAir}" HorizontalAlignment="Left" Height="23" Width="45" Margin="49,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Attack_GunAir_PropertyChanged"/>
+					<Label x:Name="label23" Content="爆装" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="99,10,0,0"/>
+					<local:BindableNumericUpDown x:Name="NUD_Bomb_GunAir" Value="{Binding BombGunAir}" HorizontalAlignment="Left" Height="23" Width="45" Margin="138,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Bomb_GunAir_PropertyChanged"/>
+					<Label x:Name="label22" Content="雷装" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="188,10,0,0"/>
+					<local:BindableNumericUpDown x:Name="NUD_Torpedo_GunAir" Value="{Binding TorpedoGunAir}" HorizontalAlignment="Left" Height="23" Width="45" Margin="227,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Torpedo_GunAir_PropertyChanged"/>
+					<Label x:Name="label24" Content="艦載機熟練度" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,37,0,0"/>
+					<ComboBox x:Name="comboBox_GunAir_Skill_0" HorizontalAlignment="Left" Margin="97,39,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_0_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_GunAir_Skill_1" HorizontalAlignment="Left" Margin="162,39,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_1_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_GunAir_Skill_2" HorizontalAlignment="Left" Margin="227,39,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_2_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_GunAir_Skill_3" HorizontalAlignment="Left" Margin="292,39,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_3_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<Label x:Name="label25" Content="装備改修度" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="24,64,0,0"/>
+					<ComboBox x:Name="comboBox_GunAir_Level_0" HorizontalAlignment="Left" Margin="97,66,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Level_0_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_GunAir_Level_1" HorizontalAlignment="Left" Margin="162,66,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Level_1_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_GunAir_Level_2" HorizontalAlignment="Left" Margin="227,66,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Level_2_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_GunAir_Level_3" HorizontalAlignment="Left" Margin="292,66,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Level_3_SelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+				</Grid>
 			</TabItem>
 			<TabItem Header="雷撃戦">
 				<Grid x:Name="grid_Torpedo" Background="White">

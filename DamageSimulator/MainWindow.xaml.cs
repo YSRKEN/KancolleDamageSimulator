@@ -267,6 +267,40 @@ namespace BindableWinFormsControl {
 		private void comboBox_Attack_Gun_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			AutoDrawHistogram();
 		}
+		//攻撃用設定(砲撃戦(航空戦))
+		private void NUD_Attack_GunAir_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_Bomb_GunAir_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_Torpedo_GunAir_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Skill_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Skill_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Skill_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Skill_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_GunAir_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
 		//攻撃用設定(雷撃)
 		private void NUD_Torpedo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
 			AutoDrawHistogram();
@@ -402,6 +436,15 @@ namespace BindableWinFormsControl {
 				baseAttackValue += param[comboBox_Attack_Gun_Type_3.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_3.SelectedIndex);
 				break;
 			case TabIndexGunAir:
+				{
+					double temp = bindData.AttackGunAir + bindData.TorpedoGunAir + (int)(bindData.BombGunAir * 1.3);
+					// 装備改修度
+					temp += Math.Sqrt(comboBox_GunAir_Level_0.SelectedIndex);
+					temp += Math.Sqrt(comboBox_GunAir_Level_1.SelectedIndex);
+					temp += Math.Sqrt(comboBox_GunAir_Level_2.SelectedIndex);
+					temp += Math.Sqrt(comboBox_GunAir_Level_3.SelectedIndex);
+					baseAttackValue = (int)(temp * 1.5) + 55;
+				}
 				break;
 			case TabIndexTorpedo:
 				baseAttackValue = bindData.Torpedo + 5;
@@ -441,13 +484,21 @@ namespace BindableWinFormsControl {
 		private double CalcAttackBeforeCap(double baseAttackValue, int type) {
 			var bindData = DataContext as TestBindObject;
 			var attackValueBeforeCap = baseAttackValue;
-			// 三式弾特効
-			if((bool)checkBox_Sanshiki.IsChecked)
-				attackValueBeforeCap *= 2.5;
-			// WG42特効
-			{
-				double[] param = { 0, 75, 110, 140, 160 };
-				attackValueBeforeCap += param[comboBox_WG42.SelectedIndex];
+			if(tabControl.SelectedIndex == TabIndexGun) {
+				// 三式弾特効
+				if((bool)checkBox_Sanshiki.IsChecked)
+					attackValueBeforeCap *= 2.5;
+				// WG42特効
+				{
+					double[] param = { 0, 75, 110, 140, 160 };
+					attackValueBeforeCap += param[comboBox_WG42.SelectedIndex];
+				}
+			}
+			if(tabControl.SelectedIndex == TabIndexNight) {
+				// 三式弾特効
+
+				// WG42特効
+
 			}
 			// キャップ前補正
 			//交戦形態補正
@@ -502,16 +553,24 @@ namespace BindableWinFormsControl {
 		private double[] CalcLastAttack(double attackValueAfterCap) {
 			double lastAttackValue = (int)attackValueAfterCap;
 			// 徹甲弾特効
-			{
+			if(tabControl.SelectedIndex == TabIndexGun){
 				double[] param = { 1.0, 1.08, 1.1, 1.15, 1.15};
 				lastAttackValue = (int)(lastAttackValue * param[comboBox_Shell.SelectedIndex]);
 			}
 			// クリティカル補正
 			double lastAttackValueWithoutCL = (int)lastAttackValue;
-			var lastAttackValueWithCL = (int)lastAttackValue * 1.5;
+			var lastAttackValueWithCL = lastAttackValue * 1.5;
 			// 熟練度補正
 			switch(tabControl.SelectedIndex) {
 			case TabIndexGunAir:
+				{
+					var airLevelWeight = 1.0;
+					airLevelWeight += Limit(comboBox_GunAir_Skill_0.SelectedIndex, 0, 7) * 0.2 / 7;
+					airLevelWeight += Limit(comboBox_GunAir_Skill_1.SelectedIndex, 0, 7) * 0.1 / 7;
+					airLevelWeight += Limit(comboBox_GunAir_Skill_2.SelectedIndex, 0, 7) * 0.1 / 7;
+					airLevelWeight += Limit(comboBox_GunAir_Skill_3.SelectedIndex, 0, 7) * 0.1 / 7;
+					lastAttackValueWithCL = (int)(lastAttackValueWithCL * airLevelWeight);
+				}
 				break;
 			case TabIndexAir:
 				break;
@@ -523,9 +582,11 @@ namespace BindableWinFormsControl {
 					airLevelWeight += Limit(comboBox_AntiSub_Level_1.SelectedIndex, 0, 7) * 0.1 / 7;
 					airLevelWeight += Limit(comboBox_AntiSub_Level_2.SelectedIndex, 0, 7) * 0.1 / 7;
 					airLevelWeight += Limit(comboBox_AntiSub_Level_3.SelectedIndex, 0, 7) * 0.1 / 7;
-					lastAttackValueWithoutCL = (int)(lastAttackValueWithoutCL * airLevelWeight);
 					lastAttackValueWithCL = (int)(lastAttackValueWithCL * airLevelWeight);
 				}
+				break;
+			default:
+				lastAttackValueWithCL = (int)lastAttackValueWithCL;
 				break;
 			}
 			// 触接・弾着補正

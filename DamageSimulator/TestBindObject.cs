@@ -20,6 +20,32 @@ namespace BindableWinFormsControl {
 			}
 		}
 
+		/* UŒ‚‘¤İ’è(–CŒ‚í(‹ó•êŒn)) */
+		private int attackGunAir;
+		public int AttackGunAir {
+			get { return attackGunAir; }
+			set {
+				attackGunAir = value;
+				NotifyPropertyChanged("AttackGunAir");
+			}
+		}
+		private int bombGunAir;
+		public int BombGunAir {
+			get { return bombGunAir; }
+			set {
+				bombGunAir = value;
+				NotifyPropertyChanged("BombGunAir");
+			}
+		}
+		private int torpedoGunAir;
+		public int TorpedoGunAir {
+			get { return torpedoGunAir; }
+			set {
+				torpedoGunAir = value;
+				NotifyPropertyChanged("TorpedoGunAir");
+			}
+		}
+
 		/* UŒ‚‘¤İ’è(—‹Œ‚) */
 		private int torpedo;
 		public int Torpedo {
