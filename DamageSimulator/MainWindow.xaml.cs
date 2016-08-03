@@ -592,7 +592,7 @@ namespace BindableWinFormsControl {
 				var nowHP2 = nowHP - damage;
 				if(nowHP == nowHP2) {
 					++status[(int)StatusIndex.NoDamage];
-				} else if(nowHP2 * 4 > maxHP) {
+				} else if(nowHP2 > maxHP) {
 					++status[(int)StatusIndex.TooSmall];
 				} else if(nowHP2 * 2 > maxHP) {
 					++status[(int)StatusIndex.Small];
