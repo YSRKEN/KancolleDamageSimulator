@@ -458,9 +458,9 @@
 			<TabItem Header="夜戦">
 				<Grid Background="White">
 					<Label x:Name="label30" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
-					<local:BindableNumericUpDown x:Name="NUD_Attack_Night" Value="{Binding AttackGun}" HorizontalAlignment="Left" Height="23" Width="45" Margin="49,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
+					<local:BindableNumericUpDown x:Name="NUD_Attack_Night" Value="{Binding AttackNight}" HorizontalAlignment="Left" Height="23" Width="45" Margin="49,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 					<Label x:Name="label31" Content="雷装" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="99,10,0,0"/>
-					<local:BindableNumericUpDown x:Name="NUD_Torpedo_Night" Value="{Binding AttackGun}" HorizontalAlignment="Left" Height="23" Width="45" Margin="138,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
+					<local:BindableNumericUpDown x:Name="NUD_Torpedo_Night" Value="{Binding TorpedoNight}" HorizontalAlignment="Left" Height="23" Width="45" Margin="138,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 					<Label x:Name="label32" Content="攻撃種別" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="188,10,0,0"/>
 					<ComboBox x:Name="comboBox_Night_Type" HorizontalAlignment="Left" Margin="251,9,0,0" VerticalAlignment="Top" Width="103" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged" RenderTransformOrigin="0.591,-0.318">
 						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left" Width="118"/>

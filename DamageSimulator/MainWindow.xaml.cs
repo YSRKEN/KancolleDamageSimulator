@@ -59,6 +59,8 @@ namespace BindableWinFormsControl {
 				SlotsAir = 10,
 				AntiSubKammusu = 50,
 				AntiSubWeapons = 28,
+				AttackNight = 70,
+				TorpedoNight = 30,
 				Defense = 50,
 				MaxHP = 50,
 				NowHP = 50,
@@ -353,6 +355,16 @@ namespace BindableWinFormsControl {
 				baseAttackValue += (comboBox_AntiSub.SelectedIndex == 0 ? 13 : 8);
 				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexNight:
+				baseAttackValue = bindData.AttackNight + ((bool)checkBox_Night_Trailer.IsChecked ? 5 : 0);
+				// 装備改修値
+				baseAttackValue += Math.Sqrt(comboBox_Attack_Night_Level_0.SelectedIndex);
+				baseAttackValue += Math.Sqrt(comboBox_Attack_Night_Level_1.SelectedIndex);
+				baseAttackValue += Math.Sqrt(comboBox_Attack_Night_Level_2.SelectedIndex);
+				baseAttackValue += Math.Sqrt(comboBox_Attack_Night_Level_3.SelectedIndex);
+				// 対地攻撃では雷装値無効
+				if(!(bool)checkBox_Sanshiki_Night.IsChecked && comboBox_WG42_Night.SelectedIndex == 0) {
+					baseAttackValue += bindData.TorpedoNight;
+				}
 				return new double[] { baseAttackValue, baseAttackValue };
 			default:
 				return new double[] { baseAttackValue, baseAttackValue };
@@ -365,43 +377,52 @@ namespace BindableWinFormsControl {
 			var bindData = DataContext as TestBindObject;
 			var attackValueBeforeCap = baseAttackValue;
 			for(var i = 0; i < 2; ++i) {
+				// 三式弾特効・WG42特効
 				if(tabControl.SelectedIndex == TabIndexGun) {
-					// 三式弾特効
 					if((bool)checkBox_Sanshiki.IsChecked)
 						attackValueBeforeCap[i] *= 2.5;
-					// WG42特効
 					{
 						double[] param = { 0, 75, 110, 140, 160 };
 						attackValueBeforeCap[i] += param[comboBox_WG42.SelectedIndex];
 					}
 				}
 				if(tabControl.SelectedIndex == TabIndexNight) {
-					// 三式弾特効
-
-					// WG42特効
-
+					if((bool)checkBox_Sanshiki_Night.IsChecked)
+						attackValueBeforeCap[i] *= 2.5;
+					{
+						double[] param = { 0, 75, 110, 140, 160 };
+						attackValueBeforeCap[i] += param[comboBox_WG42_Night.SelectedIndex];
+					}
 				}
 				// キャップ前補正
 				//交戦形態補正
-				{
+				if(tabControl.SelectedIndex == TabIndexGun
+				|| tabControl.SelectedIndex == TabIndexTorpedo
+				|| tabControl.SelectedIndex == TabIndexAntiSub) {
 					double[] param = { 1, 0.8, 1.2, 0.6 };
 					attackValueBeforeCap[i] *= param[type];
 				}
 				//陣形補正
-				if(tabControl.SelectedIndex == TabIndexAntiSub) {
-					double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3 };
-					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
-				} else {
-					double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6 };
-					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
+				if(tabControl.SelectedIndex == TabIndexGun
+				|| tabControl.SelectedIndex == TabIndexTorpedo
+				|| tabControl.SelectedIndex == TabIndexAntiSub) {
+					if(tabControl.SelectedIndex == TabIndexAntiSub) {
+						double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3 };
+						attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
+					} else {
+						double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6 };
+						attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
+					}
 				}
 				//損傷補正
-				if(tabControl.SelectedIndex == TabIndexTorpedo && (bool)checkBox_FirstTorpedo.IsChecked) {
-					double[] param = { 1, 0.8, 0.0 };
-					attackValueBeforeCap[i] *= param[comboBox_Damage.SelectedIndex];
-				} else {
-					double[] param = { 1, 0.7, 0.4 };
-					attackValueBeforeCap[i] *= param[comboBox_Damage.SelectedIndex];
+				if(tabControl.SelectedIndex != TabIndexAir) {
+					if(tabControl.SelectedIndex == TabIndexTorpedo && (bool)checkBox_FirstTorpedo.IsChecked) {
+						double[] param = { 1, 0.8, 0.0 };
+						attackValueBeforeCap[i] *= param[comboBox_Damage.SelectedIndex];
+					} else {
+						double[] param = { 1, 0.7, 0.4 };
+						attackValueBeforeCap[i] *= param[comboBox_Damage.SelectedIndex];
+					}
 				}
 				//対潜シナジー補正
 				if(tabControl.SelectedIndex == TabIndexAntiSub) {
@@ -410,7 +431,8 @@ namespace BindableWinFormsControl {
 				}
 				//夜戦特殊攻撃補正
 				if(tabControl.SelectedIndex == TabIndexNight) {
-
+					double[] param = { 1.0, 1.5, 1.3, 2.0, 1.75, 1.2 };
+					attackValueBeforeCap[i] *= param[comboBox_Night_Type.SelectedIndex];
 				}
 			}
 			return attackValueBeforeCap;

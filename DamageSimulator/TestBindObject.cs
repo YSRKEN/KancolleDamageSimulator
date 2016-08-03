@@ -92,6 +92,24 @@ namespace BindableWinFormsControl {
 			}
 		}
 
+		/* UŒ‚‘¤İ’è(–éí) */
+		private int attackNight;
+		public int AttackNight {
+			get { return attackNight; }
+			set {
+				attackNight = value;
+				NotifyPropertyChanged("AttackNight");
+			}
+		}
+		private int torpedoNight;
+		public int TorpedoNight {
+			get { return torpedoNight; }
+			set {
+				torpedoNight = value;
+				NotifyPropertyChanged("TorpedoNight");
+			}
+		}
+
 		/* –hŒä—pİ’è */
 		private int defense;
 		public int Defense {
