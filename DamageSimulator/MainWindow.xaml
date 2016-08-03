@@ -63,7 +63,7 @@
 					<Label x:Name="label16" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
 					<local:BindableNumericUpDown x:Name="NUD_Attack_Gun" Value="{Binding AttackGun}" HorizontalAlignment="Left" Height="23" Width="45" Margin="49,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 					<Label x:Name="label17" Content="弾着観測" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="99,10,0,0"/>
-					<ComboBox x:Name="comboBox_Watch" HorizontalAlignment="Left" Margin="162,12,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged" RenderTransformOrigin="0.591,-0.318">
+					<ComboBox x:Name="comboBox_Watch" HorizontalAlignment="Left" Margin="162,12,0,0" VerticalAlignment="Top" Width="103" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged" RenderTransformOrigin="0.591,-0.318">
 						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="カットイン(主主)" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="カットイン(主徹)" HorizontalAlignment="Left" Width="118"/>
@@ -456,7 +456,84 @@
 				</Grid>
 			</TabItem>
 			<TabItem Header="夜戦">
-				<Grid Background="White"/>
+				<Grid Background="White">
+					<Label x:Name="label30" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
+					<local:BindableNumericUpDown x:Name="NUD_Attack_Night" Value="{Binding AttackGun}" HorizontalAlignment="Left" Height="23" Width="45" Margin="49,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
+					<Label x:Name="label31" Content="雷装" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="99,10,0,0"/>
+					<local:BindableNumericUpDown x:Name="NUD_Torpedo_Night" Value="{Binding AttackGun}" HorizontalAlignment="Left" Height="23" Width="45" Margin="138,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
+					<Label x:Name="label32" Content="攻撃種別" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="188,10,0,0"/>
+					<ComboBox x:Name="comboBox_Night_Type" HorizontalAlignment="Left" Margin="251,9,0,0" VerticalAlignment="Top" Width="103" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged" RenderTransformOrigin="0.591,-0.318">
+						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(魚魚)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(主魚)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(主主)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カットイン(主副)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="連撃" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<CheckBox x:Name="checkBox_Night_Trailer" Content="夜間触接あり" HorizontalAlignment="Left" Margin="49,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
+					<CheckBox x:Name="checkBox_Sanshiki_Night" Content="三式弾あり" HorizontalAlignment="Left" Margin="157,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
+					<Label x:Name="label33" Content="WG42所持数" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="236,41,0,0"/>
+					<ComboBox x:Name="comboBox_WG42_Night" HorizontalAlignment="Left" Margin="314,43,0,0" VerticalAlignment="Top" Width="40" SelectedIndex="0" RenderTransformOrigin="0.591,-0.318" SelectionChanged="GeneralSelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<Label x:Name="label34" Content="装備改修" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,67,0,0"/>
+					<ComboBox x:Name="comboBox_Attack_Night_Level_0" HorizontalAlignment="Left" Margin="73,71,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_Attack_Night_Level_1" HorizontalAlignment="Left" Margin="138,71,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_Attack_Night_Level_2" HorizontalAlignment="Left" Margin="203,71,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_Attack_Night_Level_3" HorizontalAlignment="Left" Margin="268,71,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="5" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="8" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
+					</ComboBox>
+				</Grid>
 			</TabItem>
 		</TabControl>
 		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="269,219,0,0" VerticalAlignment="Top" Width="313" Height="140">
