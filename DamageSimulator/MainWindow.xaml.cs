@@ -157,8 +157,26 @@ namespace BindableWinFormsControl {
 		private void checkBox_AutoCalc_Unchecked(object sender, RoutedEventArgs e) {
 			autoCalcFlg = false;
 		}
+		/// <summary>
+		/// 最大耐久を変化させた際の処理
+		/// </summary>
+		private void NUD_MaxHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			var bindData = DataContext as TestBindObject;
+			if(bindData.NowHP > bindData.MaxHP)
+				bindData.NowHP = bindData.MaxHP;
+			AutoDrawHistogram();
+		}
+		/// <summary>
+		/// 現在耐久を変化させた際の処理
+		/// </summary>
+		private void NUD_NowHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			var bindData = DataContext as TestBindObject;
+			if(bindData.NowHP > bindData.MaxHP)
+				bindData.MaxHP = bindData.NowHP;
+			AutoDrawHistogram();
+		}
 
-		/* 右クリック時の操作 */
+		/* 右クリック時の動作 */
 		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
 			var histText = MakeHistText();
 			System.Windows.Clipboard.SetText(histText);
@@ -197,209 +215,18 @@ namespace BindableWinFormsControl {
 			}
 		}
 
-		/* 自動再計算用に同一の内容が書かれている */
+		/* 自動再計算用のテンプレ */
 		private void AutoDrawHistogram() {
 			if(autoCalcFlg)
 				DrawHistogram();
 		}
-		//防御用・シミュレーション用設定
-		private void NUD_Defense_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+		private void GeneralPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
 			AutoDrawHistogram();
 		}
-		private void NUD_MaxHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            var bindData = DataContext as TestBindObject;
-            if (bindData.NowHP > bindData.MaxHP) bindData.NowHP = bindData.MaxHP;
+		private void GeneralRouted(object sender, RoutedEventArgs e) {
 			AutoDrawHistogram();
 		}
-		private void NUD_NowHP_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            var bindData = DataContext as TestBindObject;
-            if (bindData.NowHP > bindData.MaxHP) bindData.MaxHP = bindData.NowHP;
-			AutoDrawHistogram();
-		}
-		private void checkBox_Kammusu_Checked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void checkBox_Kammusu_Unchecked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_TryCount_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		//攻撃用設定(共通)
-		private void comboBox_Position_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Formation_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Damage_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_AmmoPer_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		//攻撃用設定(砲撃戦)
-		private void NUD_Attack_Gun_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Watch_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Shell_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void checkBox_Sanshiki_Checked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void checkBox_Sanshiki_Unchecked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_WG42_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Type_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Attack_Gun_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		//攻撃用設定(砲撃戦(航空戦))
-		private void NUD_Attack_GunAir_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void NUD_Bomb_GunAir_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void NUD_Torpedo_GunAir_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Skill_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Skill_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Skill_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Skill_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_GunAir_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		//攻撃用設定(雷撃戦)
-		private void NUD_Torpedo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void checkBox_FirstTorpedo_Checked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void checkBox_FirstTorpedo_Unchecked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Torpedo_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Torpedo_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Torpedo_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Torpedo_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		//攻撃側設定(航空戦)
-		private void NUD_Air_Power_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void NUD_Air_Slots_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Air_Type_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Air_Trailer_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Air_Skill_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Air_Skill_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Air_Skill_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_Air_Skill_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		//攻撃用設定(対潜)
-		private void textBox_AntiSub_Kammusu_TextChanged(object sender, TextChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void textBox_AntiSub_Weapons_TextChanged(object sender, TextChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_AntiSub_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void checkBox_AntiSubSynergy_Checked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void checkBox_AntiSubSynergy_Unchecked(object sender, RoutedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_AntiSub_Level_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_AntiSub_Level_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_AntiSub_Level_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void comboBox_AntiSub_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void NUD_AntiSubKammusu_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void NUD_AntiSubKammusu_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			AutoDrawHistogram();
-		}
-		private void NUD_AntiSubWeapons_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+		private void GeneralSelectionChanged(object sender, SelectionChangedEventArgs e) {
 			AutoDrawHistogram();
 		}
 
