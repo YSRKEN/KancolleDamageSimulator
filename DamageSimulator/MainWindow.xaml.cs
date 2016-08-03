@@ -195,17 +195,10 @@ namespace BindableWinFormsControl {
 			sfd.ShowDialog();
 			// ファイルに書き込む
 			// https://msdn.microsoft.com/library/ms182334.aspx
-			System.IO.Stream stream = null;
-			try {
-				stream = sfd.OpenFile();
-				using(var sw = new System.IO.StreamWriter(stream)) {
-					stream = null;
-					sw.Write(histText);
-				}
-			} finally {
-				if(stream != null)
-					stream.Dispose();
-			}
+			// http://divakk.co.jp/aoyagi/csharp_tips_using.html
+			using (var stream = sfd.OpenFile())
+			using(var sw = new System.IO.StreamWriter(stream))
+				sw.Write(histText);
 		}
 		private void SaveHistPic_Click(object sender, RoutedEventArgs e) {
 			var sfd = new SaveFileDialog();
