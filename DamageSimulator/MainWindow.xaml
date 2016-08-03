@@ -7,7 +7,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:BindableWinFormsControl"
 		mc:Ignorable="d"
-		Title="DamageSimulator" Height="400" Width="600">
+		Title="KancolleDamageSimulator" Height="400" Width="600">
 	<Grid ToolTip="{Binding Path=StatusMessage}">
 		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" Height="140" Width="129">
 			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="119" Margin="0,0,0,0">
@@ -346,7 +346,7 @@
 					</ComboBox>
 					<Label x:Name="label28" Content="触接" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="186,38,0,0"/>
 					<Label x:Name="label29" Content="艦載機熟練度" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="8,66,0,0"/>
-					<ComboBox x:Name="comboBox_Air_Skill_0" HorizontalAlignment="Left" Margin="95,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_0" HorizontalAlignment="Left" Margin="95,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="7" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -356,7 +356,7 @@
 						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Air_Skill_1" HorizontalAlignment="Left" Margin="160,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_1" HorizontalAlignment="Left" Margin="160,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="7" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -366,7 +366,7 @@
 						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Air_Skill_2" HorizontalAlignment="Left" Margin="225,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_2" HorizontalAlignment="Left" Margin="225,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="7" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -376,7 +376,7 @@
 						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Air_Skill_3" HorizontalAlignment="Left" Margin="290,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_3" HorizontalAlignment="Left" Margin="290,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="7" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
