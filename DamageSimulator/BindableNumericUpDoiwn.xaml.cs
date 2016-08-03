@@ -64,7 +64,7 @@ namespace BindableWinFormsControl
 			var binding2 = new BindingSource();
 			((ISupportInitialize)binding2).BeginInit();
 			NumericUpDown child = Child as NumericUpDown;
-			child.Maximum = 500;	//hotfix(後でマトモな風に直す予定)
+			child.Maximum = 999;	//hotfix(後でマトモな風に直す予定)
 			child.DataBindings.Add(new System.Windows.Forms.Binding("Value", binding2, "Value", true, DataSourceUpdateMode.OnPropertyChanged));
 			binding2.DataSource = typeof(BindableNumericUpDown);
 			((ISupportInitialize)binding2).EndInit();
