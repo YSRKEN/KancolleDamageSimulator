@@ -5,7 +5,8 @@
 　戦闘時の状況を入力すると、与えられるダメージ量が[モンテカルロシミュレーション](https://ja.wikipedia.org/wiki/%E3%83%A2%E3%83%B3%E3%83%86%E3%82%AB%E3%83%AB%E3%83%AD%E6%B3%95)で計算され、グラフとして表示されます。  
 　また、耐久値を入力することにより、大破率や撃沈率なども表示することができます。  
 　更に、ヒストグラムの数値やグラフの画像をクリップボードにコピーしたり、保存したりすることができます。  
-　なお、このソフトウェアは[WPF](https://ja.wikipedia.org/wiki/Windows_Presentation_Foundation)を用いて作られました。
+　なお、このソフトウェアは[WPF](https://ja.wikipedia.org/wiki/Windows_Presentation_Foundation)を用いて作られました。  
+　ソフトウェアの動作には、.NET Framework 4.5.2以降が必要です。
 
 ## 使い方
 - 本家の[ダメージ計算機](http://kancollecalc.web.fc2.com/damage.html)と操作性はほぼ一緒です
