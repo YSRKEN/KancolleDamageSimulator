@@ -35,7 +35,11 @@ namespace BindableWinFormsControl {
 		const int TabIndexAntiSub = 4;	//対潜攻撃
 		const int TabIndexNight   = 5;	//夜戦
 		int[] loopCount = { 1000, 10000, 100000, 1000000 };	//ループカウント
-		enum StatusIndex { NoDamage, TooSmall, Small, Middle, Large, Destroyed, NormalMin, NormalMax, CriticalMin, CriticalMax };
+		enum StatusIndex {
+			NoDamage, TooSmall, Small, Middle, Large, Destroyed,
+			NormalMin, NormalMax, CriticalMin, CriticalMax,
+			NormalMinBig, NormalMaxBig, CriticalMinBig, CriticalMaxBig,
+		};
 
 		/* コンストラクタ */
 		public MainWindow() {
@@ -409,7 +413,8 @@ namespace BindableWinFormsControl {
 			var count = loopCount[comboBox_TryCount.SelectedIndex];
 			int[] status = {					//状態カウント
 				0, 0, 0, 0, 0, 0,				//無傷～撃沈回数
-				count + 1, -1, count + 1, -1 };	//通常攻撃の下限と上限、クリティカルの下限と上限
+				count + 1, -1, count + 1, -1,	//通常攻撃の下限と上限、クリティカルの下限と上限
+				count + 1, -1, count + 1, -1,};	//通常攻撃(強)の下限と上限、クリティカル(強)の下限と上限
 				//彩雲が絡む場合、確率毎に按分する
 				//「彩雲有り」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：40：15：0
 				//「彩雲無し」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：30：15：10
@@ -433,8 +438,15 @@ namespace BindableWinFormsControl {
 			sorted_hist = new SortedDictionary<int, int>(hist);
 			//状態messageの更新
 			var bindData = DataContext as TestBindObject;
-			bindData.StatusMessage = "通常ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
-			bindData.StatusMessage += "クリティカル：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
+			if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
+				bindData.StatusMessage = "通常ダメージ(80%)：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+				bindData.StatusMessage += "クリティカル(80%)：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
+				bindData.StatusMessage += "通常ダメージ(150%)：" + status[(int)StatusIndex.NormalMinBig] + "～" + status[(int)StatusIndex.NormalMaxBig] + "\n";
+				bindData.StatusMessage += "クリティカル(150%)：" + status[(int)StatusIndex.CriticalMinBig] + "～" + status[(int)StatusIndex.CriticalMaxBig] + "\n";
+			}else {
+				bindData.StatusMessage = "通常ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+				bindData.StatusMessage += "クリティカル：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
+			}
 			bindData.StatusMessage += "無傷率：" + Math.Round(100.0 * status[(int)StatusIndex.NoDamage] / count, 1) + "%\n";
 			bindData.StatusMessage += "カスダメ率：" + Math.Round(100.0 * status[(int)StatusIndex.TooSmall] / count, 1) + "%\n";
 			bindData.StatusMessage += "小破率：" + Math.Round(100.0 * status[(int)StatusIndex.Small] / count, 1) + "%\n";
@@ -446,6 +458,8 @@ namespace BindableWinFormsControl {
 		/// 計算処理(分割後)
 		/// </summary>
 		private void CalcDataSlave(int type, Dictionary<int, int> hist, int[] status, int loops) {
+			// baseAttackValue～attackValueAfterCapまでは{ダメージ小, ダメージ大}、
+			// lastAttackValueは{ダメージ小, ダメージ大, ダメージ小クリティカル, ダメージ大クリティカル}
 			// 基本攻撃力を算出する
 			var baseAttackValue = CalcBaseAttack();
 			// キャップ前攻撃力を出す
@@ -460,7 +474,7 @@ namespace BindableWinFormsControl {
 		/// <summary>
 		/// 基本攻撃力を出す
 		/// </summary>
-		private double CalcBaseAttack() {
+		private double[] CalcBaseAttack() {
 			var bindData = DataContext as TestBindObject;
 			var baseAttackValue = 0.0;
 			switch(tabControl.SelectedIndex) {
@@ -472,7 +486,7 @@ namespace BindableWinFormsControl {
 				baseAttackValue += param[comboBox_Attack_Gun_Type_1.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_1.SelectedIndex);
 				baseAttackValue += param[comboBox_Attack_Gun_Type_2.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_2.SelectedIndex);
 				baseAttackValue += param[comboBox_Attack_Gun_Type_3.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_3.SelectedIndex);
-				break;
+				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexGunAir:
 				{
 					double temp = bindData.AttackGunAir + bindData.TorpedoGunAir + (int)(bindData.BombGunAir * 1.3);
@@ -483,7 +497,7 @@ namespace BindableWinFormsControl {
 					temp += Math.Sqrt(comboBox_GunAir_Level_3.SelectedIndex);
 					baseAttackValue = (int)(temp * 1.5) + 55;
 				}
-				break;
+				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexTorpedo:
 				baseAttackValue = bindData.Torpedo + 5;
 				// 装備改修値
@@ -493,9 +507,14 @@ namespace BindableWinFormsControl {
 					baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_2.SelectedIndex);
 					baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_3.SelectedIndex);
 				}
-				break;
+				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexAir:
-				break;
+				baseAttackValue = (bindData.PowerAir * Math.Sqrt(bindData.SlotsAir) + 25);
+				if(comboBox_Air_Type.SelectedIndex == 0) {
+					return new double[] { baseAttackValue * 0.8, baseAttackValue * 1.5 };
+				}else {
+					return new double[] { baseAttackValue, baseAttackValue };
+				}
 			case TabIndexAntiSub:
 				// 素対潜
 				baseAttackValue += Math.Sqrt(bindData.AntiSubKammusu) * 2;
@@ -510,144 +529,165 @@ namespace BindableWinFormsControl {
 				}
 				// 対潜定数
 				baseAttackValue += (comboBox_AntiSub.SelectedIndex == 0 ? 13 : 8);
-				break;
+				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexNight:
-				break;
+				return new double[] { baseAttackValue, baseAttackValue };
+			default:
+				return new double[] { baseAttackValue, baseAttackValue };
 			}
-			return baseAttackValue;
 		}
 		/// <summary>
 		/// キャップ前攻撃力を出す
 		/// </summary>
-		private double CalcAttackBeforeCap(double baseAttackValue, int type) {
+		private double[] CalcAttackBeforeCap(double[] baseAttackValue, int type) {
 			var bindData = DataContext as TestBindObject;
 			var attackValueBeforeCap = baseAttackValue;
-			if(tabControl.SelectedIndex == TabIndexGun) {
-				// 三式弾特効
-				if((bool)checkBox_Sanshiki.IsChecked)
-					attackValueBeforeCap *= 2.5;
-				// WG42特効
-				{
-					double[] param = { 0, 75, 110, 140, 160 };
-					attackValueBeforeCap += param[comboBox_WG42.SelectedIndex];
+			for(var i = 0; i < 2; ++i) {
+				if(tabControl.SelectedIndex == TabIndexGun) {
+					// 三式弾特効
+					if((bool)checkBox_Sanshiki.IsChecked)
+						attackValueBeforeCap[i] *= 2.5;
+					// WG42特効
+					{
+						double[] param = { 0, 75, 110, 140, 160 };
+						attackValueBeforeCap[i] += param[comboBox_WG42.SelectedIndex];
+					}
 				}
-			}
-			if(tabControl.SelectedIndex == TabIndexNight) {
-				// 三式弾特効
+				if(tabControl.SelectedIndex == TabIndexNight) {
+					// 三式弾特効
 
-				// WG42特効
+					// WG42特効
 
-			}
-			// キャップ前補正
-			//交戦形態補正
-			{
-				double[] param = { 1, 0.8, 1.2, 0.6 };
-				attackValueBeforeCap *= param[type];
-			}
-			//陣形補正
-			if(tabControl.SelectedIndex == TabIndexAntiSub) {
-				double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3 };
-				attackValueBeforeCap *= param[comboBox_Formation.SelectedIndex];
-			} else {
-				double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6 };
-				attackValueBeforeCap *= param[comboBox_Formation.SelectedIndex];
-			}
-			//損傷補正
-			if(tabControl.SelectedIndex == TabIndexTorpedo && (bool)checkBox_FirstTorpedo.IsChecked) {
-				double[] param = { 1, 0.8, 0.0 };
-				attackValueBeforeCap *= param[comboBox_Damage.SelectedIndex];
-			} else {
-				double[] param = { 1, 0.7, 0.4 };
-				attackValueBeforeCap *= param[comboBox_Damage.SelectedIndex];
-			}
-			//対潜シナジー補正
-			if(tabControl.SelectedIndex == TabIndexAntiSub) {
-				if((bool)checkBox_AntiSubSynergy.IsChecked)
-					attackValueBeforeCap *= 1.15;
-			}
-			//夜戦特殊攻撃補正
-			if(tabControl.SelectedIndex == TabIndexNight) {
-				
+				}
+				// キャップ前補正
+				//交戦形態補正
+				{
+					double[] param = { 1, 0.8, 1.2, 0.6 };
+					attackValueBeforeCap[i] *= param[type];
+				}
+				//陣形補正
+				if(tabControl.SelectedIndex == TabIndexAntiSub) {
+					double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3 };
+					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
+				} else {
+					double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6 };
+					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
+				}
+				//損傷補正
+				if(tabControl.SelectedIndex == TabIndexTorpedo && (bool)checkBox_FirstTorpedo.IsChecked) {
+					double[] param = { 1, 0.8, 0.0 };
+					attackValueBeforeCap[i] *= param[comboBox_Damage.SelectedIndex];
+				} else {
+					double[] param = { 1, 0.7, 0.4 };
+					attackValueBeforeCap[i] *= param[comboBox_Damage.SelectedIndex];
+				}
+				//対潜シナジー補正
+				if(tabControl.SelectedIndex == TabIndexAntiSub) {
+					if((bool)checkBox_AntiSubSynergy.IsChecked)
+						attackValueBeforeCap[i] *= 1.15;
+				}
+				//夜戦特殊攻撃補正
+				if(tabControl.SelectedIndex == TabIndexNight) {
+
+				}
 			}
 			return attackValueBeforeCap;
 		}
 		/// <summary>
 		/// キャップ後攻撃力を出す
 		/// </summary>
-		private double CalcAttackAfterCap(double attackValueBeforeCap) {
-			var attackValueAfterCap = 0.0;
-			if(tabControl.SelectedIndex == TabIndexAntiSub) {
-				attackValueAfterCap = CalcCap(attackValueBeforeCap, 100.0);
-			} else if(tabControl.SelectedIndex == TabIndexNight) {
-				attackValueAfterCap = CalcCap(attackValueBeforeCap, 300.0);
-			} else {
-				attackValueAfterCap = CalcCap(attackValueBeforeCap, 150.0);
+		private double[] CalcAttackAfterCap(double[] attackValueBeforeCap) {
+			var attackValueAfterCap = attackValueBeforeCap;
+			for(var i = 0; i < 2; ++i) {
+				if(tabControl.SelectedIndex == TabIndexAntiSub) {
+					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 100.0);
+				} else if(tabControl.SelectedIndex == TabIndexNight) {
+					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 300.0);
+				} else {
+					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 150.0);
+				}
 			}
 			return attackValueAfterCap;
 		}
 		/// <summary>
 		/// 最終攻撃力を出す
 		/// </summary>
-		private double[] CalcLastAttack(double attackValueAfterCap) {
-			double lastAttackValue = (int)attackValueAfterCap;
-			// 徹甲弾特効
-			if(tabControl.SelectedIndex == TabIndexGun){
-				double[] param = { 1.0, 1.08, 1.1, 1.15, 1.15};
-				lastAttackValue = (int)(lastAttackValue * param[comboBox_Shell.SelectedIndex]);
-			}
-			// クリティカル補正
-			double lastAttackValueWithoutCL = (int)lastAttackValue;
-			var lastAttackValueWithCL = lastAttackValue * 1.5;
-			// 熟練度補正
-			switch(tabControl.SelectedIndex) {
-			case TabIndexGunAir:
-				{
-					var airLevelWeight = 1.0;
-					airLevelWeight += Limit(comboBox_GunAir_Skill_0.SelectedIndex, 0, 7) * 0.2 / 7;
-					airLevelWeight += Limit(comboBox_GunAir_Skill_1.SelectedIndex, 0, 7) * 0.1 / 7;
-					airLevelWeight += Limit(comboBox_GunAir_Skill_2.SelectedIndex, 0, 7) * 0.1 / 7;
-					airLevelWeight += Limit(comboBox_GunAir_Skill_3.SelectedIndex, 0, 7) * 0.1 / 7;
-					lastAttackValueWithCL = (int)(lastAttackValueWithCL * airLevelWeight);
+		private double[] CalcLastAttack(double[] attackValueAfterCap) {
+			var lastAttackValue = new double[4];
+			for(var i = 0; i < 2; ++i) {
+				double lastAttackValueTemp = (int)attackValueAfterCap[i];
+				// 徹甲弾特効
+				if(tabControl.SelectedIndex == TabIndexGun) {
+					double[] param = { 1.0, 1.08, 1.1, 1.15, 1.15 };
+					lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_Shell.SelectedIndex]);
 				}
-				break;
-			case TabIndexAir:
-				break;
-			case TabIndexAntiSub:
-				if(comboBox_AntiSub.SelectedIndex == 1) {
-					// 熟練度補正
-					var airLevelWeight = 1.0;
-					airLevelWeight += Limit(comboBox_AntiSub_Level_0.SelectedIndex, 0, 7) * 0.2 / 7;
-					airLevelWeight += Limit(comboBox_AntiSub_Level_1.SelectedIndex, 0, 7) * 0.1 / 7;
-					airLevelWeight += Limit(comboBox_AntiSub_Level_2.SelectedIndex, 0, 7) * 0.1 / 7;
-					airLevelWeight += Limit(comboBox_AntiSub_Level_3.SelectedIndex, 0, 7) * 0.1 / 7;
-					lastAttackValueWithCL = (int)(lastAttackValueWithCL * airLevelWeight);
+				// クリティカル補正
+				double lastAttackValueWithoutCL = (int)lastAttackValueTemp;
+				var lastAttackValueWithCL = lastAttackValueTemp * 1.5;
+				// 熟練度補正
+				switch(tabControl.SelectedIndex) {
+				case TabIndexGunAir:
+					{
+						var airLevelWeight = 1.0;
+						airLevelWeight += comboBox_GunAir_Skill_0.SelectedIndex * 0.2 / 7;
+						airLevelWeight += comboBox_GunAir_Skill_1.SelectedIndex * 0.1 / 7;
+						airLevelWeight += comboBox_GunAir_Skill_2.SelectedIndex * 0.1 / 7;
+						airLevelWeight += comboBox_GunAir_Skill_3.SelectedIndex * 0.1 / 7;
+						lastAttackValueWithCL = (int)(lastAttackValueWithCL * airLevelWeight);
+					}
+					break;
+				case TabIndexAir:
+					{
+						var airLevelWeight = 1.0;
+						airLevelWeight += comboBox_Air_Skill_0.SelectedIndex * 0.2 / 7;
+						airLevelWeight += comboBox_Air_Skill_0.SelectedIndex * 0.1 / 7;
+						airLevelWeight += comboBox_Air_Skill_0.SelectedIndex * 0.1 / 7;
+						airLevelWeight += comboBox_Air_Skill_0.SelectedIndex * 0.1 / 7;
+						lastAttackValueWithCL = (int)(lastAttackValueWithCL * airLevelWeight);
+					}
+					break;
+				case TabIndexAntiSub:
+					if(comboBox_AntiSub.SelectedIndex == 1) {
+						// 熟練度補正
+						var airLevelWeight = 1.0;
+						airLevelWeight += Limit(comboBox_AntiSub_Level_0.SelectedIndex, 0, 7) * 0.2 / 7;
+						airLevelWeight += Limit(comboBox_AntiSub_Level_1.SelectedIndex, 0, 7) * 0.1 / 7;
+						airLevelWeight += Limit(comboBox_AntiSub_Level_2.SelectedIndex, 0, 7) * 0.1 / 7;
+						airLevelWeight += Limit(comboBox_AntiSub_Level_3.SelectedIndex, 0, 7) * 0.1 / 7;
+						lastAttackValueWithCL = (int)(lastAttackValueWithCL * airLevelWeight);
+					}
+					break;
+				default:
+					lastAttackValueWithCL = (int)lastAttackValueWithCL;
+					break;
 				}
-				break;
-			default:
-				lastAttackValueWithCL = (int)lastAttackValueWithCL;
-				break;
-			}
-			// 触接・弾着補正
-			switch(tabControl.SelectedIndex) {
-			case TabIndexGun:
-				{
-					double[] param = { 1.0, 1.5, 1.3, 1.2, 1.1, 1.2 };
-					lastAttackValueWithoutCL = lastAttackValueWithoutCL * param[comboBox_Watch.SelectedIndex];
-					lastAttackValueWithCL = lastAttackValueWithCL * param[comboBox_Watch.SelectedIndex];
+				// 触接・弾着補正
+				switch(tabControl.SelectedIndex) {
+				case TabIndexGun:
+					{
+						double[] param = { 1.0, 1.5, 1.3, 1.2, 1.1, 1.2 };
+						lastAttackValueWithoutCL = lastAttackValueWithoutCL * param[comboBox_Watch.SelectedIndex];
+						lastAttackValueWithCL = lastAttackValueWithCL * param[comboBox_Watch.SelectedIndex];
+					}
+					break;
+				case TabIndexAir:
+					{
+						double[] param = { 1.0, 1.12, 1.12, 1.17, 1.2 };
+						lastAttackValueWithoutCL = lastAttackValueWithoutCL * param[comboBox_Air_Trailer.SelectedIndex];
+						lastAttackValueWithCL = lastAttackValueWithCL * param[comboBox_Air_Trailer.SelectedIndex];
+					}
+					break;
 				}
-				break;
-			case TabIndexAir:
-				break;
+				lastAttackValue[i] = lastAttackValueWithoutCL;
+				lastAttackValue[i + 2] = lastAttackValueWithCL;
 			}
-			return new double[] { lastAttackValueWithoutCL , lastAttackValueWithCL };
+			return lastAttackValue;
 		}
 		/// <summary>
 		/// ヒストグラムを出す
 		/// </summary>
 		private void CalcHistogram(double[] lastAttackValue, Dictionary<int, int> hist, int[] status, int loops) {
 			var bindData = DataContext as TestBindObject;
-			var lastAttackValueWithoutCL = lastAttackValue[0];
-			var lastAttackValueWithCL = lastAttackValue[1];
 			//初期設定
 			var defense = bindData.Defense;
 			var nowHP = bindData.NowHP;
@@ -660,13 +700,32 @@ namespace BindableWinFormsControl {
 				var defenseValue = defense * 0.7 + rand.Next(defense) * 0.6;
 				int damage;
 				bool criticalFlg = false;
+				bool bigDamageFlg = false;
 				if(rand.NextDouble() * 1000 < slider_Critical.Value) {
 					// クリティカル
 					criticalFlg = true;
-					damage = (int)((lastAttackValueWithCL - defenseValue) * ammo);
+					if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
+						if(rand.Next(2) == 1) {
+							bigDamageFlg = true;
+							damage = (int)((lastAttackValue[3] - defenseValue) * ammo);
+						} else {
+							damage = (int)((lastAttackValue[2] - defenseValue) * ammo);
+						}
+					} else {
+						damage = (int)((lastAttackValue[2] - defenseValue) * ammo);
+					}
 				} else {
 					// 非クリティカル
-					damage = (int)((lastAttackValueWithoutCL - defenseValue) * ammo);
+					if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
+						if(rand.Next(2) == 1) {
+							bigDamageFlg = true;
+							damage = (int)((lastAttackValue[1] - defenseValue) * ammo);
+						} else {
+							damage = (int)((lastAttackValue[0] - defenseValue) * ammo);
+						}
+					}else {
+						damage = (int)((lastAttackValue[0] - defenseValue) * ammo);
+					}
 				}
 				//0以下の際の処理(カスダメ)
 				if(damage <= 0) {
@@ -702,16 +761,27 @@ namespace BindableWinFormsControl {
 				}
 				// 上下限カウント
 				if(criticalFlg) {
-					status[(int)StatusIndex.CriticalMin] = Math.Min(status[(int)StatusIndex.CriticalMin], damage);
-					status[(int)StatusIndex.CriticalMax] = Math.Max(status[(int)StatusIndex.CriticalMax], damage);
+					if(bigDamageFlg) {
+						status[(int)StatusIndex.CriticalMinBig] = Math.Min(status[(int)StatusIndex.CriticalMinBig], damage);
+						status[(int)StatusIndex.CriticalMaxBig] = Math.Max(status[(int)StatusIndex.CriticalMaxBig], damage);
+					} else {
+						status[(int)StatusIndex.CriticalMin] = Math.Min(status[(int)StatusIndex.CriticalMin], damage);
+						status[(int)StatusIndex.CriticalMax] = Math.Max(status[(int)StatusIndex.CriticalMax], damage);
+					}
 				} else {
-					status[(int)StatusIndex.NormalMin] = Math.Min(status[(int)StatusIndex.NormalMin], damage);
-					status[(int)StatusIndex.NormalMax] = Math.Max(status[(int)StatusIndex.NormalMax], damage);
+					if(bigDamageFlg) {
+						status[(int)StatusIndex.NormalMinBig] = Math.Min(status[(int)StatusIndex.NormalMinBig], damage);
+						status[(int)StatusIndex.NormalMaxBig] = Math.Max(status[(int)StatusIndex.NormalMaxBig], damage);
+					} else {
+						status[(int)StatusIndex.NormalMin] = Math.Min(status[(int)StatusIndex.NormalMin], damage);
+						status[(int)StatusIndex.NormalMax] = Math.Max(status[(int)StatusIndex.NormalMax], damage);
+					}
 				}
 			}
 			// 特殊処理
 			if(slider_Critical.Value == 0) {
 				status[(int)StatusIndex.CriticalMin] = status[(int)StatusIndex.CriticalMax] = - 1;
+				status[(int)StatusIndex.CriticalMinBig] = status[(int)StatusIndex.CriticalMaxBig] = -1;
 			}
 		}
 		/// <summary>
