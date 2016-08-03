@@ -314,7 +314,7 @@ namespace BindableWinFormsControl {
 		private void comboBox_GunAir_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			AutoDrawHistogram();
 		}
-		//攻撃用設定(雷撃)
+		//攻撃用設定(雷撃戦)
 		private void NUD_Torpedo_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
 			AutoDrawHistogram();
 		}
@@ -334,6 +334,31 @@ namespace BindableWinFormsControl {
 			AutoDrawHistogram();
 		}
 		private void comboBox_Torpedo_Level_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		//攻撃側設定(航空戦)
+		private void NUD_Air_Power_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void NUD_Air_Slots_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Air_Type_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Air_Trailer_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Air_Skill_0_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Air_Skill_1_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Air_Skill_2_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			AutoDrawHistogram();
+		}
+		private void comboBox_Air_Skill_3_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			AutoDrawHistogram();
 		}
 		//攻撃用設定(対潜)

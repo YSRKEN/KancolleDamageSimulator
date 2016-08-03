@@ -17,7 +17,7 @@
 				<my:BindableNumericUpDown x:Name="NUD_Defense" Value="{Binding Path=Defense}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Defense_PropertyChanged"/>
 				<my:BindableNumericUpDown x:Name="NUD_MaxHP" Value="{Binding Path=MaxHP}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_MaxHP_PropertyChanged"/>
 				<my:BindableNumericUpDown x:Name="NUD_NowHP" Value="{Binding Path=NowHP}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_NowHP_PropertyChanged"/>
-				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘ならチェック" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="checkBox_Kammusu_Checked" Unchecked="checkBox_Kammusu_Unchecked"/>
+				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘フラグ" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="checkBox_Kammusu_Checked" Unchecked="checkBox_Kammusu_Unchecked"/>
 			</Grid>
 		</GroupBox>
 		<GroupBox x:Name="groupBox1" Header="攻撃側設定" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="204" Width="572">
@@ -52,9 +52,9 @@
 				<Label x:Name="label5" Content="攻撃陣形" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,37,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Label x:Name="label6" Content="損傷状態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Label x:Name="label7" Content="弾薬残量" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,91,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Label x:Name="label8" Content="クリティカル" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,117,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="62,121,0,0" VerticalAlignment="Top" Width="74" Maximum="150" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
-				<Label x:Name="label_Critical" Content="{Binding CriticalLabel}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="136,118,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<Label x:Name="label8" Content="クリティカル発生率" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,117,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="108" Maximum="150" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
+				<Label x:Name="label_Critical" Content="{Binding CriticalLabel}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="123,140,0,0" RenderTransformOrigin="0.5,-0.962"/>
 			</Grid>
 		</GroupBox>
 		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="163" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="tabControl_SelectionChanged">
@@ -330,23 +330,23 @@
 			<TabItem Header="航空戦">
 				<Grid Background="White">
 					<Label x:Name="label26" Content="機体雷装／爆装" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
-					<local:BindableNumericUpDown x:Name="NUD_Air_Power" Value="{Binding PowerAir}" HorizontalAlignment="Left" Height="23" Width="45" Margin="109,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Attack_Gun_PropertyChanged"/>
+					<local:BindableNumericUpDown x:Name="NUD_Air_Power" Value="{Binding PowerAir}" HorizontalAlignment="Left" Height="23" Width="45" Margin="109,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Air_Power_PropertyChanged"/>
 					<Label x:Name="label27" Content="スロット搭載数" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,38,0,0"/>
-					<local:BindableNumericUpDown x:Name="NUD_Air_Slots" Value="{Binding SlotsAir}" HorizontalAlignment="Left" Height="23" Width="45" Margin="109,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Attack_Gun_PropertyChanged"/>
-					<ComboBox x:Name="comboBox_Air_Type" HorizontalAlignment="Left" Margin="159,10,0,0" VerticalAlignment="Top" Width="55" SelectedIndex="0" SelectionChanged="comboBox_Watch_SelectionChanged" RenderTransformOrigin="0.591,-0.318">
+					<local:BindableNumericUpDown x:Name="NUD_Air_Slots" Value="{Binding SlotsAir}" HorizontalAlignment="Left" Height="23" Width="45" Margin="109,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_Air_Slots_PropertyChanged"/>
+					<ComboBox x:Name="comboBox_Air_Type" HorizontalAlignment="Left" Margin="159,10,0,0" VerticalAlignment="Top" Width="55" SelectedIndex="0" SelectionChanged="comboBox_Air_Type_SelectionChanged" RenderTransformOrigin="0.591,-0.318">
 						<ComboBoxItem Content="雷装" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="爆装" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Air_Trailer" HorizontalAlignment="Left" Margin="198,37,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.591,-0.318" SelectionChanged="comboBox_Shell_SelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Trailer" HorizontalAlignment="Left" Margin="225,37,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.591,-0.318" SelectionChanged="comboBox_Air_Trailer_SelectionChanged">
 						<ComboBoxItem Content="無し" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="命中+0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="命中+1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="命中+2" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="命中+3" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<Label x:Name="label28" Content="触接" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="159,38,0,0"/>
+					<Label x:Name="label28" Content="触接" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="186,38,0,0"/>
 					<Label x:Name="label29" Content="艦載機熟練度" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="8,66,0,0"/>
-					<ComboBox x:Name="comboBox_Air_Skill_0" HorizontalAlignment="Left" Margin="95,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_0_SelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_0" HorizontalAlignment="Left" Margin="95,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Air_Skill_0_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -356,7 +356,7 @@
 						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Air_Skill_1" HorizontalAlignment="Left" Margin="160,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_1_SelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_1" HorizontalAlignment="Left" Margin="160,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Air_Skill_1_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -366,7 +366,7 @@
 						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Air_Skill_2" HorizontalAlignment="Left" Margin="225,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_2_SelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_2" HorizontalAlignment="Left" Margin="225,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Air_Skill_2_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
@@ -376,7 +376,7 @@
 						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<ComboBox x:Name="comboBox_Air_Skill_3" HorizontalAlignment="Left" Margin="290,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_GunAir_Skill_3_SelectionChanged">
+					<ComboBox x:Name="comboBox_Air_Skill_3" HorizontalAlignment="Left" Margin="290,68,0,0" VerticalAlignment="Top" Width="60" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="comboBox_Air_Skill_3_SelectionChanged">
 						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="118"/>
