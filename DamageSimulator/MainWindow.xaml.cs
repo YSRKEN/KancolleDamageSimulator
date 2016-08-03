@@ -107,9 +107,17 @@ namespace BindableWinFormsControl {
 		/// ヒストグラムの文字列を作成する
 		/// </summary>
 		private string MakeHistText() {
-			string histText = "damage,count\n";
+			var count = 0;
 			foreach(var pair in sorted_hist) {
-				histText += "" + pair.Key + "," + pair.Value + "\n";
+				count += pair.Value;
+			}
+			// ダメージ,カウント,確率,標本標準偏差,95％信頼区間(最小・最大)
+			string histText = "damage,count,prob,SD,CI(95%)-min,CI(95%)-max\n";
+			foreach(var pair in sorted_hist) {
+				var average = 1.0 * pair.Value / count;
+				var SD = Math.Sqrt(((1 - average) * (1 - average) * pair.Value + (0 - average) * (0 - average) * (count - pair.Value)) / (count - 1));
+				var CI = 1.96 * SD / Math.Sqrt(count);
+				histText += "" + pair.Key + "," + pair.Value + "," + average + "," + SD + "," + (average - CI) + ","  +(average + CI) + "\n";
 			}
 			return histText;
 		}
