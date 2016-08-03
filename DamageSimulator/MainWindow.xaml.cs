@@ -193,16 +193,18 @@ namespace BindableWinFormsControl {
 			sfd.FileName = "hist.csv";
 			sfd.Filter = "CSVファイル(*.csv)|*.csv|すべてのファイル(*.*)|*.*";
 			sfd.ShowDialog();
-			if(sfd.FileName != "") {
-				var stream = sfd.OpenFile();
-				if(stream != null) {
-					//ファイルに書き込む
-					var sw = new System.IO.StreamWriter(stream);
+			// ファイルに書き込む
+			// https://msdn.microsoft.com/library/ms182334.aspx
+			System.IO.Stream stream = null;
+			try {
+				stream = sfd.OpenFile();
+				using(var sw = new System.IO.StreamWriter(stream)) {
+					stream = null;
 					sw.Write(histText);
-					//閉じる
-					sw.Close();
-					stream.Close();
 				}
+			} finally {
+				if(stream != null)
+					stream.Dispose();
 			}
 		}
 		private void SaveHistPic_Click(object sender, RoutedEventArgs e) {
