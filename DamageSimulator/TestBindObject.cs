@@ -56,6 +56,24 @@ namespace BindableWinFormsControl {
 			}
 		}
 
+		/* UŒ‚‘¤İ’è(q‹óí) */
+		private int powerAir;
+		public int PowerAir {
+			get { return powerAir; }
+			set {
+				powerAir = value;
+				NotifyPropertyChanged("PowerAir");
+			}
+		}
+		private int slotsAir;
+		public int SlotsAir {
+			get { return slotsAir; }
+			set {
+				slotsAir = value;
+				NotifyPropertyChanged("SlotsAir");
+			}
+		}
+
 		/* UŒ‚‘¤İ’è(‘ÎöUŒ‚) */
 		private int antiSubKammusu;
 		public int AntiSubKammusu {

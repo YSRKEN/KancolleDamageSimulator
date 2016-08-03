@@ -47,12 +47,17 @@ namespace BindableWinFormsControl {
 			// BindableNumericUpDown用の初期設定
 			DataContext = new TestBindObject() {
 				AttackGun = 50,
-				Torpedo = 78,
-				AntiSubKammusu = 94,
-				AntiSubWeapons = 23,
-				Defense = 21,
-				MaxHP = 27,
-				NowHP = 27,
+				AttackGunAir = 40,
+				BombGunAir = 10,
+				TorpedoGunAir = 10,
+				Torpedo = 80,
+				PowerAir = 30,
+				SlotsAir = 10,
+				AntiSubKammusu = 50,
+				AntiSubWeapons = 28,
+				Defense = 50,
+				MaxHP = 50,
+				NowHP = 50,
 				Critical = 133,
 				StatusMessage = "",
 			};
