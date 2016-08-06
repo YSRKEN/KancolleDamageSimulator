@@ -55,6 +55,7 @@
 				<Label x:Name="label8" Content="クリティカル発生率" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,117,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="108" Maximum="150" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
 				<Label x:Name="label_Critical" Content="{Binding CriticalLabel}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="123,140,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<CheckBox x:Name="checkBox_Twice" Content="twice flg" HorizontalAlignment="Left" Margin="98,123,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 			</Grid>
 		</GroupBox>
 		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="163" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">

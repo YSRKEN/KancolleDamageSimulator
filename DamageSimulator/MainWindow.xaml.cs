@@ -267,7 +267,9 @@ namespace BindableWinFormsControl {
 				bindData.StatusMessage += "クリティカル(80%)：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
 				bindData.StatusMessage += "通常ダメージ(150%)：" + status[(int)StatusIndex.NormalMinBig] + "～" + status[(int)StatusIndex.NormalMaxBig] + "\n";
 				bindData.StatusMessage += "クリティカル(150%)：" + status[(int)StatusIndex.CriticalMinBig] + "～" + status[(int)StatusIndex.CriticalMaxBig] + "\n";
-			}else {
+			} else if(GetAttackCount() == 2) {
+				bindData.StatusMessage = "ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+			} else {
 				bindData.StatusMessage = "通常ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
 				bindData.StatusMessage += "クリティカル：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
 			}
@@ -528,68 +530,93 @@ namespace BindableWinFormsControl {
 			return lastAttackValue;
 		}
 		/// <summary>
+		/// 攻撃回数を出す
+		/// </summary>
+		private int GetAttackCount() {
+			if((bool)checkBox_Twice.IsChecked) {
+				if(tabControl.SelectedIndex == TabIndexGun && comboBox_Watch.SelectedIndex == 5)
+					return 2;
+				if(tabControl.SelectedIndex == TabIndexNight) {
+					var type = comboBox_Night_Type.SelectedIndex;
+					if(type == 1 || type == 2 || type == 5)
+						return 2;
+				}
+			}
+			return 1;
+		}
+		/// <summary>
 		/// ヒストグラムを出す
 		/// </summary>
 		private void CalcHistogram(double[] lastAttackValue, Dictionary<int, int> hist, int[] status, int loops) {
 			var bindData = DataContext as TestBindObject;
-			//初期設定
+			// 初期設定
 			var defense = bindData.Defense;
 			var nowHP = bindData.NowHP;
 			var maxHP = bindData.MaxHP;
 			double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
 			var ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
-			//ループ
+			// 攻撃回数を決定する
+			var attackCount = GetAttackCount();
+			// ループ
+			bool stopper_flg = (nowHP * 4 > maxHP);
 			for(int i = 0; i < loops; ++i) {
-				// ダメージ計算
-				var defenseValue = defense * 0.7 + rand.Next(defense) * 0.6;
-				int damage;
+				var nowHP2 = nowHP;
+				var all_damage = 0;
 				bool criticalFlg = false;
 				bool bigDamageFlg = false;
-				if(rand.NextDouble() * 1000 < slider_Critical.Value) {
-					// クリティカル
-					criticalFlg = true;
-					if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
-						if(rand.Next(2) == 1) {
-							bigDamageFlg = true;
-							damage = (int)((lastAttackValue[3] - defenseValue) * ammo);
+				for(var j = 0; j < attackCount; ++j) {
+					// ダメージ計算
+					var defenseValue = defense * 0.7 + rand.Next(defense) * 0.6;
+					int damage;
+					criticalFlg = false;
+					bigDamageFlg = false;
+					if(rand.NextDouble() * 1000 < slider_Critical.Value) {
+						// クリティカル
+						criticalFlg = true;
+						if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
+							if(rand.Next(2) == 1) {
+								bigDamageFlg = true;
+								damage = (int)((lastAttackValue[3] - defenseValue) * ammo);
+							} else {
+								damage = (int)((lastAttackValue[2] - defenseValue) * ammo);
+							}
 						} else {
 							damage = (int)((lastAttackValue[2] - defenseValue) * ammo);
 						}
 					} else {
-						damage = (int)((lastAttackValue[2] - defenseValue) * ammo);
-					}
-				} else {
-					// 非クリティカル
-					if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
-						if(rand.Next(2) == 1) {
-							bigDamageFlg = true;
-							damage = (int)((lastAttackValue[1] - defenseValue) * ammo);
+						// 非クリティカル
+						if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
+							if(rand.Next(2) == 1) {
+								bigDamageFlg = true;
+								damage = (int)((lastAttackValue[1] - defenseValue) * ammo);
+							} else {
+								damage = (int)((lastAttackValue[0] - defenseValue) * ammo);
+							}
 						} else {
 							damage = (int)((lastAttackValue[0] - defenseValue) * ammo);
 						}
-					}else {
-						damage = (int)((lastAttackValue[0] - defenseValue) * ammo);
 					}
-				}
-				//0以下の際の処理(カスダメ)
-				if(damage <= 0) {
-					damage = (int)(nowHP * 0.06 + rand.Next(nowHP) * 0.08);
-				}
-				//艦娘で、更に現在耐久以上だった際の処理(大破ストッパー)
-				if(damage >= nowHP && (bool)checkBox_Kammusu.IsChecked) {
-					//大破：最大耐久の25％「以下」
-					if(nowHP * 4 > maxHP) {
-						damage = (int)(nowHP * 0.5 + rand.Next(nowHP) * 0.3);
+					//0以下の際の処理(カスダメ)
+					if(damage <= 0) {
+						damage = (int)(nowHP2 * 0.06 + rand.Next(nowHP2) * 0.08);
 					}
+					//艦娘で、更に現在耐久以上だった際の処理(大破ストッパー)
+					if(damage >= nowHP2 && (bool)checkBox_Kammusu.IsChecked) {
+						//大破：最大耐久の25％「以下」
+						if(stopper_flg) {
+							damage = (int)(nowHP2 * 0.5 + rand.Next(nowHP2) * 0.3);
+						}
+					}
+					nowHP2 -= damage;
+					all_damage += damage;
 				}
 				// ヒストグラムカウント
-				if(hist.ContainsKey(damage)) {
-					++hist[damage];
+				if(hist.ContainsKey(all_damage)) {
+					++hist[all_damage];
 				} else {
-					hist[damage] = 1;
+					hist[all_damage] = 1;
 				}
 				// 状態カウント
-				var nowHP2 = nowHP - damage;
 				if(nowHP == nowHP2) {
 					++status[(int)StatusIndex.NoDamage];
 				} else if(nowHP2 * 4 > maxHP * 3) {
@@ -604,22 +631,27 @@ namespace BindableWinFormsControl {
 					++status[(int)StatusIndex.Destroyed];
 				}
 				// 上下限カウント
-				if(criticalFlg) {
-					if(bigDamageFlg) {
-						status[(int)StatusIndex.CriticalMinBig] = Math.Min(status[(int)StatusIndex.CriticalMinBig], damage);
-						status[(int)StatusIndex.CriticalMaxBig] = Math.Max(status[(int)StatusIndex.CriticalMaxBig], damage);
+				if(attackCount == 1) {
+					if(criticalFlg) {
+						if(bigDamageFlg) {
+							status[(int)StatusIndex.CriticalMinBig] = Math.Min(status[(int)StatusIndex.CriticalMinBig], all_damage);
+							status[(int)StatusIndex.CriticalMaxBig] = Math.Max(status[(int)StatusIndex.CriticalMaxBig], all_damage);
+						} else {
+							status[(int)StatusIndex.CriticalMin] = Math.Min(status[(int)StatusIndex.CriticalMin], all_damage);
+							status[(int)StatusIndex.CriticalMax] = Math.Max(status[(int)StatusIndex.CriticalMax], all_damage);
+						}
 					} else {
-						status[(int)StatusIndex.CriticalMin] = Math.Min(status[(int)StatusIndex.CriticalMin], damage);
-						status[(int)StatusIndex.CriticalMax] = Math.Max(status[(int)StatusIndex.CriticalMax], damage);
+						if(bigDamageFlg) {
+							status[(int)StatusIndex.NormalMinBig] = Math.Min(status[(int)StatusIndex.NormalMinBig], all_damage);
+							status[(int)StatusIndex.NormalMaxBig] = Math.Max(status[(int)StatusIndex.NormalMaxBig], all_damage);
+						} else {
+							status[(int)StatusIndex.NormalMin] = Math.Min(status[(int)StatusIndex.NormalMin], all_damage);
+							status[(int)StatusIndex.NormalMax] = Math.Max(status[(int)StatusIndex.NormalMax], all_damage);
+						}
 					}
 				} else {
-					if(bigDamageFlg) {
-						status[(int)StatusIndex.NormalMinBig] = Math.Min(status[(int)StatusIndex.NormalMinBig], damage);
-						status[(int)StatusIndex.NormalMaxBig] = Math.Max(status[(int)StatusIndex.NormalMaxBig], damage);
-					} else {
-						status[(int)StatusIndex.NormalMin] = Math.Min(status[(int)StatusIndex.NormalMin], damage);
-						status[(int)StatusIndex.NormalMax] = Math.Max(status[(int)StatusIndex.NormalMax], damage);
-					}
+					status[(int)StatusIndex.NormalMin] = Math.Min(status[(int)StatusIndex.NormalMin], all_damage);
+					status[(int)StatusIndex.NormalMax] = Math.Max(status[(int)StatusIndex.NormalMax], all_damage);
 				}
 			}
 			// 特殊処理
