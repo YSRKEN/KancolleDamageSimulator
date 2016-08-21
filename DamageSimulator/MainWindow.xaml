@@ -57,7 +57,7 @@
 				<Label x:Name="label6" Content="損傷状態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,93,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Label x:Name="label7" Content="弾薬残量" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Label x:Name="label8" Content="クリティカル発生率" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,146,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="20,174,0,0" VerticalAlignment="Top" Width="108" Maximum="150" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
+				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="20,174,0,0" VerticalAlignment="Top" Width="108" Maximum="500" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
 				<Label x:Name="label_Critical" Content="{Binding CriticalLabel}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="133,169,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<CheckBox x:Name="checkBox_Twice" Content="twice flg" HorizontalAlignment="Left" Margin="108,152,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 				<Label x:Name="label35" Content="艦隊" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="32,10,0,0" RenderTransformOrigin="0.5,-0.962"/>
@@ -72,7 +72,7 @@
 				</ComboBox>
 			</Grid>
 		</GroupBox>
-		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="163" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="tabControl_SelectionChanged">
+		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="185" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="tabControl_SelectionChanged">
 			<TabItem Header="砲撃戦">
 				<Grid Background="White">
 					<Label x:Name="label16" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
@@ -176,6 +176,7 @@
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
+					<Label x:Name="label36" Content="備考：カットインおよび連撃の際、回避されると割合ダメが発生する" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="砲撃戦(空母)">
@@ -280,6 +281,8 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
+					<Label x:Name="label36_Copy" Content="備考1：中破攻撃は装甲空母のみ、大破時は攻撃不可" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
+					<Label x:Name="label36_Copy3" Content="備考2：最大熟練度の艦攻艦爆1スロにつきクリティカル率+5～7％" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="雷撃戦">
@@ -340,6 +343,7 @@
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<CheckBox x:Name="checkBox_FirstTorpedo" Content="開幕雷撃" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
+					<Label x:Name="label36_Copy1" Content="備考：雷撃戦では中破時に攻撃不可" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="航空戦">
@@ -401,6 +405,8 @@
 						<ComboBoxItem Content="6" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="7" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
+					<Label x:Name="label37" Content="備考1：艦攻における、倍率80%と倍率150%の発生率は50%程度" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
+					<Label x:Name="label37_Copy" Content="備考2：クリティカルの発生率は非常に低い(熟練度により上昇する)" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="対潜攻撃">
@@ -468,6 +474,7 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
+					<Label x:Name="label37_Copy1" Content="備考：主砲・電探・偵察機の対潜値は無視される" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="夜戦">
@@ -548,6 +555,7 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
+					<Label x:Name="label36_Copy2" Content="備考：カットインおよび連撃の際、回避されると割合ダメが発生する" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
 				</Grid>
 			</TabItem>
 		</TabControl>
