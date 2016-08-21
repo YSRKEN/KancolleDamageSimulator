@@ -236,6 +236,125 @@ namespace BindableWinFormsControl {
 			}
 			AutoDrawHistogram();
 		}
+		/// <summary>
+		/// 敵艦の形態を変化させた際の処理
+		/// </summary>
+		private void comboBox_Enemy_Type_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_Enemy_Type == null
+			|| comboBox_Shell == null
+			|| checkBox_Sanshiki == null
+			|| comboBox_WG42 == null
+			|| comboBox_Landing_Craft == null
+			|| checkBox_KaMi == null
+			|| checkBox_WBWF == null)
+				return;
+			switch(comboBox_Enemy_Type.SelectedIndex) {
+			case 0:
+				// 通常艦：徹甲弾特殊効果が効くこともある
+				comboBox_Shell.IsEnabled = true;
+				checkBox_Sanshiki.IsEnabled = false;
+				comboBox_WG42.IsEnabled = false;
+				comboBox_Landing_Craft.IsEnabled = false;
+				checkBox_KaMi.IsEnabled = false;
+				checkBox_WBWF.IsEnabled = false;
+				break;
+			case 1:
+				// 通常陸上型：徹甲弾・三式弾・WG42(キャップ前加算)が効く
+				comboBox_Shell.IsEnabled = true;
+				checkBox_Sanshiki.IsEnabled = true;
+				comboBox_WG42.IsEnabled = true;
+				comboBox_Landing_Craft.IsEnabled = false;
+				checkBox_KaMi.IsEnabled = false;
+				checkBox_WBWF.IsEnabled = false;
+				break;
+			case 2:
+				// 集積地棲姫：徹甲弾・三式弾・WG42(キャップ前加算・キャップ後乗算)が効く
+				comboBox_Shell.IsEnabled = true;
+				checkBox_Sanshiki.IsEnabled = true;
+				comboBox_WG42.IsEnabled = true;
+				comboBox_Landing_Craft.IsEnabled = false;
+				checkBox_KaMi.IsEnabled = false;
+				checkBox_WBWF.IsEnabled = false;
+				break;
+			case 3:
+				// 砲台子鬼：徹甲弾・WG42(キャップ前乗算加算)・大発系・カミ車・水爆水戦が効く
+				comboBox_Shell.IsEnabled = true;
+				checkBox_Sanshiki.IsEnabled = false;
+				comboBox_WG42.IsEnabled = true;
+				comboBox_Landing_Craft.IsEnabled = true;
+				checkBox_KaMi.IsEnabled = true;
+				checkBox_WBWF.IsEnabled = true;
+				break;
+			case 4:
+				// 離島棲姫：三式弾(乗算倍率が違う)・WG42(キャップ前乗算加算)が効く
+				comboBox_Shell.IsEnabled = false;
+				checkBox_Sanshiki.IsEnabled = true;
+				comboBox_WG42.IsEnabled = true;
+				comboBox_Landing_Craft.IsEnabled = false;
+				checkBox_KaMi.IsEnabled = false;
+				checkBox_WBWF.IsEnabled = false;
+				break;
+			}
+			AutoDrawHistogram();
+		}
+		private void comboBox_Enemy_Type_Night_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_Enemy_Type_Night == null
+	|| checkBox_Shiell_Night == null
+	|| checkBox_Sanshiki_Night == null
+	|| comboBox_WG42_Night == null
+	|| comboBox_Landing_Craft_Night == null
+	|| checkBox_KaMi_Night == null
+	|| checkBox_WBWF_Night == null)
+				return;
+			switch(comboBox_Enemy_Type_Night.SelectedIndex) {
+			case 0:
+				// 通常艦：夜戦なので徹甲弾特殊効果がない
+				checkBox_Shiell_Night.IsEnabled = false;
+				checkBox_Sanshiki_Night.IsEnabled = false;
+				comboBox_WG42_Night.IsEnabled = false;
+				comboBox_Landing_Craft_Night.IsEnabled = false;
+				checkBox_KaMi_Night.IsEnabled = false;
+				checkBox_WBWF_Night.IsEnabled = false;
+				break;
+			case 1:
+				// 通常陸上型：三式弾・WG42(キャップ前加算)が効く
+				checkBox_Shiell_Night.IsEnabled = false;
+				checkBox_Sanshiki_Night.IsEnabled = true;
+				comboBox_WG42_Night.IsEnabled = true;
+				comboBox_Landing_Craft_Night.IsEnabled = false;
+				checkBox_KaMi_Night.IsEnabled = false;
+				checkBox_WBWF_Night.IsEnabled = false;
+				break;
+			case 2:
+				// 集積地棲姫：三式弾・WG42(キャップ前加算・キャップ後乗算)が効く
+				checkBox_Shiell_Night.IsEnabled = false;
+				checkBox_Sanshiki_Night.IsEnabled = true;
+				comboBox_WG42_Night.IsEnabled = true;
+				comboBox_Landing_Craft_Night.IsEnabled = false;
+				checkBox_KaMi_Night.IsEnabled = false;
+				checkBox_WBWF_Night.IsEnabled = false;
+				break;
+			case 3:
+				// 砲台子鬼：徹甲弾・WG42(キャップ前乗算加算)・大発系・カミ車・水爆水戦が効く
+				checkBox_Shiell_Night.IsEnabled = true;
+				checkBox_Sanshiki_Night.IsEnabled = false;
+				comboBox_WG42_Night.IsEnabled = true;
+				comboBox_Landing_Craft_Night.IsEnabled = true;
+				checkBox_KaMi_Night.IsEnabled = true;
+				checkBox_WBWF_Night.IsEnabled = true;
+				break;
+			case 4:
+				// 離島棲姫：三式弾(乗算倍率が違う)・WG42(キャップ前乗算加算)が効く
+				checkBox_Shiell_Night.IsEnabled = false;
+				checkBox_Sanshiki_Night.IsEnabled = true;
+				comboBox_WG42_Night.IsEnabled = true;
+				comboBox_Landing_Craft_Night.IsEnabled = false;
+				checkBox_KaMi_Night.IsEnabled = false;
+				checkBox_WBWF_Night.IsEnabled = false;
+				break;
+			}
+			AutoDrawHistogram();
+		}
 
 		/* 右クリック時の動作 */
 		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
