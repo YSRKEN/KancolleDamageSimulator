@@ -406,6 +406,7 @@ namespace BindableWinFormsControl {
 				}
 				//陣形補正
 				if(tabControl.SelectedIndex == TabIndexGun
+				|| tabControl.SelectedIndex == TabIndexGunAir
 				|| tabControl.SelectedIndex == TabIndexTorpedo
 				|| tabControl.SelectedIndex == TabIndexAntiSub) {
 					if(tabControl.SelectedIndex == TabIndexAntiSub) {
