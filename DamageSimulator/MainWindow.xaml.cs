@@ -399,6 +399,7 @@ namespace BindableWinFormsControl {
 				// キャップ前補正
 				//交戦形態補正
 				if(tabControl.SelectedIndex == TabIndexGun
+				|| tabControl.SelectedIndex == TabIndexGunAir
 				|| tabControl.SelectedIndex == TabIndexTorpedo
 				|| tabControl.SelectedIndex == TabIndexAntiSub) {
 					double[] param = { 1, 0.8, 1.2, 0.6 };
@@ -406,6 +407,7 @@ namespace BindableWinFormsControl {
 				}
 				//陣形補正
 				if(tabControl.SelectedIndex == TabIndexGun
+				|| tabControl.SelectedIndex == TabIndexGunAir
 				|| tabControl.SelectedIndex == TabIndexTorpedo
 				|| tabControl.SelectedIndex == TabIndexAntiSub) {
 					if(tabControl.SelectedIndex == TabIndexAntiSub) {
