@@ -7,9 +7,9 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:BindableWinFormsControl"
 		mc:Ignorable="d"
-		Title="KancolleDamageSimulator" Height="400" Width="600">
+		Title="KancolleDamageSimulator" Height="420" Width="600">
 	<Grid ToolTip="{Binding Path=StatusMessage}">
-		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" Height="140" Width="129">
+		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Height="140" Width="129">
 			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="119" Margin="0,0,0,0">
 				<Label x:Name="label1" Content="敵装甲値" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
 				<Label x:Name="label2" Content="最大耐久" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.638,1.308"/>
@@ -20,9 +20,9 @@
 				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘フラグ" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 			</Grid>
 		</GroupBox>
-		<GroupBox x:Name="groupBox1" Header="攻撃側設定" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="204" Width="572">
+		<GroupBox x:Name="groupBox1" Header="攻撃側設定" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="224" Width="572">
 			<Grid x:Name="grid_Attack" Margin="0,0,0,0">
-				<ComboBox x:Name="comboBox_Position" HorizontalAlignment="Left" Margin="73,10,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+				<ComboBox x:Name="comboBox_Position" HorizontalAlignment="Left" Margin="83,39,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 					<ComboBoxItem Content="同航戦" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="反航戦" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="丁字有利" HorizontalAlignment="Left" Width="118"/>
@@ -30,35 +30,49 @@
 					<ComboBoxItem Content="彩雲有り" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="彩雲無し" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
-				<ComboBox x:Name="comboBox_Formation" HorizontalAlignment="Left" Margin="73,37,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
+				<ComboBox x:Name="comboBox_Formation" HorizontalAlignment="Left" Margin="73,66,0,0" VerticalAlignment="Top" Width="98" SelectedIndex="0" SelectionChanged="comboBox_Formation_SelectionChanged">
 					<ComboBoxItem Content="単縦陣" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="複縦陣" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="輪形陣" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="梯形陣" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="単横陣" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="第一(対潜)" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="第二(前方)" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="第三(輪形)" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="第四(戦闘)" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
-				<ComboBox x:Name="comboBox_Damage" HorizontalAlignment="Left" Margin="73,64,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
+				<ComboBox x:Name="comboBox_Damage" HorizontalAlignment="Left" Margin="83,93,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
 					<ComboBoxItem Content="小破以下" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="中破" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="大破" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
-				<ComboBox x:Name="comboBox_AmmoPer" HorizontalAlignment="Left" Margin="73,91,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
+				<ComboBox x:Name="comboBox_AmmoPer" HorizontalAlignment="Left" Margin="83,120,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
 					<ComboBoxItem Content="3戦目以下" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="4戦目" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="5戦目" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="6戦目以上" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
-				<Label x:Name="label4" Content="交戦形態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Label x:Name="label5" Content="攻撃陣形" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,37,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Label x:Name="label6" Content="損傷状態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Label x:Name="label7" Content="弾薬残量" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,91,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Label x:Name="label8" Content="クリティカル発生率" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,117,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="108" Maximum="150" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
-				<Label x:Name="label_Critical" Content="{Binding CriticalLabel}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="123,140,0,0" RenderTransformOrigin="0.5,-0.962"/>
-				<CheckBox x:Name="checkBox_Twice" Content="twice flg" HorizontalAlignment="Left" Margin="98,123,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
+				<Label x:Name="label4" Content="交戦形態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,39,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<Label x:Name="label5" Content="攻撃陣形" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<Label x:Name="label6" Content="損傷状態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,93,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<Label x:Name="label7" Content="弾薬残量" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<Label x:Name="label8" Content="クリティカル発生率" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,146,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<Slider x:Name="slider_Critical" HorizontalAlignment="Left" Margin="20,174,0,0" VerticalAlignment="Top" Width="108" Maximum="150" Value="{Binding Critical}" TickFrequency="0.1" ValueChanged="slider_Critical_ValueChanged" LargeChange="10" SmallChange="1"/>
+				<Label x:Name="label_Critical" Content="{Binding CriticalLabel}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="133,169,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<CheckBox x:Name="checkBox_Twice" Content="twice flg" HorizontalAlignment="Left" Margin="108,152,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
+				<Label x:Name="label35" Content="艦隊" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="32,10,0,0" RenderTransformOrigin="0.5,-0.962"/>
+				<ComboBox x:Name="comboBox_FleetOption" HorizontalAlignment="Left" Margin="71,12,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
+					<ComboBoxItem Content="通常艦隊" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="空母機動/第1" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="空母機動/第2" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="水上打撃/第1" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="水上打撃/第2" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="輸送護衛/第1" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="輸送護衛/第2" HorizontalAlignment="Left" Width="118"/>
+				</ComboBox>
 			</Grid>
 		</GroupBox>
-		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="163" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
+		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="180" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
 			<TabItem Header="砲撃戦">
 				<Grid Background="White">
 					<Label x:Name="label16" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>
@@ -537,7 +551,7 @@
 				</Grid>
 			</TabItem>
 		</TabControl>
-		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="269,219,0,0" VerticalAlignment="Top" Width="313" Height="140">
+		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="269,239,0,0" VerticalAlignment="Top" Width="313" Height="140">
 			<Grid x:Name="grid_Graph" HorizontalAlignment="Left" Height="118" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="293">
 				<WindowsFormsHost Margin="0,0,0,0">
 					<wfc:Chart Name="Chart_Histogram" />
@@ -545,7 +559,7 @@
 				<StackPanel HorizontalAlignment="Left" Height="118" VerticalAlignment="Top" Width="293"/>
 			</Grid>
 		</GroupBox>
-		<GroupBox x:Name="groupBox3" Header="計算条件" HorizontalAlignment="Left" Margin="144,219,0,0" VerticalAlignment="Top" Height="141" Width="120">
+		<GroupBox x:Name="groupBox3" Header="計算条件" HorizontalAlignment="Left" Margin="144,238,0,0" VerticalAlignment="Top" Height="141" Width="120">
 			<Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="110" Margin="0,0,-2,-1">
 				<Label x:Name="label13" Content="試行回数：" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.638,-0.692" Margin="5,5,0,0"/>
 				<ComboBox x:Name="comboBox_TryCount" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="74" SelectedIndex="3" SelectionChanged="GeneralSelectionChanged">

@@ -177,6 +177,39 @@ namespace BindableWinFormsControl {
 				bindData.MaxHP = bindData.NowHP;
 			AutoDrawHistogram();
 		}
+		/// <summary>
+		/// 陣形を変化させた際の処理
+		/// </summary>
+		private void comboBox_Formation_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_FleetOption == null)
+				return;
+			var a = comboBox_FleetOption.SelectedIndex;
+			//! 通常艦隊モードでは、一部の陣形は選択できない
+			if((comboBox_FleetOption.SelectedIndex == 0) && (comboBox_Formation.SelectedIndex >= 5)) {
+				//! 直感に反しないよう、それぞれ対応した陣形に変換する
+				switch(comboBox_Formation.SelectedIndex) {
+				case 5:
+					//! 第一警戒航行序列(対潜警戒)→単横陣
+					comboBox_Formation.SelectedIndex = 4;
+					break;
+				case 6:
+					//! 第二警戒航行序列(前方警戒)→複縦陣
+					comboBox_Formation.SelectedIndex = 1;
+					break;
+				case 7:
+					//! 第三警戒航行序列(輪形陣)→輪形陣
+					comboBox_Formation.SelectedIndex = 2;
+					break;
+				case 8:
+					//! 第四警戒航行序列(戦闘隊形)→単縦陣
+					comboBox_Formation.SelectedIndex = 0;
+					break;
+				default:
+					break;
+				}
+			}
+			AutoDrawHistogram();
+		}
 
 		/* 右クリック時の動作 */
 		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
