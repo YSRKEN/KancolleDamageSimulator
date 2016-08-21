@@ -58,7 +58,7 @@
 				<CheckBox x:Name="checkBox_Twice" Content="twice flg" HorizontalAlignment="Left" Margin="98,123,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 			</Grid>
 		</GroupBox>
-		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="163" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
+		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="163" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="tabControl_SelectionChanged">
 			<TabItem Header="砲撃戦">
 				<Grid Background="White">
 					<Label x:Name="label16" Content="火力" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,10,0,0"/>

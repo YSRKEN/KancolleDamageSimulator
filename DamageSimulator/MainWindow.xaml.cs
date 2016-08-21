@@ -177,6 +177,29 @@ namespace BindableWinFormsControl {
 				bindData.MaxHP = bindData.NowHP;
 			AutoDrawHistogram();
 		}
+		/// <summary>
+		/// タブを切り替えた際の処理
+		/// </summary>
+		private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			switch(tabControl.SelectedIndex) {
+			case TabIndexAir:
+				comboBox_Position.IsEnabled = false;
+				comboBox_Formation.IsEnabled = false;
+				comboBox_Damage.IsEnabled = false;
+				break;
+			case TabIndexNight:
+				comboBox_Position.IsEnabled = false;
+				comboBox_Formation.IsEnabled = false;
+				comboBox_Damage.IsEnabled = true;
+				break;
+			default:
+				comboBox_Position.IsEnabled = true;
+				comboBox_Formation.IsEnabled = true;
+				comboBox_Damage.IsEnabled = true;
+				break;
+			}
+			AutoDrawHistogram();
+		}
 
 		/* 右クリック時の動作 */
 		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
