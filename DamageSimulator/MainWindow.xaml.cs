@@ -183,20 +183,56 @@ namespace BindableWinFormsControl {
 		private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			switch(tabControl.SelectedIndex) {
 			case TabIndexAir:
+				comboBox_FleetOption.IsEnabled = false;
 				comboBox_Position.IsEnabled = false;
 				comboBox_Formation.IsEnabled = false;
 				comboBox_Damage.IsEnabled = false;
 				break;
 			case TabIndexNight:
+				comboBox_FleetOption.IsEnabled = false;
 				comboBox_Position.IsEnabled = false;
 				comboBox_Formation.IsEnabled = false;
 				comboBox_Damage.IsEnabled = true;
 				break;
 			default:
+				comboBox_FleetOption.IsEnabled = true;
 				comboBox_Position.IsEnabled = true;
 				comboBox_Formation.IsEnabled = true;
 				comboBox_Damage.IsEnabled = true;
 				break;
+			}
+			AutoDrawHistogram();
+		}
+		/// <summary>
+		/// 陣形を変化させた際の処理
+		/// </summary>
+		private void comboBox_Formation_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_FleetOption == null)
+				return;
+			var a = comboBox_FleetOption.SelectedIndex;
+			//! 通常艦隊モードでは、一部の陣形は選択できない
+			if((comboBox_FleetOption.SelectedIndex == 0) && (comboBox_Formation.SelectedIndex >= 5)) {
+				//! 直感に反しないよう、それぞれ対応した陣形に変換する
+				switch(comboBox_Formation.SelectedIndex) {
+				case 5:
+					//! 第一警戒航行序列(対潜警戒)→単横陣
+					comboBox_Formation.SelectedIndex = 4;
+					break;
+				case 6:
+					//! 第二警戒航行序列(前方警戒)→複縦陣
+					comboBox_Formation.SelectedIndex = 1;
+					break;
+				case 7:
+					//! 第三警戒航行序列(輪形陣)→輪形陣
+					comboBox_Formation.SelectedIndex = 2;
+					break;
+				case 8:
+					//! 第四警戒航行序列(戦闘隊形)→単縦陣
+					comboBox_Formation.SelectedIndex = 0;
+					break;
+				default:
+					break;
+				}
 			}
 			AutoDrawHistogram();
 		}
@@ -328,13 +364,27 @@ namespace BindableWinFormsControl {
 			var baseAttackValue = 0.0;
 			switch(tabControl.SelectedIndex) {
 			case TabIndexGun:
-				baseAttackValue = bindData.AttackGun + 5;
-				// 装備改修値
-				double[] param = { 1.0,  1.5, 0.75};
-				baseAttackValue += param[comboBox_Attack_Gun_Type_0.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_0.SelectedIndex);
-				baseAttackValue += param[comboBox_Attack_Gun_Type_1.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_1.SelectedIndex);
-				baseAttackValue += param[comboBox_Attack_Gun_Type_2.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_2.SelectedIndex);
-				baseAttackValue += param[comboBox_Attack_Gun_Type_3.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_3.SelectedIndex);
+				{
+					baseAttackValue = bindData.AttackGun + 5;
+					// 装備改修値
+					double[] param = { 1.0, 1.5, 0.75 };
+					baseAttackValue += param[comboBox_Attack_Gun_Type_0.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_0.SelectedIndex);
+					baseAttackValue += param[comboBox_Attack_Gun_Type_1.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_1.SelectedIndex);
+					baseAttackValue += param[comboBox_Attack_Gun_Type_2.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_2.SelectedIndex);
+					baseAttackValue += param[comboBox_Attack_Gun_Type_3.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_3.SelectedIndex);
+					// 連合艦隊補正
+					if(comboBox_FleetOption.SelectedIndex > 0) {
+						if(comboBox_Formation.SelectedIndex >= 5) {
+							// 連合艦隊(自艦隊視点)
+							double[] add_attack = { 2, 10, 10, -5, -5, 10 };
+							baseAttackValue += add_attack[comboBox_FleetOption.SelectedIndex - 1];
+						} else {
+							// 連合艦隊(敵艦隊視点)
+							double[] add_attack = { 10, 5, 5, -5, 10, +5 };
+							baseAttackValue += add_attack[comboBox_FleetOption.SelectedIndex - 1];
+						}
+					}
+				}
 				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexGunAir:
 				{
@@ -344,6 +394,19 @@ namespace BindableWinFormsControl {
 					temp += Math.Sqrt(comboBox_GunAir_Level_1.SelectedIndex);
 					temp += Math.Sqrt(comboBox_GunAir_Level_2.SelectedIndex);
 					temp += Math.Sqrt(comboBox_GunAir_Level_3.SelectedIndex);
+					// 連合艦隊補正
+					if(comboBox_FleetOption.SelectedIndex > 0) {
+						if(comboBox_Formation.SelectedIndex >= 5) {
+							// 連合艦隊(自艦隊視点)
+							double[] add_attack = { 2, 10, 10, -5, -5, 10 };
+							temp += add_attack[comboBox_FleetOption.SelectedIndex - 1];
+						} else {
+							// 連合艦隊(敵艦隊視点)
+							double[] add_attack = { 10, 5, 5, -5, 10, +5 };
+							temp += add_attack[comboBox_FleetOption.SelectedIndex - 1];
+						}
+					}
+					//
 					baseAttackValue = (int)(temp * 1.5) + 55;
 				}
 				return new double[] { baseAttackValue, baseAttackValue };
@@ -354,6 +417,10 @@ namespace BindableWinFormsControl {
 				baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_1.SelectedIndex);
 				baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_2.SelectedIndex);
 				baseAttackValue += 1.2 * Math.Sqrt(comboBox_Torpedo_Level_3.SelectedIndex);
+				// 連合艦隊補正
+				if(comboBox_FleetOption.SelectedIndex > 0) {
+					baseAttackValue -= 5;
+				}
 				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexAir:
 				baseAttackValue = (bindData.PowerAir * Math.Sqrt(bindData.SlotsAir) + 25);
@@ -428,16 +495,15 @@ namespace BindableWinFormsControl {
 				}
 				//陣形補正
 				if(tabControl.SelectedIndex == TabIndexGun
-				|| tabControl.SelectedIndex == TabIndexGunAir
-				|| tabControl.SelectedIndex == TabIndexTorpedo
-				|| tabControl.SelectedIndex == TabIndexAntiSub) {
-					if(tabControl.SelectedIndex == TabIndexAntiSub) {
-						double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3 };
-						attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
-					} else {
-						double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6 };
-						attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
-					}
+				|| tabControl.SelectedIndex == TabIndexGunAir) {
+					double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6, 0.8, 1.0, 0.7, 1.1 };
+					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
+				} else if(tabControl.SelectedIndex == TabIndexTorpedo) {
+					double[] param = { 1.0, 0.8, 0.7, 0.6, 0.6, 0.7, 0.9, 0.6, 1.0 };
+					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
+				} else if(tabControl.SelectedIndex == TabIndexAntiSub) {
+					double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3, 1.1, 1.0, 0.7 };
+					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
 				}
 				//損傷補正
 				if(tabControl.SelectedIndex != TabIndexAir) {
