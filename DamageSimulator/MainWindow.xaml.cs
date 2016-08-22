@@ -246,7 +246,8 @@ namespace BindableWinFormsControl {
 			|| comboBox_WG42 == null
 			|| comboBox_Landing_Craft == null
 			|| checkBox_KaMi == null
-			|| checkBox_WBWF == null)
+			|| checkBox_WBWF == null
+			|| checkBox_DDCL == null)
 				return;
 			switch(comboBox_Enemy_Type.SelectedIndex) {
 			case 0:
@@ -257,6 +258,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft.IsEnabled = false;
 				checkBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
+				checkBox_DDCL.IsEnabled = false;
 				break;
 			case 1:
 				// 通常陸上型：徹甲弾・三式弾・WG42(キャップ前加算)が効く
@@ -266,6 +268,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft.IsEnabled = false;
 				checkBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
+				checkBox_DDCL.IsEnabled = false;
 				break;
 			case 2:
 				// 集積地棲姫：徹甲弾・三式弾・WG42(キャップ前加算・キャップ後乗算)が効く
@@ -275,6 +278,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft.IsEnabled = false;
 				checkBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
+				checkBox_DDCL.IsEnabled = false;
 				break;
 			case 3:
 				// 砲台子鬼：徹甲弾・WG42(キャップ前乗算加算)・大発系・カミ車・水爆水戦が効く
@@ -284,6 +288,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft.IsEnabled = true;
 				checkBox_KaMi.IsEnabled = true;
 				checkBox_WBWF.IsEnabled = true;
+				checkBox_DDCL.IsEnabled = true;
 				break;
 			case 4:
 				// 離島棲姫：三式弾(乗算倍率が違う)・WG42(キャップ前乗算加算)が効く
@@ -293,6 +298,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft.IsEnabled = false;
 				checkBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
+				checkBox_DDCL.IsEnabled = false;
 				break;
 			}
 			AutoDrawHistogram();
@@ -304,7 +310,8 @@ namespace BindableWinFormsControl {
 	|| comboBox_WG42_Night == null
 	|| comboBox_Landing_Craft_Night == null
 	|| checkBox_KaMi_Night == null
-	|| checkBox_WBWF_Night == null)
+	|| checkBox_WBWF_Night == null
+	|| checkBox_DDCL_Night == null)
 				return;
 			switch(comboBox_Enemy_Type_Night.SelectedIndex) {
 			case 0:
@@ -315,6 +322,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft_Night.IsEnabled = false;
 				checkBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
+				checkBox_DDCL_Night.IsEnabled = false;
 				break;
 			case 1:
 				// 通常陸上型：三式弾・WG42(キャップ前加算)が効く
@@ -324,6 +332,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft_Night.IsEnabled = false;
 				checkBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
+				checkBox_DDCL_Night.IsEnabled = false;
 				break;
 			case 2:
 				// 集積地棲姫：三式弾・WG42(キャップ前加算・キャップ後乗算)が効く
@@ -333,6 +342,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft_Night.IsEnabled = false;
 				checkBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
+				checkBox_DDCL_Night.IsEnabled = false;
 				break;
 			case 3:
 				// 砲台子鬼：徹甲弾・WG42(キャップ前乗算加算)・大発系・カミ車・水爆水戦が効く
@@ -342,6 +352,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft_Night.IsEnabled = true;
 				checkBox_KaMi_Night.IsEnabled = true;
 				checkBox_WBWF_Night.IsEnabled = true;
+				checkBox_DDCL_Night.IsEnabled = true;
 				break;
 			case 4:
 				// 離島棲姫：三式弾(乗算倍率が違う)・WG42(キャップ前乗算加算)が効く
@@ -351,6 +362,7 @@ namespace BindableWinFormsControl {
 				comboBox_Landing_Craft_Night.IsEnabled = false;
 				checkBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
+				checkBox_DDCL_Night.IsEnabled = false;
 				break;
 			}
 			AutoDrawHistogram();
@@ -507,7 +519,9 @@ namespace BindableWinFormsControl {
 				return new double[] { baseAttackValue, baseAttackValue };
 			case TabIndexGunAir:
 				{
-					double temp = bindData.AttackGunAir + bindData.TorpedoGunAir + (int)(bindData.BombGunAir * 1.3);
+					double temp = bindData.AttackGunAir;
+					if(!(bool)checkBox_AF.IsChecked)
+						temp += bindData.TorpedoGunAir + (int)(bindData.BombGunAir * 1.3);
 					// 装備改修度
 					temp += Math.Sqrt(comboBox_GunAir_Level_0.SelectedIndex);
 					temp += Math.Sqrt(comboBox_GunAir_Level_1.SelectedIndex);
@@ -571,7 +585,7 @@ namespace BindableWinFormsControl {
 				baseAttackValue += Math.Sqrt(comboBox_Attack_Night_Level_2.SelectedIndex);
 				baseAttackValue += Math.Sqrt(comboBox_Attack_Night_Level_3.SelectedIndex);
 				// 対地攻撃では雷装値無効
-				if(!(bool)checkBox_Sanshiki_Night.IsChecked && comboBox_WG42_Night.SelectedIndex == 0) {
+				if(comboBox_Enemy_Type_Night.SelectedIndex == 0) {
 					baseAttackValue += bindData.TorpedoNight;
 				}
 				return new double[] { baseAttackValue, baseAttackValue };
@@ -586,18 +600,86 @@ namespace BindableWinFormsControl {
 			var bindData = DataContext as TestBindObject;
 			var attackValueBeforeCap = baseAttackValue;
 			for(var i = 0; i < 2; ++i) {
-				// 三式弾特効・WG42特効
-				if(tabControl.SelectedIndex == TabIndexGun) {
-					if((bool)checkBox_Sanshiki.IsChecked)
-						attackValueBeforeCap[i] *= 2.5;
+				// キャップ前陸上特効
+				if(tabControl.SelectedIndex == TabIndexGun && comboBox_Enemy_Type.SelectedIndex != 0) {
+					// 三式弾
+					if(comboBox_Enemy_Type.SelectedIndex == 1 || comboBox_Enemy_Type.SelectedIndex == 2) {
+						if((bool)checkBox_Sanshiki.IsChecked)
+							attackValueBeforeCap[i] *= 2.5;
+					}
+					//! 砲台子鬼
+					if(comboBox_Enemy_Type.SelectedIndex == 3) {
+						// 艦種
+						if((bool)checkBox_DDCL.IsChecked)
+							attackValueBeforeCap[i] *= 1.4;
+						// 大発
+						double[] param1 = { 1.0, 1.80, 2.15, 3.0 };
+						attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft.SelectedIndex];
+						// カミ車
+						if((bool)checkBox_KaMi.IsChecked)
+							attackValueBeforeCap[i] *= 2.4;
+						// WG42
+						double[] param2 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
+						attackValueBeforeCap[i] *= param2[comboBox_WG42.SelectedIndex];
+						// 水爆水戦
+						if((bool)checkBox_WBWF.IsChecked)
+							attackValueBeforeCap[i] *= 1.5;
+						// 徹甲弾
+						if(comboBox_Shell.SelectedIndex != 0)
+							attackValueBeforeCap[i] *= 1.85;
+					}
+					//! 離島棲鬼
+					if(comboBox_Enemy_Type.SelectedIndex == 4) {
+						// WG42
+						double[] param1 = { 1.0, 1.4, 2.1, 2.1, 2.1 };
+						attackValueBeforeCap[i] *= param1[comboBox_WG42.SelectedIndex];
+						// 三式弾
+						if((bool)checkBox_Sanshiki.IsChecked)
+							attackValueBeforeCap[i] *= 1.75;
+					}
+					//! WG加算特効
 					{
 						double[] param = { 0, 75, 110, 140, 160 };
 						attackValueBeforeCap[i] += param[comboBox_WG42.SelectedIndex];
 					}
 				}
-				if(tabControl.SelectedIndex == TabIndexNight) {
-					if((bool)checkBox_Sanshiki_Night.IsChecked)
-						attackValueBeforeCap[i] *= 2.5;
+				if(tabControl.SelectedIndex == TabIndexNight && comboBox_Enemy_Type_Night.SelectedIndex != 0) {
+					// 三式弾
+					if(comboBox_Enemy_Type_Night.SelectedIndex == 1 || comboBox_Enemy_Type_Night.SelectedIndex == 2) {
+						if((bool)checkBox_Sanshiki_Night.IsChecked)
+							attackValueBeforeCap[i] *= 2.5;
+					}
+					//! 砲台子鬼
+					if(comboBox_Enemy_Type_Night.SelectedIndex == 3) {
+						// 艦種
+						if((bool)checkBox_DDCL_Night.IsChecked)
+							attackValueBeforeCap[i] *= 1.4;
+						// 大発
+						double[] param1 = { 1.0, 1.80, 2.15, 3.0 };
+						attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft_Night.SelectedIndex];
+						// カミ車
+						if((bool)checkBox_KaMi_Night.IsChecked)
+							attackValueBeforeCap[i] *= 2.4;
+						// WG42
+						double[] param2 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
+						attackValueBeforeCap[i] *= param2[comboBox_WG42_Night.SelectedIndex];
+						// 水爆水戦
+						if((bool)checkBox_WBWF_Night.IsChecked)
+							attackValueBeforeCap[i] *= 1.5;
+						// 徹甲弾
+						if((bool)checkBox_Shiell_Night.IsChecked)
+							attackValueBeforeCap[i] *= 1.85;
+					}
+					//! 離島棲鬼
+					if(comboBox_Enemy_Type_Night.SelectedIndex == 4) {
+						// WG42
+						double[] param1 = { 1.0, 1.4, 2.1, 2.1, 2.1 };
+						attackValueBeforeCap[i] *= param1[comboBox_WG42_Night.SelectedIndex];
+						// 三式弾
+						if((bool)checkBox_Sanshiki_Night.IsChecked)
+							attackValueBeforeCap[i] *= 1.75;
+					}
+					//! WG加算特効
 					{
 						double[] param = { 0, 75, 110, 140, 160 };
 						attackValueBeforeCap[i] += param[comboBox_WG42_Night.SelectedIndex];
@@ -670,10 +752,23 @@ namespace BindableWinFormsControl {
 			var lastAttackValue = new double[4];
 			for(var i = 0; i < 2; ++i) {
 				double lastAttackValueTemp = (int)attackValueAfterCap[i];
+				// 集積地棲姫特効
+				if(tabControl.SelectedIndex == TabIndexGun && comboBox_Enemy_Type.SelectedIndex == 2) {
+					double[] param = { 1.0, 1.25, 1.625, 1.625, 1.625 };
+					lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_WG42.SelectedIndex]);
+				}
+				if(tabControl.SelectedIndex == TabIndexNight && comboBox_Enemy_Type_Night.SelectedIndex == 2) {
+					double[] param = { 1.0, 1.25, 1.625, 1.625, 1.625 };
+					lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_WG42_Night.SelectedIndex]);
+				}
 				// 徹甲弾特効
 				if(tabControl.SelectedIndex == TabIndexGun) {
-					double[] param = { 1.0, 1.08, 1.1, 1.15, 1.15 };
-					lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_Shell.SelectedIndex]);
+					if(comboBox_Enemy_Type.SelectedIndex == 0
+					|| comboBox_Enemy_Type.SelectedIndex == 1
+					|| comboBox_Enemy_Type.SelectedIndex == 2) {
+						double[] param = { 1.0, 1.08, 1.1, 1.15, 1.15 };
+						lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_Shell.SelectedIndex]);
+					}
 				}
 				// クリティカル補正
 				double lastAttackValueWithoutCL = (int)lastAttackValueTemp;
