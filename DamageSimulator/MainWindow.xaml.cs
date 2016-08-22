@@ -706,6 +706,11 @@ namespace BindableWinFormsControl {
 					double[] param = { 0.6, 0.8, 1.2, 1.0, 1.3, 1.1, 1.0, 0.7 };
 					attackValueBeforeCap[i] *= param[comboBox_Formation.SelectedIndex];
 				}
+				//夜戦特殊攻撃補正
+				if(tabControl.SelectedIndex == TabIndexNight) {
+					double[] param = { 1.0, 1.5, 1.3, 2.0, 1.75, 1.2 };
+					attackValueBeforeCap[i] *= param[comboBox_Night_Type.SelectedIndex];
+				}
 				//損傷補正
 				if(tabControl.SelectedIndex != TabIndexAir) {
 					if(tabControl.SelectedIndex == TabIndexTorpedo && (bool)checkBox_FirstTorpedo.IsChecked) {
@@ -720,11 +725,6 @@ namespace BindableWinFormsControl {
 				if(tabControl.SelectedIndex == TabIndexAntiSub) {
 					if((bool)checkBox_AntiSubSynergy.IsChecked)
 						attackValueBeforeCap[i] *= 1.15;
-				}
-				//夜戦特殊攻撃補正
-				if(tabControl.SelectedIndex == TabIndexNight) {
-					double[] param = { 1.0, 1.5, 1.3, 2.0, 1.75, 1.2 };
-					attackValueBeforeCap[i] *= param[comboBox_Night_Type.SelectedIndex];
 				}
 			}
 			return attackValueBeforeCap;
@@ -751,16 +751,17 @@ namespace BindableWinFormsControl {
 		private double[] CalcLastAttack(double[] attackValueAfterCap) {
 			var lastAttackValue = new double[4];
 			for(var i = 0; i < 2; ++i) {
-				double lastAttackValueTemp = (int)attackValueAfterCap[i];
+				double lastAttackValueTemp = attackValueAfterCap[i];
 				// 集積地棲姫特効
 				if(tabControl.SelectedIndex == TabIndexGun && comboBox_Enemy_Type.SelectedIndex == 2) {
 					double[] param = { 1.0, 1.25, 1.625, 1.625, 1.625 };
-					lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_WG42.SelectedIndex]);
+					lastAttackValueTemp = (lastAttackValueTemp * param[comboBox_WG42.SelectedIndex]);
 				}
 				if(tabControl.SelectedIndex == TabIndexNight && comboBox_Enemy_Type_Night.SelectedIndex == 2) {
 					double[] param = { 1.0, 1.25, 1.625, 1.625, 1.625 };
-					lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_WG42_Night.SelectedIndex]);
+					lastAttackValueTemp = (lastAttackValueTemp * param[comboBox_WG42_Night.SelectedIndex]);
 				}
+				lastAttackValueTemp = (int)lastAttackValueTemp;
 				// 徹甲弾特効
 				if(tabControl.SelectedIndex == TabIndexGun) {
 					if(comboBox_Enemy_Type.SelectedIndex != 4) {
