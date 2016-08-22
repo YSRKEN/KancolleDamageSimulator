@@ -193,7 +193,7 @@
 					</ComboBox>
 					<CheckBox x:Name="checkBox_KaMi" Content="カミ車" HorizontalAlignment="Left" Margin="165,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<CheckBox x:Name="checkBox_WBWF" Content="水爆水戦" HorizontalAlignment="Left" Margin="218,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
-					<CheckBox x:Name="checkBox_DDCL" Content="駆逐軽巡" HorizontalAlignment="Left" Margin="291,71,0,0" VerticalAlignment="Top" IsEnabled="False"/>
+					<CheckBox x:Name="checkBox_DDCL" Content="駆逐軽巡" HorizontalAlignment="Left" Margin="291,71,0,0" VerticalAlignment="Top" IsEnabled="False" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="砲撃戦(空母)">

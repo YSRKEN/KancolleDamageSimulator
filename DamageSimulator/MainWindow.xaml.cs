@@ -763,9 +763,7 @@ namespace BindableWinFormsControl {
 				}
 				// 徹甲弾特効
 				if(tabControl.SelectedIndex == TabIndexGun) {
-					if(comboBox_Enemy_Type.SelectedIndex == 0
-					|| comboBox_Enemy_Type.SelectedIndex == 1
-					|| comboBox_Enemy_Type.SelectedIndex == 2) {
+					if(comboBox_Enemy_Type.SelectedIndex != 4) {
 						double[] param = { 1.0, 1.08, 1.1, 1.15, 1.15 };
 						lastAttackValueTemp = (int)(lastAttackValueTemp * param[comboBox_Shell.SelectedIndex]);
 					}
