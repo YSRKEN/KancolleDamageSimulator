@@ -1,4 +1,4 @@
-index,type,class,name,attack,bomb,torpedo,pa_pb_power,slot_size,anti_sub_body,anti_sub_weapon,defense,hp
+index,type,class,name,attack,torpedo1,bomb,torpedo2,pa_pb_power,slot_size,anti_sub_body,anti_sub_weapon,defense,hp
 1,駆逐艦,神風型,神風改,41,68,0,0,0,0,70,0,38,23
 2,駆逐艦,神風型,春風改,38,68,0,0,0,0,72,0,38,23
 3,駆逐艦,睦月型,睦月改二,45,79,0,0,0,0,69,0,43,27
