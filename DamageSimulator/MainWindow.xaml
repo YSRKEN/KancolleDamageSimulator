@@ -23,6 +23,9 @@
 		</GroupBox>
 		<GroupBox x:Name="groupBox1" Header="攻撃側設定" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="224" Width="572">
 			<Grid x:Name="grid_Attack" Margin="0,0,0,0">
+				<Grid.ContextMenu>
+					<ContextMenu/>
+				</Grid.ContextMenu>
 				<ComboBox x:Name="comboBox_Position" HorizontalAlignment="Left" Margin="83,39,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 					<ComboBoxItem Content="同航戦" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="反航戦" HorizontalAlignment="Left" Width="118"/>

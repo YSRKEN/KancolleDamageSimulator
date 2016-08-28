@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace BindableWinFormsControl {
 		//変数
 		bool autoCalcFlg = false;	//自動再計算フラグ
 		Chart chart;				//グラフ
-		SortedDictionary<int, int> sorted_hist;	//ヒストグラム
+		SortedDictionary<int, int> sorted_hist; //ヒストグラム
 		//定数
 		System.Random rand = new System.Random();	//乱数シード
 		const int TabIndexGun     = 0;	//砲撃戦
@@ -67,6 +68,46 @@ namespace BindableWinFormsControl {
 				Critical = 133,
 				StatusMessage = "",
 			};
+			// 右クリックメニュー用のデータを読み込む
+			try {
+				/* 配列に読み出す
+				 * arr[行番号][列番号] X行14列
+				 * 行番号→0は列名、1以降がデータ
+				 * 列番号→0から順に番号,艦種,艦型,艦名,火力,雷装1,爆装,雷装2,
+				 * 艦載機力(艦爆は正、艦攻は負),搭載数,素対潜,装備対潜,装甲,耐久
+				 */
+				var sr = new StreamReader("preset.csv", Encoding.GetEncoding("UTF-8"));
+				var list = new List<string[]>();
+				while(sr.Peek() >= 0)
+					list.Add(sr.ReadLine().Split(','));
+				sr.Close();
+				var arr = list.ToArray();
+				//! 多段連想配列に変換
+				var preset_data = new Dictionary<string, Dictionary<string, Dictionary<string, int[]>>>();
+				for(int i = 1; i < arr.Length; ++i) {
+					//! 必要な部分を抜き出す
+					var type_str = arr[i][1];
+					var class_str = arr[i][2];
+					var name_str = arr[i][3];
+					var parameter_str = arr[i].Skip(4).Take(10).ToArray();
+					var parameter = new int[10];
+					//! 適宜拡張しつつ、代入していく
+					if(!preset_data.ContainsKey(type_str))
+						preset_data[type_str] = new Dictionary<string, Dictionary<string, int[]>> ();
+					if(!preset_data[type_str].ContainsKey(class_str))
+						preset_data[type_str][class_str] = new Dictionary<string, int[]> ();
+					if(!preset_data[type_str][class_str].ContainsKey(name_str))
+						preset_data[type_str][class_str][name_str] = new int[10];
+					for(int j = 0; j < 10; ++j) {
+						preset_data[type_str][class_str][name_str][j] = int.Parse(parameter_str[j]);
+					}
+				}
+				//! メニューを動的に作成
+
+				return;
+			} catch {
+				System.Windows.Forms.MessageBox.Show("プリセットファイルを読み込めませんでした。", "KancolleDamageSimulator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		/* ヒストグラム関係 */

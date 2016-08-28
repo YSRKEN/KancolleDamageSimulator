@@ -1,5 +1,4 @@
 index,type,class,name,attack,torpedo1,bomb,torpedo2,pa_pb_power,slot_size,anti_sub_body,anti_sub_weapon,defense,hp
-番号,艦種,艦型,艦名,火力,雷装1,爆装,雷装2,艦載機力(艦爆は正、艦攻は負),搭載数,素対潜,装備対潜,装甲,耐久
 1,駆逐艦,神風型,神風改,41,68,0,0,0,0,70,0,38,23
 2,駆逐艦,神風型,春風改,38,68,0,0,0,0,72,0,38,23
 3,駆逐艦,睦月型,睦月改二,45,79,0,0,0,0,69,0,43,27
