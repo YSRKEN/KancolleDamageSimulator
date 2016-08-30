@@ -42,6 +42,10 @@ namespace BindableWinFormsControl {
 			NormalMin, NormalMax, CriticalMin, CriticalMax,
 			NormalMinBig, NormalMaxBig, CriticalMinBig, CriticalMaxBig,
 		};
+		enum PresetData {
+			Attack, Torpedo1, Bomb, Torpedo2, PAPB_Power,
+			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP
+		};
 
 		/* コンストラクタ */
 		public MainWindow() {
@@ -428,6 +432,49 @@ namespace BindableWinFormsControl {
 			bindData.ShipNameList = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem].Keys);
 			comboBox_ShipName.IsEnabled = true;
 			comboBox_ShipName.SelectedIndex = -1;
+		}
+		/// <summary>
+		/// プリセットをGUIに反映させる処理
+		/// </summary>
+		private void button_SetShipA_Click(object sender, RoutedEventArgs e) {
+			//! nullチェック
+			if(comboBox_ShipType.SelectedItem == null
+			|| comboBox_ShipClass.SelectedItem == null
+			|| comboBox_ShipName.SelectedItem == null)
+				return;
+			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
+			//! データを書き込む
+			var bindData = DataContext as TestBindObject;
+			bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+			bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
+			bindData.AttackGun      = unit_data[(int)PresetData.Attack];
+			bindData.AttackGunAir   = unit_data[(int)PresetData.Attack];
+			bindData.AttackNight    = unit_data[(int)PresetData.Attack];
+			bindData.BombGunAir     = unit_data[(int)PresetData.Bomb];
+			if(unit_data[(int)PresetData.PAPB_Power] >= 0) {
+				bindData.PowerAir = unit_data[(int)PresetData.PAPB_Power];
+				comboBox_Air_Type.SelectedIndex = 1;
+			} else {
+				bindData.PowerAir = -unit_data[(int)PresetData.PAPB_Power];
+				comboBox_Air_Type.SelectedIndex = 0;
+			}
+			bindData.SlotsAir       = unit_data[(int)PresetData.SlotSize];
+			bindData.Torpedo        = unit_data[(int)PresetData.Torpedo1];
+			bindData.TorpedoGunAir  = unit_data[(int)PresetData.Torpedo2];
+			bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
+		}
+
+		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
+			//! nullチェック
+			if(comboBox_ShipType.SelectedItem == null
+			|| comboBox_ShipClass.SelectedItem == null
+			|| comboBox_ShipName.SelectedItem == null)
+				return;
+			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
+			//! データを書き込む
+			var bindData = DataContext as TestBindObject;
+			bindData.Defense = unit_data[(int)PresetData.Defense];
+			bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
 		}
 
 		/* 右クリック時の動作 */
