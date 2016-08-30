@@ -145,13 +145,21 @@ namespace BindableWinFormsControl {
 		}
 		private List<string> shipClassList;
 		public List<string> ShipClassList {
-			get { return shipClassList; }
-			set { shipClassList = value; }
+			get {
+				return shipClassList;
+			}
+			set {
+				shipClassList = value;
+				NotifyPropertyChanged("ShipClassList");
+			}
 		}
 		private List<string> shipNameList;
 		public List<string> ShipNameList {
 			get { return shipNameList; }
-			set { shipNameList = value; }
+			set {
+				shipNameList = value;
+				NotifyPropertyChanged("ShipNameList");
+			}
 		}
 
 		/* ‚»‚Ì‘¼ */

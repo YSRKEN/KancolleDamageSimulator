@@ -629,7 +629,7 @@
 			</Grid>
 		</GroupBox>
 		<ComboBox x:Name="comboBox_ShipType" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="-1" ItemsSource="{Binding ShipTypeList}" SelectionChanged="comboBox_ShipType_SelectionChanged"/>
-		<ComboBox x:Name="comboBox_ShipClass" HorizontalAlignment="Left" Margin="115,239,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="-1" ItemsSource="{Binding ShipClassList}" IsEnabled ="False"/>
+		<ComboBox x:Name="comboBox_ShipClass" HorizontalAlignment="Left" Margin="115,239,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="-1" ItemsSource="{Binding ShipClassList}" IsEnabled ="False" SelectionChanged="comboBox_ShipClass_SelectionChanged"/>
 		<ComboBox x:Name="comboBox_ShipName" HorizontalAlignment="Left" Margin="220,239,0,0" VerticalAlignment="Top" Width="100" ItemsSource="{Binding ShipNameList}" SelectedIndex="-1" IsEnabled ="False"/>
 		<Button x:Name="button_SetShipA" Content="攻" HorizontalAlignment="Left" Margin="325,241,0,0" VerticalAlignment="Top" Width="20"/>
 		<Button x:Name="button_SetShipD" Content="防" HorizontalAlignment="Left" Margin="350,241,0,0" VerticalAlignment="Top" Width="20"/>

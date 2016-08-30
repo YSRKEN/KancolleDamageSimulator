@@ -27,7 +27,7 @@ namespace BindableWinFormsControl {
 		bool autoCalcFlg = false;	//自動再計算フラグ
 		Chart chart;				//グラフ
 		SortedDictionary<int, int> sorted_hist; //ヒストグラム
-		Dictionary<string, Dictionary<string, Dictionary<string, int[]>>> preset_data;
+		public static Dictionary<string, Dictionary<string, Dictionary<string, int[]>>> preset_data = null;
 		//定数
 		System.Random rand = new System.Random();	//乱数シード
 		const int TabIndexGun     = 0;	//砲撃戦
@@ -68,7 +68,7 @@ namespace BindableWinFormsControl {
 				NowHP = 50,
 				Critical = 133,
 				StatusMessage = "",
-				ShipTypeList = null
+				ShipTypeList = null,
 			};
 			// 右クリックメニュー用のデータを読み込む
 			try {
@@ -415,9 +415,19 @@ namespace BindableWinFormsControl {
 		/// </summary>
 		private void comboBox_ShipType_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			var bindData = DataContext as TestBindObject;
-			var hoge = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem].Keys);
 			bindData.ShipClassList = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem].Keys);
 			comboBox_ShipClass.IsEnabled = true;
+			comboBox_ShipClass.SelectedIndex = -1;
+			comboBox_ShipName.IsEnabled = false;
+			comboBox_ShipName.SelectedIndex = -1;
+		}
+		private void comboBox_ShipClass_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_ShipClass.SelectedItem == null)
+				return;
+			var bindData = DataContext as TestBindObject;
+			bindData.ShipNameList = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem].Keys);
+			comboBox_ShipName.IsEnabled = true;
+			comboBox_ShipName.SelectedIndex = -1;
 		}
 
 		/* 右クリック時の動作 */
