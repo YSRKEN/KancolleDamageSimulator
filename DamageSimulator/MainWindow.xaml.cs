@@ -27,6 +27,7 @@ namespace BindableWinFormsControl {
 		bool autoCalcFlg = false;	//自動再計算フラグ
 		Chart chart;				//グラフ
 		SortedDictionary<int, int> sorted_hist; //ヒストグラム
+		Dictionary<string, Dictionary<string, Dictionary<string, int[]>>> preset_data;
 		//定数
 		System.Random rand = new System.Random();	//乱数シード
 		const int TabIndexGun     = 0;	//砲撃戦
@@ -67,6 +68,7 @@ namespace BindableWinFormsControl {
 				NowHP = 50,
 				Critical = 133,
 				StatusMessage = "",
+				ShipTypeList = null
 			};
 			// 右クリックメニュー用のデータを読み込む
 			try {
@@ -83,7 +85,7 @@ namespace BindableWinFormsControl {
 				sr.Close();
 				var arr = list.ToArray();
 				//! 多段連想配列に変換
-				var preset_data = new Dictionary<string, Dictionary<string, Dictionary<string, int[]>>>();
+				preset_data = new Dictionary<string, Dictionary<string, Dictionary<string, int[]>>>();
 				for(int i = 1; i < arr.Length; ++i) {
 					//! 必要な部分を抜き出す
 					var type_str = arr[i][1];
@@ -103,8 +105,8 @@ namespace BindableWinFormsControl {
 					}
 				}
 				//! メニューを動的に作成
-
-				return;
+				var bindData = DataContext as TestBindObject;
+				bindData.ShipTypeList = new List<string>(preset_data.Keys);
 			} catch {
 				System.Windows.Forms.MessageBox.Show("プリセットファイルを読み込めませんでした。", "KancolleDamageSimulator", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -407,6 +409,15 @@ namespace BindableWinFormsControl {
 				break;
 			}
 			AutoDrawHistogram();
+		}
+		/// <summary>
+		/// プリセット設定を変化させた際の処理
+		/// </summary>
+		private void comboBox_ShipType_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			var bindData = DataContext as TestBindObject;
+			var hoge = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem].Keys);
+			bindData.ShipClassList = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem].Keys);
+			comboBox_ShipClass.IsEnabled = true;
 		}
 
 		/* 右クリック時の動作 */
