@@ -136,6 +136,32 @@ namespace BindableWinFormsControl {
 			}
 		}
 
+		/* プリセット用コンボボックス */
+		private List<string> shipTypeList;
+		public List<string> ShipTypeList
+		{
+			get { return shipTypeList; }
+			set { shipTypeList = value; }
+		}
+		private List<string> shipClassList;
+		public List<string> ShipClassList {
+			get {
+				return shipClassList;
+			}
+			set {
+				shipClassList = value;
+				NotifyPropertyChanged("ShipClassList");
+			}
+		}
+		private List<string> shipNameList;
+		public List<string> ShipNameList {
+			get { return shipNameList; }
+			set {
+				shipNameList = value;
+				NotifyPropertyChanged("ShipNameList");
+			}
+		}
+
 		/* その他 */
 		private int critical;
 		public int Critical {

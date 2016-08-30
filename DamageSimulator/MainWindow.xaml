@@ -7,10 +7,10 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:BindableWinFormsControl"
 		mc:Ignorable="d"
-		Title="KancolleDamageSimulator" Height="420" Width="600"
+		Title="KancolleDamageSimulator" Height="450" Width="600"
 		ResizeMode="NoResize">
 	<Grid ToolTip="{Binding Path=StatusMessage}">
-		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Height="140" Width="129">
+		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="15,266,0,0" VerticalAlignment="Top" Height="140" Width="129">
 			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="119" Margin="0,0,0,0">
 				<Label x:Name="label1" Content="敵装甲値" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
 				<Label x:Name="label2" Content="最大耐久" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.638,1.308"/>
@@ -594,7 +594,7 @@
 				</Grid>
 			</TabItem>
 		</TabControl>
-		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="269,239,0,0" VerticalAlignment="Top" Width="313" Height="140">
+		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="269,266,0,0" VerticalAlignment="Top" Width="313" Height="140">
 			<Grid x:Name="grid_Graph" HorizontalAlignment="Left" Height="118" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="293">
 				<WindowsFormsHost Margin="0,0,0,0">
 					<wfc:Chart Name="Chart_Histogram" />
@@ -602,7 +602,7 @@
 				<StackPanel HorizontalAlignment="Left" Height="118" VerticalAlignment="Top" Width="293"/>
 			</Grid>
 		</GroupBox>
-		<GroupBox x:Name="groupBox3" Header="計算条件" HorizontalAlignment="Left" Margin="144,238,0,0" VerticalAlignment="Top" Height="141" Width="120">
+		<GroupBox x:Name="groupBox3" Header="計算条件" HorizontalAlignment="Left" Margin="144,266,0,0" VerticalAlignment="Top" Height="141" Width="120">
 			<Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="110" Margin="0,0,-2,-1">
 				<Label x:Name="label13" Content="試行回数：" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.638,-0.692" Margin="5,5,0,0"/>
 				<ComboBox x:Name="comboBox_TryCount" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="74" SelectedIndex="3" SelectionChanged="GeneralSelectionChanged">
@@ -628,5 +628,10 @@
 				</Button>
 			</Grid>
 		</GroupBox>
+		<ComboBox x:Name="comboBox_ShipType" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="-1" ItemsSource="{Binding ShipTypeList}" SelectionChanged="comboBox_ShipType_SelectionChanged"/>
+		<ComboBox x:Name="comboBox_ShipClass" HorizontalAlignment="Left" Margin="115,239,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="-1" ItemsSource="{Binding ShipClassList}" IsEnabled ="False" SelectionChanged="comboBox_ShipClass_SelectionChanged"/>
+		<ComboBox x:Name="comboBox_ShipName" HorizontalAlignment="Left" Margin="220,239,0,0" VerticalAlignment="Top" Width="100" ItemsSource="{Binding ShipNameList}" SelectedIndex="-1" IsEnabled ="False"/>
+		<Button x:Name="button_SetShipA" Content="攻" HorizontalAlignment="Left" Margin="325,241,0,0" VerticalAlignment="Top" Width="20" Click="button_SetShipA_Click"/>
+		<Button x:Name="button_SetShipD" Content="防" HorizontalAlignment="Left" Margin="350,241,0,0" VerticalAlignment="Top" Width="20" Click="button_SetShipD_Click"/>
 	</Grid>
 </Window>
