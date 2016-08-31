@@ -615,6 +615,7 @@
 				<Button x:Name="button_Run" Content="計算開始" HorizontalAlignment="Left" Margin="10,78,0,10" Width="90" RenderTransformOrigin="0.48,-0.1" Click="button_Run_Click">
 					<Button.ContextMenu>
 						<ContextMenu>
+							<MenuItem x:Name="CopyResult" Header="結果をコピー" Click="CopyResult_Click"/>
 							<MenuItem Header="ヒストグラムをコピー">
 								<MenuItem x:Name="CopyHistText" Header="テキスト" Click="CopyHistText_Click"/>
 								<MenuItem x:Name="CopyHistPic" Header="画像" Click="CopyHistPic_Click"/>

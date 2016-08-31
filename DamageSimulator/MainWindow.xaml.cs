@@ -463,7 +463,6 @@ namespace BindableWinFormsControl {
 			bindData.TorpedoGunAir  = unit_data[(int)PresetData.Torpedo2];
 			bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
 		}
-
 		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
 			//! nullチェック
 			if(comboBox_ShipType.SelectedItem == null
@@ -509,6 +508,10 @@ namespace BindableWinFormsControl {
 			if(sfd.FileName != "") {
 				chart.SaveImage(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
 			}
+		}
+		private void CopyResult_Click(object sender, RoutedEventArgs e) {
+			var bindData = DataContext as TestBindObject;
+			System.Windows.Clipboard.SetText(bindData.StatusMessage);
 		}
 
 		/* 自動再計算用のテンプレ */
