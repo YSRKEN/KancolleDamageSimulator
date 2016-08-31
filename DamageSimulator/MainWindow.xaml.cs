@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,8 @@ namespace BindableWinFormsControl {
 		//変数
 		bool autoCalcFlg = false;	//自動再計算フラグ
 		Chart chart;				//グラフ
-		SortedDictionary<int, int> sorted_hist;	//ヒストグラム
+		SortedDictionary<int, int> sorted_hist; //ヒストグラム
+		public static Dictionary<string, Dictionary<string, Dictionary<string, int[]>>> preset_data = null;
 		//定数
 		System.Random rand = new System.Random();	//乱数シード
 		const int TabIndexGun     = 0;	//砲撃戦
@@ -39,6 +41,10 @@ namespace BindableWinFormsControl {
 			NoDamage, TooSmall, Small, Middle, Large, Destroyed,
 			NormalMin, NormalMax, CriticalMin, CriticalMax,
 			NormalMinBig, NormalMaxBig, CriticalMinBig, CriticalMaxBig,
+		};
+		enum PresetData {
+			Attack, Torpedo1, Bomb, Torpedo2, PAPB_Power,
+			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP
 		};
 
 		/* コンストラクタ */
@@ -66,7 +72,48 @@ namespace BindableWinFormsControl {
 				NowHP = 50,
 				Critical = 133,
 				StatusMessage = "",
+				ShipTypeList = null,
 			};
+			// 右クリックメニュー用のデータを読み込む
+			try {
+				/* 配列に読み出す
+				 * arr[行番号][列番号] X行14列
+				 * 行番号→0は列名、1以降がデータ
+				 * 列番号→0から順に番号,艦種,艦型,艦名,火力,雷装1,爆装,雷装2,
+				 * 艦載機力(艦爆は正、艦攻は負),搭載数,素対潜,装備対潜,装甲,耐久
+				 */
+				var sr = new StreamReader("preset.csv", Encoding.GetEncoding("UTF-8"));
+				var list = new List<string[]>();
+				while(sr.Peek() >= 0)
+					list.Add(sr.ReadLine().Split(','));
+				sr.Close();
+				var arr = list.ToArray();
+				//! 多段連想配列に変換
+				preset_data = new Dictionary<string, Dictionary<string, Dictionary<string, int[]>>>();
+				for(int i = 1; i < arr.Length; ++i) {
+					//! 必要な部分を抜き出す
+					var type_str = arr[i][1];
+					var class_str = arr[i][2];
+					var name_str = arr[i][3];
+					var parameter_str = arr[i].Skip(4).Take(10).ToArray();
+					var parameter = new int[10];
+					//! 適宜拡張しつつ、代入していく
+					if(!preset_data.ContainsKey(type_str))
+						preset_data[type_str] = new Dictionary<string, Dictionary<string, int[]>> ();
+					if(!preset_data[type_str].ContainsKey(class_str))
+						preset_data[type_str][class_str] = new Dictionary<string, int[]> ();
+					if(!preset_data[type_str][class_str].ContainsKey(name_str))
+						preset_data[type_str][class_str][name_str] = new int[10];
+					for(int j = 0; j < 10; ++j) {
+						preset_data[type_str][class_str][name_str][j] = int.Parse(parameter_str[j]);
+					}
+				}
+				//! メニューを動的に作成
+				var bindData = DataContext as TestBindObject;
+				bindData.ShipTypeList = new List<string>(preset_data.Keys);
+			} catch {
+				System.Windows.Forms.MessageBox.Show("プリセットファイルを読み込めませんでした。", "KancolleDamageSimulator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 
 		/* ヒストグラム関係 */
@@ -367,6 +414,67 @@ namespace BindableWinFormsControl {
 			}
 			AutoDrawHistogram();
 		}
+		/// <summary>
+		/// プリセット設定を変化させた際の処理
+		/// </summary>
+		private void comboBox_ShipType_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			var bindData = DataContext as TestBindObject;
+			bindData.ShipClassList = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem].Keys);
+			comboBox_ShipClass.IsEnabled = true;
+			comboBox_ShipClass.SelectedIndex = -1;
+			comboBox_ShipName.IsEnabled = false;
+			comboBox_ShipName.SelectedIndex = -1;
+		}
+		private void comboBox_ShipClass_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_ShipClass.SelectedItem == null)
+				return;
+			var bindData = DataContext as TestBindObject;
+			bindData.ShipNameList = new List<string>(preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem].Keys);
+			comboBox_ShipName.IsEnabled = true;
+			comboBox_ShipName.SelectedIndex = -1;
+		}
+		/// <summary>
+		/// プリセットをGUIに反映させる処理
+		/// </summary>
+		private void button_SetShipA_Click(object sender, RoutedEventArgs e) {
+			//! nullチェック
+			if(comboBox_ShipType.SelectedItem == null
+			|| comboBox_ShipClass.SelectedItem == null
+			|| comboBox_ShipName.SelectedItem == null)
+				return;
+			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
+			//! データを書き込む
+			var bindData = DataContext as TestBindObject;
+			bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+			bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
+			bindData.AttackGun      = unit_data[(int)PresetData.Attack];
+			bindData.AttackGunAir   = unit_data[(int)PresetData.Attack];
+			bindData.AttackNight    = unit_data[(int)PresetData.Attack];
+			bindData.BombGunAir     = unit_data[(int)PresetData.Bomb];
+			if(unit_data[(int)PresetData.PAPB_Power] >= 0) {
+				bindData.PowerAir = unit_data[(int)PresetData.PAPB_Power];
+				comboBox_Air_Type.SelectedIndex = 1;
+			} else {
+				bindData.PowerAir = -unit_data[(int)PresetData.PAPB_Power];
+				comboBox_Air_Type.SelectedIndex = 0;
+			}
+			bindData.SlotsAir       = unit_data[(int)PresetData.SlotSize];
+			bindData.Torpedo        = unit_data[(int)PresetData.Torpedo1];
+			bindData.TorpedoGunAir  = unit_data[(int)PresetData.Torpedo2];
+			bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
+		}
+		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
+			//! nullチェック
+			if(comboBox_ShipType.SelectedItem == null
+			|| comboBox_ShipClass.SelectedItem == null
+			|| comboBox_ShipName.SelectedItem == null)
+				return;
+			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
+			//! データを書き込む
+			var bindData = DataContext as TestBindObject;
+			bindData.Defense = unit_data[(int)PresetData.Defense];
+			bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+		}
 
 		/* 右クリック時の動作 */
 		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
@@ -400,6 +508,10 @@ namespace BindableWinFormsControl {
 			if(sfd.FileName != "") {
 				chart.SaveImage(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
 			}
+		}
+		private void CopyResult_Click(object sender, RoutedEventArgs e) {
+			var bindData = DataContext as TestBindObject;
+			System.Windows.Clipboard.SetText(bindData.StatusMessage);
 		}
 
 		/* 自動再計算用のテンプレ */
