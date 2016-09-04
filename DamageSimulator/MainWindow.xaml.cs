@@ -44,7 +44,8 @@ namespace BindableWinFormsControl {
 		};
 		enum PresetData {
 			Attack, Torpedo1, Bomb, Torpedo2, PAPB_Power,
-			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP
+			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP,
+			KammusuFlg,Size,
 		};
 
 		/* コンストラクタ */
@@ -80,7 +81,8 @@ namespace BindableWinFormsControl {
 				 * arr[行番号][列番号] X行14列
 				 * 行番号→0は列名、1以降がデータ
 				 * 列番号→0から順に番号,艦種,艦型,艦名,火力,雷装1,爆装,雷装2,
-				 * 艦載機力(艦爆は正、艦攻は負),搭載数,素対潜,装備対潜,装甲,耐久
+				 * 艦載機力(艦爆は正、艦攻は負),搭載数,素対潜,装備対潜,装甲,耐久,
+				 * 艦娘フラグ
 				 */
 				var sr = new StreamReader("preset.csv", Encoding.GetEncoding("UTF-8"));
 				var list = new List<string[]>();
@@ -95,16 +97,16 @@ namespace BindableWinFormsControl {
 					var type_str = arr[i][1];
 					var class_str = arr[i][2];
 					var name_str = arr[i][3];
-					var parameter_str = arr[i].Skip(4).Take(10).ToArray();
-					var parameter = new int[10];
+					var parameter_str = arr[i].Skip(4).Take((int)PresetData.Size).ToArray();
+					var parameter = new int[(int)PresetData.Size];
 					//! 適宜拡張しつつ、代入していく
 					if(!preset_data.ContainsKey(type_str))
 						preset_data[type_str] = new Dictionary<string, Dictionary<string, int[]>> ();
 					if(!preset_data[type_str].ContainsKey(class_str))
 						preset_data[type_str][class_str] = new Dictionary<string, int[]> ();
 					if(!preset_data[type_str][class_str].ContainsKey(name_str))
-						preset_data[type_str][class_str][name_str] = new int[10];
-					for(int j = 0; j < 10; ++j) {
+						preset_data[type_str][class_str][name_str] = new int[(int)PresetData.Size];
+					for(int j = 0; j < (int)PresetData.Size; ++j) {
 						preset_data[type_str][class_str][name_str][j] = int.Parse(parameter_str[j]);
 					}
 				}
@@ -444,24 +446,32 @@ namespace BindableWinFormsControl {
 				return;
 			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
 			//! データを書き込む
-			var bindData = DataContext as TestBindObject;
-			bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
-			bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
-			bindData.AttackGun      = unit_data[(int)PresetData.Attack];
-			bindData.AttackGunAir   = unit_data[(int)PresetData.Attack];
-			bindData.AttackNight    = unit_data[(int)PresetData.Attack];
-			bindData.BombGunAir     = unit_data[(int)PresetData.Bomb];
-			if(unit_data[(int)PresetData.PAPB_Power] >= 0) {
-				bindData.PowerAir = unit_data[(int)PresetData.PAPB_Power];
-				comboBox_Air_Type.SelectedIndex = 1;
-			} else {
-				bindData.PowerAir = -unit_data[(int)PresetData.PAPB_Power];
-				comboBox_Air_Type.SelectedIndex = 0;
+			{
+				var bindData = DataContext as TestBindObject;
+				//! 砲撃戦
+				bindData.AttackGun = unit_data[(int)PresetData.Attack];
+				//! 砲撃戦(空母)
+				bindData.AttackGunAir = unit_data[(int)PresetData.Attack];
+				bindData.BombGunAir = unit_data[(int)PresetData.Bomb];
+				bindData.TorpedoGunAir = unit_data[(int)PresetData.Torpedo2];
+				//! 雷撃戦
+				bindData.Torpedo = unit_data[(int)PresetData.Torpedo1];
+				//! 航空戦
+				if(unit_data[(int)PresetData.PAPB_Power] >= 0) {
+					bindData.PowerAir = unit_data[(int)PresetData.PAPB_Power];
+					comboBox_Air_Type.SelectedIndex = 1;
+				} else {
+					bindData.PowerAir = -unit_data[(int)PresetData.PAPB_Power];
+					comboBox_Air_Type.SelectedIndex = 0;
+				}
+				bindData.SlotsAir = unit_data[(int)PresetData.SlotSize];
+				//! 対潜攻撃
+				bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+				bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
+				//! 夜戦
+				bindData.AttackNight = unit_data[(int)PresetData.Attack];
+				bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
 			}
-			bindData.SlotsAir       = unit_data[(int)PresetData.SlotSize];
-			bindData.Torpedo        = unit_data[(int)PresetData.Torpedo1];
-			bindData.TorpedoGunAir  = unit_data[(int)PresetData.Torpedo2];
-			bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
 		}
 		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
 			//! nullチェック
@@ -471,9 +481,38 @@ namespace BindableWinFormsControl {
 				return;
 			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
 			//! データを書き込む
-			var bindData = DataContext as TestBindObject;
-			bindData.Defense = unit_data[(int)PresetData.Defense];
-			bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+			{
+				var bindData = DataContext as TestBindObject;
+				//! 砲撃戦
+				var ship_type = (string)comboBox_ShipType.SelectedItem;
+				var ship_class = (string)comboBox_ShipClass.SelectedItem;
+				if(ship_type == "陸上型") {
+					switch(ship_class) {
+					case "集積地棲姫":
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 2;
+						break;
+					case "砲台子鬼":
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 3;
+						break;
+					case "離島棲姫":
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 4;
+						break;
+					default:
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 1;
+						break;
+					}
+				}else {
+					comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 0;
+				}
+				//! 防御側設定
+				bindData.Defense = unit_data[(int)PresetData.Defense];
+				bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+				if(unit_data[(int)PresetData.KammusuFlg] == 1) {
+					checkBox_Kammusu.IsChecked = true;
+				} else {
+					checkBox_Kammusu.IsChecked = false;
+				}
+			}
 		}
 
 		/* 右クリック時の動作 */
