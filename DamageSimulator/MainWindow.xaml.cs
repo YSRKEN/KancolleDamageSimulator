@@ -448,14 +448,38 @@ namespace BindableWinFormsControl {
 			//! データを書き込む
 			{
 				var bindData = DataContext as TestBindObject;
+				bool deep_ship_flg = (unit_data[(int)PresetData.KammusuFlg] == 0);	//! 深海棲艦フラグ
 				//! 砲撃戦
 				bindData.AttackGun = unit_data[(int)PresetData.Attack];
+				if(deep_ship_flg) {
+					comboBox_Attack_Gun_Level_0.SelectedIndex = 0;
+					comboBox_Attack_Gun_Level_1.SelectedIndex = 0;
+					comboBox_Attack_Gun_Level_2.SelectedIndex = 0;
+					comboBox_Attack_Gun_Level_3.SelectedIndex = 0;
+				}
 				//! 砲撃戦(空母)
 				bindData.AttackGunAir = unit_data[(int)PresetData.Attack];
 				bindData.BombGunAir = unit_data[(int)PresetData.Bomb];
 				bindData.TorpedoGunAir = unit_data[(int)PresetData.Torpedo2];
+				if(deep_ship_flg) {
+					//! 深海棲艦の場合、艦載機熟練度・装備改修度が載ってないので全て0にしておく
+					comboBox_GunAir_Skill_0.SelectedIndex = 0;
+					comboBox_GunAir_Skill_1.SelectedIndex = 0;
+					comboBox_GunAir_Skill_2.SelectedIndex = 0;
+					comboBox_GunAir_Skill_3.SelectedIndex = 0;
+					comboBox_GunAir_Level_0.SelectedIndex = 0;
+					comboBox_GunAir_Level_1.SelectedIndex = 0;
+					comboBox_GunAir_Level_2.SelectedIndex = 0;
+					comboBox_GunAir_Level_3.SelectedIndex = 0;
+				}
 				//! 雷撃戦
 				bindData.Torpedo = unit_data[(int)PresetData.Torpedo1];
+				if(deep_ship_flg) {
+					comboBox_Torpedo_Level_0.SelectedIndex = 0;
+					comboBox_Torpedo_Level_1.SelectedIndex = 0;
+					comboBox_Torpedo_Level_2.SelectedIndex = 0;
+					comboBox_Torpedo_Level_3.SelectedIndex = 0;
+				}
 				//! 航空戦
 				if(unit_data[(int)PresetData.PAPB_Power] >= 0) {
 					bindData.PowerAir = unit_data[(int)PresetData.PAPB_Power];
@@ -465,12 +489,30 @@ namespace BindableWinFormsControl {
 					comboBox_Air_Type.SelectedIndex = 0;
 				}
 				bindData.SlotsAir = unit_data[(int)PresetData.SlotSize];
+				if(deep_ship_flg) {
+					comboBox_Air_Skill_0.SelectedIndex = 0;
+					comboBox_Air_Skill_1.SelectedIndex = 0;
+					comboBox_Air_Skill_2.SelectedIndex = 0;
+					comboBox_Air_Skill_3.SelectedIndex = 0;
+				}
 				//! 対潜攻撃
 				bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
 				bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
+				if(deep_ship_flg) {
+					comboBox_AntiSub_Level_0.SelectedIndex = 0;
+					comboBox_AntiSub_Level_1.SelectedIndex = 0;
+					comboBox_AntiSub_Level_2.SelectedIndex = 0;
+					comboBox_AntiSub_Level_3.SelectedIndex = 0;
+				}
 				//! 夜戦
 				bindData.AttackNight = unit_data[(int)PresetData.Attack];
 				bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
+				if(deep_ship_flg) {
+					comboBox_Attack_Night_Level_0.SelectedIndex = 0;
+					comboBox_Attack_Night_Level_1.SelectedIndex = 0;
+					comboBox_Attack_Night_Level_2.SelectedIndex = 0;
+					comboBox_Attack_Night_Level_3.SelectedIndex = 0;
+				}
 			}
 		}
 		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
