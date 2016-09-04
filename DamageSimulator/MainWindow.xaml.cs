@@ -44,7 +44,8 @@ namespace BindableWinFormsControl {
 		};
 		enum PresetData {
 			Attack, Torpedo1, Bomb, Torpedo2, PAPB_Power,
-			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP
+			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP,
+			KammusuFlg,
 		};
 
 		/* コンストラクタ */
@@ -80,7 +81,8 @@ namespace BindableWinFormsControl {
 				 * arr[行番号][列番号] X行14列
 				 * 行番号→0は列名、1以降がデータ
 				 * 列番号→0から順に番号,艦種,艦型,艦名,火力,雷装1,爆装,雷装2,
-				 * 艦載機力(艦爆は正、艦攻は負),搭載数,素対潜,装備対潜,装甲,耐久
+				 * 艦載機力(艦爆は正、艦攻は負),搭載数,素対潜,装備対潜,装甲,耐久,
+				 * 艦娘フラグ
 				 */
 				var sr = new StreamReader("preset.csv", Encoding.GetEncoding("UTF-8"));
 				var list = new List<string[]>();
@@ -444,24 +446,32 @@ namespace BindableWinFormsControl {
 				return;
 			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
 			//! データを書き込む
-			var bindData = DataContext as TestBindObject;
-			bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
-			bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
-			bindData.AttackGun      = unit_data[(int)PresetData.Attack];
-			bindData.AttackGunAir   = unit_data[(int)PresetData.Attack];
-			bindData.AttackNight    = unit_data[(int)PresetData.Attack];
-			bindData.BombGunAir     = unit_data[(int)PresetData.Bomb];
-			if(unit_data[(int)PresetData.PAPB_Power] >= 0) {
-				bindData.PowerAir = unit_data[(int)PresetData.PAPB_Power];
-				comboBox_Air_Type.SelectedIndex = 1;
-			} else {
-				bindData.PowerAir = -unit_data[(int)PresetData.PAPB_Power];
-				comboBox_Air_Type.SelectedIndex = 0;
+			{
+				var bindData = DataContext as TestBindObject;
+				//! 砲撃戦
+				bindData.AttackGun = unit_data[(int)PresetData.Attack];
+				//! 砲撃戦(空母)
+				bindData.AttackGunAir = unit_data[(int)PresetData.Attack];
+				bindData.BombGunAir = unit_data[(int)PresetData.Bomb];
+				bindData.TorpedoGunAir = unit_data[(int)PresetData.Torpedo2];
+				//! 雷撃戦
+				bindData.Torpedo = unit_data[(int)PresetData.Torpedo1];
+				//! 航空戦
+				if(unit_data[(int)PresetData.PAPB_Power] >= 0) {
+					bindData.PowerAir = unit_data[(int)PresetData.PAPB_Power];
+					comboBox_Air_Type.SelectedIndex = 1;
+				} else {
+					bindData.PowerAir = -unit_data[(int)PresetData.PAPB_Power];
+					comboBox_Air_Type.SelectedIndex = 0;
+				}
+				bindData.SlotsAir = unit_data[(int)PresetData.SlotSize];
+				//! 対潜攻撃
+				bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+				bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
+				//! 夜戦
+				bindData.AttackNight = unit_data[(int)PresetData.Attack];
+				bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
 			}
-			bindData.SlotsAir       = unit_data[(int)PresetData.SlotSize];
-			bindData.Torpedo        = unit_data[(int)PresetData.Torpedo1];
-			bindData.TorpedoGunAir  = unit_data[(int)PresetData.Torpedo2];
-			bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
 		}
 		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
 			//! nullチェック
