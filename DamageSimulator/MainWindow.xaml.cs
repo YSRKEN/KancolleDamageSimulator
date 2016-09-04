@@ -45,7 +45,7 @@ namespace BindableWinFormsControl {
 		enum PresetData {
 			Attack, Torpedo1, Bomb, Torpedo2, PAPB_Power,
 			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP,
-			KammusuFlg,
+			KammusuFlg,Size,
 		};
 
 		/* コンストラクタ */
@@ -97,16 +97,16 @@ namespace BindableWinFormsControl {
 					var type_str = arr[i][1];
 					var class_str = arr[i][2];
 					var name_str = arr[i][3];
-					var parameter_str = arr[i].Skip(4).Take(10).ToArray();
-					var parameter = new int[10];
+					var parameter_str = arr[i].Skip(4).Take((int)PresetData.Size).ToArray();
+					var parameter = new int[(int)PresetData.Size];
 					//! 適宜拡張しつつ、代入していく
 					if(!preset_data.ContainsKey(type_str))
 						preset_data[type_str] = new Dictionary<string, Dictionary<string, int[]>> ();
 					if(!preset_data[type_str].ContainsKey(class_str))
 						preset_data[type_str][class_str] = new Dictionary<string, int[]> ();
 					if(!preset_data[type_str][class_str].ContainsKey(name_str))
-						preset_data[type_str][class_str][name_str] = new int[10];
-					for(int j = 0; j < 10; ++j) {
+						preset_data[type_str][class_str][name_str] = new int[(int)PresetData.Size];
+					for(int j = 0; j < (int)PresetData.Size; ++j) {
 						preset_data[type_str][class_str][name_str][j] = int.Parse(parameter_str[j]);
 					}
 				}
@@ -481,9 +481,38 @@ namespace BindableWinFormsControl {
 				return;
 			var unit_data = preset_data[(string)comboBox_ShipType.SelectedItem][(string)comboBox_ShipClass.SelectedItem][(string)comboBox_ShipName.SelectedItem];
 			//! データを書き込む
-			var bindData = DataContext as TestBindObject;
-			bindData.Defense = unit_data[(int)PresetData.Defense];
-			bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+			{
+				var bindData = DataContext as TestBindObject;
+				//! 砲撃戦
+				var ship_type = (string)comboBox_ShipType.SelectedItem;
+				var ship_class = (string)comboBox_ShipClass.SelectedItem;
+				if(ship_type == "陸上型") {
+					switch(ship_class) {
+					case "集積地棲姫":
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 2;
+						break;
+					case "砲台子鬼":
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 3;
+						break;
+					case "離島棲姫":
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 4;
+						break;
+					default:
+						comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 1;
+						break;
+					}
+				}else {
+					comboBox_Enemy_Type.SelectedIndex = comboBox_Enemy_Type_Night.SelectedIndex = 0;
+				}
+				//! 防御側設定
+				bindData.Defense = unit_data[(int)PresetData.Defense];
+				bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+				if(unit_data[(int)PresetData.KammusuFlg] == 1) {
+					checkBox_Kammusu.IsChecked = true;
+				} else {
+					checkBox_Kammusu.IsChecked = false;
+				}
+			}
 		}
 
 		/* 右クリック時の動作 */
