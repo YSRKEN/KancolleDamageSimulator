@@ -643,17 +643,24 @@ namespace BindableWinFormsControl {
 			}
 			//ソート
 			sorted_hist = new SortedDictionary<int, int>(hist);
+			//平均ダメージの計算
+			double averageDamage = 0.0;
+			foreach(var it in hist) {
+				averageDamage += 1.0 * it.Key * it.Value;
+			}
+			averageDamage /= count;
 			//状態messageの更新
 			var bindData = DataContext as TestBindObject;
+			bindData.StatusMessage = "平均ダメージ：" + Math.Round(averageDamage, 3) + "\n";
 			if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
-				bindData.StatusMessage = "通常ダメージ(80%)：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+				bindData.StatusMessage += "通常ダメージ(80%)：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
 				bindData.StatusMessage += "クリティカル(80%)：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
 				bindData.StatusMessage += "通常ダメージ(150%)：" + status[(int)StatusIndex.NormalMinBig] + "～" + status[(int)StatusIndex.NormalMaxBig] + "\n";
 				bindData.StatusMessage += "クリティカル(150%)：" + status[(int)StatusIndex.CriticalMinBig] + "～" + status[(int)StatusIndex.CriticalMaxBig] + "\n";
 			} else if(GetAttackCount() == 2) {
-				bindData.StatusMessage = "ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+				bindData.StatusMessage += "ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
 			} else {
-				bindData.StatusMessage = "通常ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+				bindData.StatusMessage += "通常ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
 				bindData.StatusMessage += "クリティカル：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
 			}
 			bindData.StatusMessage += "無傷率：" + Math.Round(100.0 * status[(int)StatusIndex.NoDamage] / count, 1) + "%\n";
