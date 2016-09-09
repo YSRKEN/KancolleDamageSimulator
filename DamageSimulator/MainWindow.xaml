@@ -192,16 +192,20 @@
 						<ComboBoxItem Content="砲台子鬼" HorizontalAlignment="Left" Width="104"/>
 						<ComboBoxItem Content="離島棲姫" HorizontalAlignment="Left" Width="104"/>
 					</ComboBox>
-					<Label x:Name="label19_Copy" Content="大発補正" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="14,65,0,0"/>
-					<ComboBox x:Name="comboBox_Landing_Craft" HorizontalAlignment="Left" Margin="80,67,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" IsEnabled="False">
-						<ComboBoxItem Content="無し" HorizontalAlignment="Left" Width="92"/>
+					<Label x:Name="label19_Copy" Content="その他" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="7,65,0,0"/>
+					<ComboBox x:Name="comboBox_Landing_Craft" HorizontalAlignment="Left" Margin="48,67,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" IsEnabled="False" RenderTransformOrigin="0.312,0.364">
+						<ComboBoxItem Content="大発無し" HorizontalAlignment="Left" Width="92"/>
 						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="92"/>
 						<ComboBoxItem Content="陸戦隊x1" HorizontalAlignment="Left" Width="92"/>
 						<ComboBoxItem Content="陸戦隊x2" HorizontalAlignment="Left" Width="92"/>
 					</ComboBox>
-					<CheckBox x:Name="checkBox_KaMi" Content="カミ車" HorizontalAlignment="Left" Margin="165,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<CheckBox x:Name="checkBox_WBWF" Content="水爆水戦" HorizontalAlignment="Left" Margin="218,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<CheckBox x:Name="checkBox_DDCL" Content="駆逐軽巡" HorizontalAlignment="Left" Margin="291,71,0,0" VerticalAlignment="Top" IsEnabled="False" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
+					<ComboBox x:Name="comboBox_KaMi" HorizontalAlignment="Left" Margin="133,67,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" IsEnabled="False">
+						<ComboBoxItem Content="カミ車の数" HorizontalAlignment="Left" Width="92"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="92"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="92"/>
+					</ComboBox>
 				</Grid>
 			</TabItem>
 			<TabItem Header="砲撃戦(空母)">
@@ -588,7 +592,6 @@
 						<ComboBoxItem Content="陸戦隊x1" HorizontalAlignment="Left" Width="92"/>
 						<ComboBoxItem Content="陸戦隊x2" HorizontalAlignment="Left" Width="92"/>
 					</ComboBox>
-					<CheckBox x:Name="checkBox_KaMi_Night" Content="カミ車" HorizontalAlignment="Left" Margin="200,89,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<CheckBox x:Name="checkBox_WBWF_Night" Content="水爆水戦" HorizontalAlignment="Left" Margin="200,69,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<ComboBox x:Name="comboBox_Enemy_Type_Night" HorizontalAlignment="Left" Margin="95,36,0,0" VerticalAlignment="Top" Width="95" SelectedIndex="0" RenderTransformOrigin="0.505,1.136" SelectionChanged="comboBox_Enemy_Type_Night_SelectionChanged">
 						<ComboBoxItem Content="通常艦" HorizontalAlignment="Left" Width="104"/>
@@ -599,6 +602,12 @@
 					</ComboBox>
 					<CheckBox x:Name="checkBox_Shiell_Night" Content="徹甲弾" HorizontalAlignment="Left" Margin="273,69,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<CheckBox x:Name="checkBox_DDCL_Night" Content="駆逐軽巡" HorizontalAlignment="Left" Margin="273,89,0,0" VerticalAlignment="Top" IsEnabled="False" RenderTransformOrigin="3.882,7.133"/>
+					<ComboBox x:Name="comboBox_KaMi_Night" HorizontalAlignment="Left" Margin="95,92,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" RenderTransformOrigin="-0.125,1.955" IsEnabled="False">
+						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="92"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="92"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="92"/>
+					</ComboBox>
+					<Label x:Name="label19_Copy2" Content="カミ車補正" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="32,90,0,0"/>
 				</Grid>
 			</TabItem>
 		</TabControl>
