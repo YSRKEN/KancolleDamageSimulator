@@ -417,6 +417,29 @@ namespace BindableWinFormsControl {
 			AutoDrawHistogram();
 		}
 		/// <summary>
+		/// 大発数やカミ車数を変化させた際の処理
+		/// </summary>
+		private void comboBox_Landing_Craft_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			comboBox_Attack_Gun_Type_0.SelectedIndex = (comboBox_Landing_Craft.SelectedIndex != 0 ? 3 : 0);
+			comboBox_Attack_Gun_Type_1.SelectedIndex = (comboBox_Landing_Craft.SelectedIndex == 3 ? 3 : 0);
+		}
+		private void comboBox_KaMi_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			comboBox_Attack_Gun_Type_2.SelectedIndex = (comboBox_KaMi.SelectedIndex != 0 ? 4 : 0);
+			comboBox_Attack_Gun_Type_3.SelectedIndex = (comboBox_KaMi.SelectedIndex == 2 ? 4 : 0);
+		}
+		private void comboBox_Landing_Craft_Night_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_Attack_Gun_Type_0_Night == null || comboBox_Attack_Gun_Type_1_Night == null)
+				return;
+			comboBox_Attack_Gun_Type_0_Night.SelectedIndex = (comboBox_Landing_Craft_Night.SelectedIndex != 0 ? 1 : 0);
+			comboBox_Attack_Gun_Type_1_Night.SelectedIndex = (comboBox_Landing_Craft_Night.SelectedIndex == 3 ? 1 : 0);
+		}
+		private void comboBox_KaMi_Night_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			if(comboBox_Attack_Gun_Type_2_Night == null || comboBox_Attack_Gun_Type_3_Night == null)
+				return;
+			comboBox_Attack_Gun_Type_2_Night.SelectedIndex = (comboBox_KaMi_Night.SelectedIndex != 0 ? 2 : 0);
+			comboBox_Attack_Gun_Type_3_Night.SelectedIndex = (comboBox_KaMi_Night.SelectedIndex == 2 ? 2 : 0);
+		}
+		/// <summary>
 		/// プリセット設定を変化させた際の処理
 		/// </summary>
 		private void comboBox_ShipType_SelectionChanged(object sender, SelectionChangedEventArgs e) {
