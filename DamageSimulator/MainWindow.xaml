@@ -161,21 +161,29 @@
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カミ車" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<ComboBox x:Name="comboBox_Attack_Gun_Type_1" HorizontalAlignment="Left" Margin="150,98,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カミ車" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<ComboBox x:Name="comboBox_Attack_Gun_Type_2" HorizontalAlignment="Left" Margin="220,98,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カミ車" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<ComboBox x:Name="comboBox_Attack_Gun_Type_3" HorizontalAlignment="Left" Margin="290,98,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" RenderTransformOrigin="0.469,1.227" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="通常" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="大口径" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="対潜" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="カミ車" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<ComboBox x:Name="comboBox_Enemy_Type" HorizontalAlignment="Left" Margin="259,10,0,0" VerticalAlignment="Top" Width="95" SelectedIndex="0" RenderTransformOrigin="0.505,1.136" SelectionChanged="comboBox_Enemy_Type_SelectionChanged">
 						<ComboBoxItem Content="通常艦" HorizontalAlignment="Left" Width="104"/>
