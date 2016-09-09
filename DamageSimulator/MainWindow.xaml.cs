@@ -294,7 +294,7 @@ namespace BindableWinFormsControl {
 			|| checkBox_Sanshiki == null
 			|| comboBox_WG42 == null
 			|| comboBox_Landing_Craft == null
-			|| checkBox_KaMi == null
+			|| comboBox_KaMi == null
 			|| checkBox_WBWF == null
 			|| checkBox_DDCL == null)
 				return;
@@ -305,7 +305,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki.IsEnabled = false;
 				comboBox_WG42.IsEnabled = false;
 				comboBox_Landing_Craft.IsEnabled = false;
-				checkBox_KaMi.IsEnabled = false;
+				comboBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
 				checkBox_DDCL.IsEnabled = false;
 				break;
@@ -315,7 +315,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki.IsEnabled = true;
 				comboBox_WG42.IsEnabled = true;
 				comboBox_Landing_Craft.IsEnabled = false;
-				checkBox_KaMi.IsEnabled = false;
+				comboBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
 				checkBox_DDCL.IsEnabled = false;
 				break;
@@ -325,7 +325,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki.IsEnabled = true;
 				comboBox_WG42.IsEnabled = true;
 				comboBox_Landing_Craft.IsEnabled = false;
-				checkBox_KaMi.IsEnabled = false;
+				comboBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
 				checkBox_DDCL.IsEnabled = false;
 				break;
@@ -335,7 +335,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki.IsEnabled = false;
 				comboBox_WG42.IsEnabled = true;
 				comboBox_Landing_Craft.IsEnabled = true;
-				checkBox_KaMi.IsEnabled = true;
+				comboBox_KaMi.IsEnabled = true;
 				checkBox_WBWF.IsEnabled = true;
 				checkBox_DDCL.IsEnabled = true;
 				break;
@@ -345,7 +345,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki.IsEnabled = true;
 				comboBox_WG42.IsEnabled = true;
 				comboBox_Landing_Craft.IsEnabled = false;
-				checkBox_KaMi.IsEnabled = false;
+				comboBox_KaMi.IsEnabled = false;
 				checkBox_WBWF.IsEnabled = false;
 				checkBox_DDCL.IsEnabled = false;
 				break;
@@ -358,7 +358,7 @@ namespace BindableWinFormsControl {
 	|| checkBox_Sanshiki_Night == null
 	|| comboBox_WG42_Night == null
 	|| comboBox_Landing_Craft_Night == null
-	|| checkBox_KaMi_Night == null
+	|| comboBox_KaMi_Night == null
 	|| checkBox_WBWF_Night == null
 	|| checkBox_DDCL_Night == null)
 				return;
@@ -369,7 +369,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki_Night.IsEnabled = false;
 				comboBox_WG42_Night.IsEnabled = false;
 				comboBox_Landing_Craft_Night.IsEnabled = false;
-				checkBox_KaMi_Night.IsEnabled = false;
+				comboBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
 				checkBox_DDCL_Night.IsEnabled = false;
 				break;
@@ -379,7 +379,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki_Night.IsEnabled = true;
 				comboBox_WG42_Night.IsEnabled = true;
 				comboBox_Landing_Craft_Night.IsEnabled = false;
-				checkBox_KaMi_Night.IsEnabled = false;
+				comboBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
 				checkBox_DDCL_Night.IsEnabled = false;
 				break;
@@ -389,7 +389,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki_Night.IsEnabled = true;
 				comboBox_WG42_Night.IsEnabled = true;
 				comboBox_Landing_Craft_Night.IsEnabled = false;
-				checkBox_KaMi_Night.IsEnabled = false;
+				comboBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
 				checkBox_DDCL_Night.IsEnabled = false;
 				break;
@@ -399,7 +399,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki_Night.IsEnabled = false;
 				comboBox_WG42_Night.IsEnabled = true;
 				comboBox_Landing_Craft_Night.IsEnabled = true;
-				checkBox_KaMi_Night.IsEnabled = true;
+				comboBox_KaMi_Night.IsEnabled = true;
 				checkBox_WBWF_Night.IsEnabled = true;
 				checkBox_DDCL_Night.IsEnabled = true;
 				break;
@@ -409,7 +409,7 @@ namespace BindableWinFormsControl {
 				checkBox_Sanshiki_Night.IsEnabled = true;
 				comboBox_WG42_Night.IsEnabled = true;
 				comboBox_Landing_Craft_Night.IsEnabled = false;
-				checkBox_KaMi_Night.IsEnabled = false;
+				comboBox_KaMi_Night.IsEnabled = false;
 				checkBox_WBWF_Night.IsEnabled = false;
 				checkBox_DDCL_Night.IsEnabled = false;
 				break;
@@ -698,7 +698,7 @@ namespace BindableWinFormsControl {
 				{
 					baseAttackValue = bindData.AttackGun + 5;
 					// 装備改修値
-					double[] param = { 1.0, 1.5, 0.75 };
+					double[] param = { 1.0, 1.5, 0.75, 0.0, 0.0 };
 					baseAttackValue += param[comboBox_Attack_Gun_Type_0.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_0.SelectedIndex);
 					baseAttackValue += param[comboBox_Attack_Gun_Type_1.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_1.SelectedIndex);
 					baseAttackValue += param[comboBox_Attack_Gun_Type_2.SelectedIndex] * Math.Sqrt(comboBox_Attack_Gun_Level_2.SelectedIndex);
@@ -816,11 +816,11 @@ namespace BindableWinFormsControl {
 						double[] param1 = { 1.0, 1.80, 2.15, 3.0 };
 						attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft.SelectedIndex];
 						// カミ車
-						if((bool)checkBox_KaMi.IsChecked)
-							attackValueBeforeCap[i] *= 2.4;
+						double[] param2 = { 1.0, 2.4, 3.2 };
+						attackValueBeforeCap[i] *= param2[comboBox_KaMi.SelectedIndex];
 						// WG42
-						double[] param2 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
-						attackValueBeforeCap[i] *= param2[comboBox_WG42.SelectedIndex];
+						double[] param3 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
+						attackValueBeforeCap[i] *= param3[comboBox_WG42.SelectedIndex];
 						// 水爆水戦
 						if((bool)checkBox_WBWF.IsChecked)
 							attackValueBeforeCap[i] *= 1.5;
@@ -858,11 +858,11 @@ namespace BindableWinFormsControl {
 						double[] param1 = { 1.0, 1.80, 2.15, 3.0 };
 						attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft_Night.SelectedIndex];
 						// カミ車
-						if((bool)checkBox_KaMi_Night.IsChecked)
-							attackValueBeforeCap[i] *= 2.4;
+						double[] param2 = { 1.0, 2.4, 3.2 };
+						attackValueBeforeCap[i] *= param2[comboBox_KaMi_Night.SelectedIndex];
 						// WG42
-						double[] param2 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
-						attackValueBeforeCap[i] *= param2[comboBox_WG42_Night.SelectedIndex];
+						double[] param3 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
+						attackValueBeforeCap[i] *= param3[comboBox_WG42_Night.SelectedIndex];
 						// 水爆水戦
 						if((bool)checkBox_WBWF_Night.IsChecked)
 							attackValueBeforeCap[i] *= 1.5;
@@ -954,12 +954,20 @@ namespace BindableWinFormsControl {
 				double lastAttackValueTemp = attackValueAfterCap[i];
 				// 集積地棲姫特効
 				if(tabControl.SelectedIndex == TabIndexGun && comboBox_Enemy_Type.SelectedIndex == 2) {
-					double[] param = { 1.0, 1.25, 1.625, 1.625, 1.625 };
-					lastAttackValueTemp = (lastAttackValueTemp * param[comboBox_WG42.SelectedIndex]);
+					double[] param1 = { 1.0, 1.25, 1.625, 1.625, 1.625 };
+					lastAttackValueTemp = (lastAttackValueTemp * param1[comboBox_WG42.SelectedIndex]);
+					double[] param2 = { 1.0, 1.0, 1.3, 2.08 };
+					lastAttackValueTemp = (lastAttackValueTemp * param2[comboBox_Landing_Craft.SelectedIndex]);
+					double[] param3 = { 1.0, 1.7, 2.5 };
+					lastAttackValueTemp = (lastAttackValueTemp * param3[comboBox_KaMi.SelectedIndex]);
 				}
 				if(tabControl.SelectedIndex == TabIndexNight && comboBox_Enemy_Type_Night.SelectedIndex == 2) {
-					double[] param = { 1.0, 1.25, 1.625, 1.625, 1.625 };
-					lastAttackValueTemp = (lastAttackValueTemp * param[comboBox_WG42_Night.SelectedIndex]);
+					double[] param1 = { 1.0, 1.25, 1.625, 1.625, 1.625 };
+					lastAttackValueTemp = (lastAttackValueTemp * param1[comboBox_WG42_Night.SelectedIndex]);
+					double[] param2 = { 1.0, 1.0, 1.3, 2.08 };
+					lastAttackValueTemp = (lastAttackValueTemp * param2[comboBox_Landing_Craft_Night.SelectedIndex]);
+					double[] param3 = { 1.0, 1.7, 2.5 };
+					lastAttackValueTemp = (lastAttackValueTemp * param3[comboBox_KaMi_Night.SelectedIndex]);
 				}
 				lastAttackValueTemp = (int)lastAttackValueTemp;
 				// 徹甲弾特効
