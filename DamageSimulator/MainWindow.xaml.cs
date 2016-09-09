@@ -837,10 +837,40 @@ namespace BindableWinFormsControl {
 							attackValueBeforeCap[i] *= 1.4;
 						// 大発
 						double[] param1 = { 1.0, 1.80, 2.15, 3.0 };
-						attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft.SelectedIndex];
+						switch(comboBox_Landing_Craft.SelectedIndex) {
+						case 0:
+							//! 大発なし
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft.SelectedIndex];
+							break;
+						case 1:
+							//! 大発
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Gun_Level_0.SelectedIndex / 50);
+							break;
+						case 2:
+							//! 陸戦隊x1
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Gun_Level_0.SelectedIndex / 50);
+							break;
+						case 3:
+							//! 陸戦隊x2
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Gun_Level_0.SelectedIndex + comboBox_Attack_Gun_Level_1.SelectedIndex) / 100);
+							break;
+						}
 						// カミ車
 						double[] param2 = { 1.0, 2.4, 3.2 };
-						attackValueBeforeCap[i] *= param2[comboBox_KaMi.SelectedIndex];
+						switch(comboBox_KaMi.SelectedIndex) {
+						case 0:
+							//! 0個
+							attackValueBeforeCap[i] *= param2[comboBox_KaMi.SelectedIndex];
+							break;
+						case 1:
+							//! 1個
+							attackValueBeforeCap[i] *= param2[comboBox_KaMi.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Gun_Level_2.SelectedIndex / 30);
+							break;
+						case 2:
+							//! 2個
+							attackValueBeforeCap[i] *= param2[comboBox_KaMi.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Gun_Level_2.SelectedIndex + comboBox_Attack_Gun_Level_3.SelectedIndex) / 60);
+							break;
+						}
 						// WG42
 						double[] param3 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
 						attackValueBeforeCap[i] *= param3[comboBox_WG42.SelectedIndex];
@@ -879,10 +909,40 @@ namespace BindableWinFormsControl {
 							attackValueBeforeCap[i] *= 1.4;
 						// 大発
 						double[] param1 = { 1.0, 1.80, 2.15, 3.0 };
-						attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft_Night.SelectedIndex];
+						switch(comboBox_Landing_Craft_Night.SelectedIndex) {
+						case 0:
+							//! 大発なし
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft_Night.SelectedIndex];
+							break;
+						case 1:
+							//! 大発
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft_Night.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Night_Level_0.SelectedIndex / 50);
+							break;
+						case 2:
+							//! 陸戦隊x1
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft_Night.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Night_Level_0.SelectedIndex / 50);
+							break;
+						case 3:
+							//! 陸戦隊x2
+							attackValueBeforeCap[i] *= param1[comboBox_Landing_Craft_Night.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Night_Level_0.SelectedIndex + comboBox_Attack_Night_Level_1.SelectedIndex) / 100);
+							break;
+						}
 						// カミ車
 						double[] param2 = { 1.0, 2.4, 3.2 };
-						attackValueBeforeCap[i] *= param2[comboBox_KaMi_Night.SelectedIndex];
+						switch(comboBox_KaMi_Night.SelectedIndex) {
+						case 0:
+							//! 0個
+							attackValueBeforeCap[i] *= param2[comboBox_KaMi_Night.SelectedIndex];
+							break;
+						case 1:
+							//! 1個
+							attackValueBeforeCap[i] *= param2[comboBox_KaMi_Night.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Night_Level_2.SelectedIndex / 30);
+							break;
+						case 2:
+							//! 2個
+							attackValueBeforeCap[i] *= param2[comboBox_KaMi_Night.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Night_Level_2.SelectedIndex + comboBox_Attack_Night_Level_3.SelectedIndex) / 60);
+							break;
+						}
 						// WG42
 						double[] param3 = { 1.0, 1.6, 2.72, 2.72, 2.72 };
 						attackValueBeforeCap[i] *= param3[comboBox_WG42_Night.SelectedIndex];
@@ -980,17 +1040,77 @@ namespace BindableWinFormsControl {
 					double[] param1 = { 1.0, 1.25, 1.625, 1.625, 1.625 };
 					lastAttackValueTemp = (lastAttackValueTemp * param1[comboBox_WG42.SelectedIndex]);
 					double[] param2 = { 1.0, 1.0, 1.3, 2.08 };
-					lastAttackValueTemp = (lastAttackValueTemp * param2[comboBox_Landing_Craft.SelectedIndex]);
+					switch(comboBox_Landing_Craft.SelectedIndex) {
+					case 0:
+						//! 大発なし
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft.SelectedIndex];
+						break;
+					case 1:
+						//! 大発
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Gun_Level_0.SelectedIndex / 50);
+						break;
+					case 2:
+						//! 陸戦隊x1
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Gun_Level_0.SelectedIndex / 50);
+						break;
+					case 3:
+						//! 陸戦隊x2
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Gun_Level_0.SelectedIndex + comboBox_Attack_Gun_Level_1.SelectedIndex) / 100);
+						break;
+					}
 					double[] param3 = { 1.0, 1.7, 2.5 };
-					lastAttackValueTemp = (lastAttackValueTemp * param3[comboBox_KaMi.SelectedIndex]);
+					switch(comboBox_KaMi.SelectedIndex) {
+					case 0:
+						//! 0個
+						lastAttackValueTemp *= param3[comboBox_KaMi.SelectedIndex];
+						break;
+					case 1:
+						//! 1個
+						lastAttackValueTemp *= param3[comboBox_KaMi.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Gun_Level_2.SelectedIndex / 30);
+						break;
+					case 2:
+						//! 2個
+						lastAttackValueTemp *= param3[comboBox_KaMi.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Gun_Level_2.SelectedIndex + comboBox_Attack_Gun_Level_3.SelectedIndex) / 60);
+						break;
+					}
 				}
 				if(tabControl.SelectedIndex == TabIndexNight && comboBox_Enemy_Type_Night.SelectedIndex == 2) {
 					double[] param1 = { 1.0, 1.25, 1.625, 1.625, 1.625 };
 					lastAttackValueTemp = (lastAttackValueTemp * param1[comboBox_WG42_Night.SelectedIndex]);
 					double[] param2 = { 1.0, 1.0, 1.3, 2.08 };
-					lastAttackValueTemp = (lastAttackValueTemp * param2[comboBox_Landing_Craft_Night.SelectedIndex]);
+					switch(comboBox_Landing_Craft_Night.SelectedIndex) {
+					case 0:
+						//! 大発なし
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft_Night.SelectedIndex];
+						break;
+					case 1:
+						//! 大発
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft_Night.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Night_Level_0.SelectedIndex / 50);
+						break;
+					case 2:
+						//! 陸戦隊x1
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft_Night.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Night_Level_0.SelectedIndex / 50);
+						break;
+					case 3:
+						//! 陸戦隊x2
+						lastAttackValueTemp *= param2[comboBox_Landing_Craft_Night.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Night_Level_0.SelectedIndex + comboBox_Attack_Night_Level_1.SelectedIndex) / 100);
+						break;
+					}
 					double[] param3 = { 1.0, 1.7, 2.5 };
-					lastAttackValueTemp = (lastAttackValueTemp * param3[comboBox_KaMi_Night.SelectedIndex]);
+					switch(comboBox_KaMi_Night.SelectedIndex) {
+					case 0:
+						//! 0個
+						lastAttackValueTemp *= param3[comboBox_KaMi_Night.SelectedIndex];
+						break;
+					case 1:
+						//! 1個
+						lastAttackValueTemp *= param3[comboBox_KaMi_Night.SelectedIndex] * (1.0 + 1.0 * comboBox_Attack_Night_Level_2.SelectedIndex / 30);
+						break;
+					case 2:
+						//! 2個
+						lastAttackValueTemp *= param3[comboBox_KaMi_Night.SelectedIndex] * (1.0 + 1.0 * (comboBox_Attack_Night_Level_2.SelectedIndex + comboBox_Attack_Night_Level_3.SelectedIndex) / 60);
+						break;
+					}
 				}
 				lastAttackValueTemp = (int)lastAttackValueTemp;
 				// 徹甲弾特効
