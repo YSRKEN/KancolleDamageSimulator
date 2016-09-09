@@ -312,7 +312,7 @@
 					</ComboBox>
 					<Label x:Name="label36_Copy" Content="備考1：中破攻撃は装甲空母のみ、大破時は攻撃不可" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
 					<Label x:Name="label36_Copy3" Content="備考2：最大熟練度の艦攻艦爆1スロにつきクリティカル率+5～7％" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.763,0.091"/>
-					<CheckBox x:Name="checkBox_AF" Content="対地攻撃" HorizontalAlignment="Left" Margin="277,16,0,0" VerticalAlignment="Top"/>
+					<CheckBox x:Name="checkBox_AF" Content="対地攻撃" HorizontalAlignment="Left" Margin="277,16,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="雷撃戦">
