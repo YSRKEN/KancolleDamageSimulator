@@ -320,12 +320,12 @@ namespace BindableWinFormsControl {
 				checkBox_DDCL.IsEnabled = false;
 				break;
 			case 2:
-				// 集積地棲姫：徹甲弾・三式弾・WG42(キャップ前加算・キャップ後乗算)が効く
+				// 集積地棲姫：徹甲弾・三式弾・WG42・大発系・カミ車(キャップ前加算・キャップ後乗算)が効く
 				comboBox_Shell.IsEnabled = true;
 				checkBox_Sanshiki.IsEnabled = true;
 				comboBox_WG42.IsEnabled = true;
-				comboBox_Landing_Craft.IsEnabled = false;
-				comboBox_KaMi.IsEnabled = false;
+				comboBox_Landing_Craft.IsEnabled = true;
+				comboBox_KaMi.IsEnabled = true;
 				checkBox_WBWF.IsEnabled = false;
 				checkBox_DDCL.IsEnabled = false;
 				break;
@@ -384,12 +384,12 @@ namespace BindableWinFormsControl {
 				checkBox_DDCL_Night.IsEnabled = false;
 				break;
 			case 2:
-				// 集積地棲姫：三式弾・WG42(キャップ前加算・キャップ後乗算)が効く
+				// 集積地棲姫：三式弾・WG42・大発系・カミ車(キャップ前加算・キャップ後乗算)が効く
 				checkBox_Shiell_Night.IsEnabled = false;
 				checkBox_Sanshiki_Night.IsEnabled = true;
 				comboBox_WG42_Night.IsEnabled = true;
-				comboBox_Landing_Craft_Night.IsEnabled = false;
-				comboBox_KaMi_Night.IsEnabled = false;
+				comboBox_Landing_Craft_Night.IsEnabled = true;
+				comboBox_KaMi_Night.IsEnabled = true;
 				checkBox_WBWF_Night.IsEnabled = false;
 				checkBox_DDCL_Night.IsEnabled = false;
 				break;
