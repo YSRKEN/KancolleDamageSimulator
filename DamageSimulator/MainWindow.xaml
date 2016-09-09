@@ -80,12 +80,12 @@
 					<local:BindableNumericUpDown x:Name="NUD_Attack_Gun" Value="{Binding AttackGun}" HorizontalAlignment="Left" Height="23" Width="45" Margin="44,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 					<Label x:Name="label17" Content="弾着観測" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="89,10,0,0"/>
 					<ComboBox x:Name="comboBox_Watch" HorizontalAlignment="Left" Margin="147,11,0,0" VerticalAlignment="Top" Width="103" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged" RenderTransformOrigin="0.591,-0.318">
-						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(主主)" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(主徹)" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(主電)" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(主副)" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="連撃" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(主主)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(主徹)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(主電)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(主副)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="連撃" HorizontalAlignment="Left"/>
 					</ComboBox>
 					<Label x:Name="label18" Content="徹甲弾特効" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="10,36,0,0"/>
 					<ComboBox x:Name="comboBox_Shell" HorizontalAlignment="Left" Margin="80,38,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.591,-0.318" SelectionChanged="GeneralSelectionChanged">
@@ -186,25 +186,25 @@
 						<ComboBoxItem Content="カミ車" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<ComboBox x:Name="comboBox_Enemy_Type" HorizontalAlignment="Left" Margin="259,10,0,0" VerticalAlignment="Top" Width="95" SelectedIndex="0" RenderTransformOrigin="0.505,1.136" SelectionChanged="comboBox_Enemy_Type_SelectionChanged">
-						<ComboBoxItem Content="通常艦" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="陸上型(通常)" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="集積地棲姫" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="砲台子鬼" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="離島棲姫" HorizontalAlignment="Left" Width="104"/>
+						<ComboBoxItem Content="通常艦" HorizontalAlignment="Left" Width="95"/>
+						<ComboBoxItem Content="陸上型(通常)" HorizontalAlignment="Left" Width="95"/>
+						<ComboBoxItem Content="集積地棲姫" HorizontalAlignment="Left" Width="95"/>
+						<ComboBoxItem Content="砲台子鬼" HorizontalAlignment="Left" Width="95"/>
+						<ComboBoxItem Content="離島棲姫" HorizontalAlignment="Left" Width="95"/>
 					</ComboBox>
 					<Label x:Name="label19_Copy" Content="その他" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="7,65,0,0"/>
 					<ComboBox x:Name="comboBox_Landing_Craft" HorizontalAlignment="Left" Margin="48,67,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" IsEnabled="False" RenderTransformOrigin="0.312,0.364">
-						<ComboBoxItem Content="大発無し" HorizontalAlignment="Left" Width="92"/>
-						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="92"/>
-						<ComboBoxItem Content="陸戦隊x1" HorizontalAlignment="Left" Width="92"/>
-						<ComboBoxItem Content="陸戦隊x2" HorizontalAlignment="Left" Width="92"/>
+						<ComboBoxItem Content="大発無し" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="陸戦隊x1" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="陸戦隊x2" HorizontalAlignment="Left" Width="80"/>
 					</ComboBox>
 					<CheckBox x:Name="checkBox_WBWF" Content="水爆水戦" HorizontalAlignment="Left" Margin="218,71,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<CheckBox x:Name="checkBox_DDCL" Content="駆逐軽巡" HorizontalAlignment="Left" Margin="291,71,0,0" VerticalAlignment="Top" IsEnabled="False" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 					<ComboBox x:Name="comboBox_KaMi" HorizontalAlignment="Left" Margin="133,67,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" IsEnabled="False">
-						<ComboBoxItem Content="カミ車の数" HorizontalAlignment="Left" Width="92"/>
-						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="92"/>
-						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="92"/>
+						<ComboBoxItem Content="カミ車の数" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="80"/>
 					</ComboBox>
 				</Grid>
 			</TabItem>
@@ -515,11 +515,11 @@
 					<local:BindableNumericUpDown x:Name="NUD_Torpedo_Night" Value="{Binding TorpedoNight}" HorizontalAlignment="Left" Height="23" Width="45" Margin="138,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 					<Label x:Name="label32" Content="攻撃種別" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="188,10,0,0"/>
 					<ComboBox x:Name="comboBox_Night_Type" HorizontalAlignment="Left" Margin="251,9,0,0" VerticalAlignment="Top" Width="103" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged" RenderTransformOrigin="0.591,-0.318">
-						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(魚魚)" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(主魚)" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(主主)" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="カットイン(主副)" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="通常攻撃" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(魚魚)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(主魚)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(主主)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="カットイン(主副)" HorizontalAlignment="Left"/>
 						<ComboBoxItem Content="連撃" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<CheckBox x:Name="checkBox_Night_Trailer" Content="夜間触接あり" HorizontalAlignment="Left" Margin="4,40,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
@@ -585,29 +585,27 @@
 						<ComboBoxItem Content="9" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="MAX" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
-					<Label x:Name="label19_Copy1" Content="大発補正" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="32,63,0,0"/>
-					<ComboBox x:Name="comboBox_Landing_Craft_Night" HorizontalAlignment="Left" Margin="95,65,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" IsEnabled="False">
-						<ComboBoxItem Content="無し" HorizontalAlignment="Left" Width="92"/>
+					<ComboBox x:Name="comboBox_Landing_Craft_Night" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" IsEnabled="False">
+						<ComboBoxItem Content="大発無し" HorizontalAlignment="Left" Width="92"/>
 						<ComboBoxItem Content="大発" HorizontalAlignment="Left" Width="92"/>
 						<ComboBoxItem Content="陸戦隊x1" HorizontalAlignment="Left" Width="92"/>
 						<ComboBoxItem Content="陸戦隊x2" HorizontalAlignment="Left" Width="92"/>
 					</ComboBox>
-					<CheckBox x:Name="checkBox_WBWF_Night" Content="水爆水戦" HorizontalAlignment="Left" Margin="200,69,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
+					<CheckBox x:Name="checkBox_WBWF_Night" Content="水爆水戦" HorizontalAlignment="Left" Margin="180,67,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
 					<ComboBox x:Name="comboBox_Enemy_Type_Night" HorizontalAlignment="Left" Margin="95,36,0,0" VerticalAlignment="Top" Width="95" SelectedIndex="0" RenderTransformOrigin="0.505,1.136" SelectionChanged="comboBox_Enemy_Type_Night_SelectionChanged">
-						<ComboBoxItem Content="通常艦" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="陸上型(通常)" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="集積地棲姫" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="砲台子鬼" HorizontalAlignment="Left" Width="104"/>
-						<ComboBoxItem Content="離島棲姫" HorizontalAlignment="Left" Width="104"/>
+						<ComboBoxItem Content="通常艦" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="陸上型(通常)" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="集積地棲姫" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="砲台子鬼" HorizontalAlignment="Left"/>
+						<ComboBoxItem Content="離島棲姫" HorizontalAlignment="Left"/>
 					</ComboBox>
-					<CheckBox x:Name="checkBox_Shiell_Night" Content="徹甲弾" HorizontalAlignment="Left" Margin="273,69,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
-					<CheckBox x:Name="checkBox_DDCL_Night" Content="駆逐軽巡" HorizontalAlignment="Left" Margin="273,89,0,0" VerticalAlignment="Top" IsEnabled="False" RenderTransformOrigin="3.882,7.133"/>
-					<ComboBox x:Name="comboBox_KaMi_Night" HorizontalAlignment="Left" Margin="95,92,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" RenderTransformOrigin="-0.125,1.955" IsEnabled="False">
-						<ComboBoxItem Content="0" HorizontalAlignment="Left" Width="92"/>
-						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="92"/>
-						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="92"/>
+					<CheckBox x:Name="checkBox_Shiell_Night" Content="徹甲弾" HorizontalAlignment="Left" Margin="253,67,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
+					<CheckBox x:Name="checkBox_DDCL_Night" Content="駆軽" HorizontalAlignment="Left" Margin="314,67,0,0" VerticalAlignment="Top" IsEnabled="False" RenderTransformOrigin="3.882,7.133"/>
+					<ComboBox x:Name="comboBox_KaMi_Night" HorizontalAlignment="Left" Margin="95,63,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" RenderTransformOrigin="-0.125,1.955" IsEnabled="False">
+						<ComboBoxItem Content="カミ車の数" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="80"/>
 					</ComboBox>
-					<Label x:Name="label19_Copy2" Content="カミ車補正" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="32,90,0,0"/>
 				</Grid>
 			</TabItem>
 		</TabControl>
