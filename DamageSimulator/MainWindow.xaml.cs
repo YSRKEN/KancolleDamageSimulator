@@ -1217,8 +1217,20 @@ namespace BindableWinFormsControl {
 			var defense = bindData.Defense;
 			var nowHP = bindData.NowHP;
 			var maxHP = bindData.MaxHP;
-			double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
-			var ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
+			double ammo;
+			{
+				double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
+				if(comboBox_AmmoPer.SelectedIndex != ammoWeight.Count()) {
+					ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
+				}else {
+					var ammo_int = bindData.AmmoParam;
+					if(ammo_int < 0)
+						ammo_int = 0;
+					if(ammo_int > 50)
+						ammo_int = 50;
+					ammo = 1.0 * ammo_int / 50;
+				}
+			}
 			// 攻撃回数を決定する
 			var attackCount = GetAttackCount();
 			// ループ
