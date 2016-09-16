@@ -674,5 +674,6 @@
 		<Button x:Name="button_SetShipA" Content="攻" HorizontalAlignment="Left" Margin="383,270,0,0" VerticalAlignment="Top" Width="20" Click="button_SetShipA_Click"/>
 		<Button x:Name="button_SetShipD" Content="防" HorizontalAlignment="Left" Margin="408,270,0,0" VerticalAlignment="Top" Width="20" Click="button_SetShipD_Click"/>
 		<Label Content="プリセット" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.321,0"/>
+		<CheckBox x:Name="checkBox_Marriage" Content="ケッコンカッコカリ" HorizontalAlignment="Left" Margin="433,273,0,0" VerticalAlignment="Top"/>
 	</Grid>
 </Window>
