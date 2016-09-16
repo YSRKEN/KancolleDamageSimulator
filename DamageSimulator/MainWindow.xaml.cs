@@ -546,6 +546,8 @@ namespace BindableWinFormsControl {
 					bindData.HunterName = (string)comboBox_ShipClass.SelectedItem + (string)comboBox_ShipName.SelectedItem;
 				else
 					bindData.HunterName = (string)comboBox_ShipName.SelectedItem;
+				if((bool)checkBox_Marriage.IsChecked && !deep_ship_flg)
+					bindData.HunterName += "(ケッコン)";
 			}
 		}
 		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
@@ -596,6 +598,8 @@ namespace BindableWinFormsControl {
 					bindData.TargetName = (string)comboBox_ShipClass.SelectedItem + (string)comboBox_ShipName.SelectedItem;
 				else
 					bindData.TargetName = (string)comboBox_ShipName.SelectedItem;
+				if((bool)checkBox_Marriage.IsChecked && unit_data[(int)PresetData.KammusuFlg] == 1)
+					bindData.TargetName += "(ケッコン)";
 			}
 		}
 
