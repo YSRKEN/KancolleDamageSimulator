@@ -45,7 +45,7 @@ namespace BindableWinFormsControl {
 		enum PresetData {
 			Attack, Torpedo1, Bomb, Torpedo2, PAPB_Power,
 			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP,
-			KammusuFlg,Size,
+			KammusuFlg,MarriageHP, MarriageAntiSubBody, Size,
 		};
 
 		/* コンストラクタ */
