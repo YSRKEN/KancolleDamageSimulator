@@ -198,6 +198,14 @@ namespace BindableWinFormsControl {
 				NotifyPropertyChanged("StatusMessage");
 			}
 		}
+		private int ammoParam;
+		public int AmmoParam {
+			get { return ammoParam; }
+			set {
+				ammoParam = value;
+				NotifyPropertyChanged("AmmoParam");
+			}
+		}
 
 		private void NotifyPropertyChanged(string parameter) {
 			PropertyChanged(this, new PropertyChangedEventArgs(parameter));

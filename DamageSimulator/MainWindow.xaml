@@ -53,6 +53,7 @@
 					<ComboBoxItem Content="4戦目" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="5戦目" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="6戦目以上" HorizontalAlignment="Left" Width="118"/>
+					<ComboBoxItem Content="手動設定" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
 				<Label x:Name="label4" Content="交戦形態" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,39,0,0" RenderTransformOrigin="0.5,-0.962"/>
 				<Label x:Name="label5" Content="攻撃陣形" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,64,0,0" RenderTransformOrigin="0.5,-0.962"/>
@@ -72,7 +73,8 @@
 					<ComboBoxItem Content="輸送護衛/第1" HorizontalAlignment="Left" Width="118"/>
 					<ComboBoxItem Content="輸送護衛/第2" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
-				<TextBox x:Name="textBox_HunterName" HorizontalAlignment="Left" Height="23" Margin="10,197,0,0" TextWrapping="Wrap" Text="{Binding HunterName}" VerticalAlignment="Top" Width="99" VerticalScrollBarVisibility="Auto"/>
+				<TextBox x:Name="textBox_HunterName" HorizontalAlignment="Left" Height="23" Margin="10,197,0,0" TextWrapping="Wrap" Text="{Binding HunterName}" VerticalAlignment="Top" Width="111" VerticalScrollBarVisibility="Auto"/>
+				<local:BindableNumericUpDown x:Name="NUD_Ammo_Parameter" Value="{Binding AmmoParam}" HorizontalAlignment="Left" Height="23" Width="45" Margin="126,197,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 			</Grid>
 		</GroupBox>
 		<TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="210" Margin="197,36,0,0" VerticalAlignment="Top" Width="370" SelectedIndex="0" SelectionChanged="tabControl_SelectionChanged">

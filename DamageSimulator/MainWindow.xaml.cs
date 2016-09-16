@@ -74,6 +74,7 @@ namespace BindableWinFormsControl {
 				Critical = 133,
 				StatusMessage = "",
 				ShipTypeList = null,
+				AmmoParam = 50,
 			};
 			// 右クリックメニュー用のデータを読み込む
 			try {
