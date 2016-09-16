@@ -473,7 +473,7 @@ namespace BindableWinFormsControl {
 			{
 				var bindData = DataContext as TestBindObject;
 				bool deep_ship_flg = (unit_data[(int)PresetData.KammusuFlg] == 0);  //! 深海棲艦フラグ
-																					//! 砲撃戦
+				//! 砲撃戦
 				bindData.AttackGun = unit_data[(int)PresetData.Attack];
 				if(deep_ship_flg) {
 					comboBox_Attack_Gun_Level_0.SelectedIndex = 0;
@@ -520,7 +520,11 @@ namespace BindableWinFormsControl {
 					comboBox_Air_Skill_3.SelectedIndex = 0;
 				}
 				//! 対潜攻撃
-				bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+				if(!deep_ship_flg && (bool)checkBox_Marriage.IsChecked) {
+					bindData.AntiSubKammusu = unit_data[(int)PresetData.MarriageAntiSubBody];
+				}else {
+					bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+				}
 				bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
 				if(deep_ship_flg) {
 					comboBox_AntiSub_Level_0.SelectedIndex = 0;
@@ -577,7 +581,11 @@ namespace BindableWinFormsControl {
 				}
 				//! 防御側設定
 				bindData.Defense = unit_data[(int)PresetData.Defense];
-				bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+				if(unit_data[(int)PresetData.KammusuFlg] == 1 && (bool)checkBox_Marriage.IsChecked) {
+					bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.MarriageHP];
+				}else {
+					bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+				}
 				if(unit_data[(int)PresetData.KammusuFlg] == 1) {
 					checkBox_Kammusu.IsChecked = true;
 				} else {
