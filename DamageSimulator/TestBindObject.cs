@@ -161,6 +161,22 @@ namespace BindableWinFormsControl {
 				NotifyPropertyChanged("ShipNameList");
 			}
 		}
+		private string hunterName;
+		public string HunterName {
+			get { return hunterName; }
+			set {
+				hunterName = value;
+				NotifyPropertyChanged("HunterName");
+			}
+		}
+		private string targetName;
+		public string TargetName {
+			get { return targetName; }
+			set {
+				targetName = value;
+				NotifyPropertyChanged("TargetName");
+			}
+		}
 
 		/* ‚»‚Ì‘¼ */
 		private int critical;
