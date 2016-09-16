@@ -471,8 +471,8 @@ namespace BindableWinFormsControl {
 			//! データを書き込む
 			{
 				var bindData = DataContext as TestBindObject;
-				bool deep_ship_flg = (unit_data[(int)PresetData.KammusuFlg] == 0);	//! 深海棲艦フラグ
-				//! 砲撃戦
+				bool deep_ship_flg = (unit_data[(int)PresetData.KammusuFlg] == 0);  //! 深海棲艦フラグ
+																					//! 砲撃戦
 				bindData.AttackGun = unit_data[(int)PresetData.Attack];
 				if(deep_ship_flg) {
 					comboBox_Attack_Gun_Level_0.SelectedIndex = 0;
@@ -529,13 +529,18 @@ namespace BindableWinFormsControl {
 				}
 				//! 夜戦
 				bindData.AttackNight = unit_data[(int)PresetData.Attack];
-				bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
+				bindData.TorpedoNight = unit_data[(int)PresetData.Torpedo1];
 				if(deep_ship_flg) {
 					comboBox_Attack_Night_Level_0.SelectedIndex = 0;
 					comboBox_Attack_Night_Level_1.SelectedIndex = 0;
 					comboBox_Attack_Night_Level_2.SelectedIndex = 0;
 					comboBox_Attack_Night_Level_3.SelectedIndex = 0;
 				}
+				//! ラベル(その実テキストボックス)
+				if(deep_ship_flg)
+					bindData.HunterName = (string)comboBox_ShipClass.SelectedItem + (string)comboBox_ShipName.SelectedItem;
+				else
+					bindData.HunterName = (string)comboBox_ShipName.SelectedItem;
 			}
 		}
 		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
@@ -577,6 +582,11 @@ namespace BindableWinFormsControl {
 				} else {
 					checkBox_Kammusu.IsChecked = false;
 				}
+				//! ラベル(その実テキストボックス)
+				if(unit_data[(int)PresetData.KammusuFlg] == 0)
+					bindData.TargetName = (string)comboBox_ShipClass.SelectedItem + (string)comboBox_ShipName.SelectedItem;
+				else
+					bindData.TargetName = (string)comboBox_ShipName.SelectedItem;
 			}
 		}
 
