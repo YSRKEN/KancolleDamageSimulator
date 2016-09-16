@@ -41,11 +41,12 @@ namespace BindableWinFormsControl {
 			NoDamage, TooSmall, Small, Middle, Large, Destroyed,
 			NormalMin, NormalMax, CriticalMin, CriticalMax,
 			NormalMinBig, NormalMaxBig, CriticalMinBig, CriticalMaxBig,
+			NormalPerDamage, CriticalPerDamage, NormalPerDamageBig, CriticalPerDamageBig,
 		};
 		enum PresetData {
 			Attack, Torpedo1, Bomb, Torpedo2, PAPB_Power,
 			SlotSize, AntiSubBody, AntiSubWeapon, Defense, HP,
-			KammusuFlg,Size,
+			KammusuFlg,MarriageHP, MarriageAntiSubBody, Size,
 		};
 
 		/* コンストラクタ */
@@ -74,6 +75,7 @@ namespace BindableWinFormsControl {
 				Critical = 133,
 				StatusMessage = "",
 				ShipTypeList = null,
+				AmmoParam = 50,
 			};
 			// 右クリックメニュー用のデータを読み込む
 			try {
@@ -471,7 +473,7 @@ namespace BindableWinFormsControl {
 			//! データを書き込む
 			{
 				var bindData = DataContext as TestBindObject;
-				bool deep_ship_flg = (unit_data[(int)PresetData.KammusuFlg] == 0);	//! 深海棲艦フラグ
+				bool deep_ship_flg = (unit_data[(int)PresetData.KammusuFlg] == 0);  //! 深海棲艦フラグ
 				//! 砲撃戦
 				bindData.AttackGun = unit_data[(int)PresetData.Attack];
 				if(deep_ship_flg) {
@@ -519,7 +521,11 @@ namespace BindableWinFormsControl {
 					comboBox_Air_Skill_3.SelectedIndex = 0;
 				}
 				//! 対潜攻撃
-				bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+				if(!deep_ship_flg && (bool)checkBox_Marriage.IsChecked) {
+					bindData.AntiSubKammusu = unit_data[(int)PresetData.MarriageAntiSubBody];
+				}else {
+					bindData.AntiSubKammusu = unit_data[(int)PresetData.AntiSubBody];
+				}
 				bindData.AntiSubWeapons = unit_data[(int)PresetData.AntiSubWeapon];
 				if(deep_ship_flg) {
 					comboBox_AntiSub_Level_0.SelectedIndex = 0;
@@ -529,13 +535,20 @@ namespace BindableWinFormsControl {
 				}
 				//! 夜戦
 				bindData.AttackNight = unit_data[(int)PresetData.Attack];
-				bindData.TorpedoNight  = unit_data[(int)PresetData.Torpedo1];
+				bindData.TorpedoNight = unit_data[(int)PresetData.Torpedo1];
 				if(deep_ship_flg) {
 					comboBox_Attack_Night_Level_0.SelectedIndex = 0;
 					comboBox_Attack_Night_Level_1.SelectedIndex = 0;
 					comboBox_Attack_Night_Level_2.SelectedIndex = 0;
 					comboBox_Attack_Night_Level_3.SelectedIndex = 0;
 				}
+				//! ラベル(その実テキストボックス)
+				if(deep_ship_flg)
+					bindData.HunterName = (string)comboBox_ShipClass.SelectedItem + (string)comboBox_ShipName.SelectedItem;
+				else
+					bindData.HunterName = (string)comboBox_ShipName.SelectedItem;
+				if((bool)checkBox_Marriage.IsChecked && !deep_ship_flg)
+					bindData.HunterName += "(ケッコン)";
 			}
 		}
 		private void button_SetShipD_Click(object sender, RoutedEventArgs e) {
@@ -571,12 +584,23 @@ namespace BindableWinFormsControl {
 				}
 				//! 防御側設定
 				bindData.Defense = unit_data[(int)PresetData.Defense];
-				bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+				if(unit_data[(int)PresetData.KammusuFlg] == 1 && (bool)checkBox_Marriage.IsChecked) {
+					bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.MarriageHP];
+				}else {
+					bindData.MaxHP = bindData.NowHP = unit_data[(int)PresetData.HP];
+				}
 				if(unit_data[(int)PresetData.KammusuFlg] == 1) {
 					checkBox_Kammusu.IsChecked = true;
 				} else {
 					checkBox_Kammusu.IsChecked = false;
 				}
+				//! ラベル(その実テキストボックス)
+				if(unit_data[(int)PresetData.KammusuFlg] == 0)
+					bindData.TargetName = (string)comboBox_ShipClass.SelectedItem + (string)comboBox_ShipName.SelectedItem;
+				else
+					bindData.TargetName = (string)comboBox_ShipName.SelectedItem;
+				if((bool)checkBox_Marriage.IsChecked && unit_data[(int)PresetData.KammusuFlg] == 1)
+					bindData.TargetName += "(ケッコン)";
 			}
 		}
 
@@ -641,27 +665,29 @@ namespace BindableWinFormsControl {
 			// 「彩雲有り」「彩雲無し」のため、処理を分割する
 			var hist = new Dictionary<int, int>();  //ヒストグラム(元)
 			var count = loopCount[comboBox_TryCount.SelectedIndex];
+			int[] damage_count = {0, 0, 0, 0};
 			int[] status = {					//状態カウント
 				0, 0, 0, 0, 0, 0,				//無傷～撃沈回数
 				count + 1, -1, count + 1, -1,	//通常攻撃の下限と上限、クリティカルの下限と上限
-				count + 1, -1, count + 1, -1,};	//通常攻撃(強)の下限と上限、クリティカル(強)の下限と上限
+				count + 1, -1, count + 1, -1,	//通常攻撃(強)の下限と上限、クリティカル(強)の下限と上限
+				0,0,0,0};						//割合攻撃になった回数(通常、クリティカル)
 				//彩雲が絡む場合、確率毎に按分する
 				//「彩雲有り」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：40：15：0
 				//「彩雲無し」の場合、同航戦：反航戦：丁字有利：丁字不利＝45：30：15：10
 			switch(comboBox_Position.SelectedIndex) {
 			case 4:
-				CalcDataSlave(0, hist, status, count * 45 / 100);
-				CalcDataSlave(1, hist, status, count * 40 / 100);
-				CalcDataSlave(2, hist, status, count * 15 / 100);
+				CalcDataSlave(0, hist, status, count * 45 / 100, damage_count);
+				CalcDataSlave(1, hist, status, count * 40 / 100, damage_count);
+				CalcDataSlave(2, hist, status, count * 15 / 100, damage_count);
 				break;
 			case 5:
-				CalcDataSlave(0, hist, status, count * 45 / 100);
-				CalcDataSlave(1, hist, status, count * 30 / 100);
-				CalcDataSlave(2, hist, status, count * 15 / 100);
-				CalcDataSlave(3, hist, status, count * 10 / 100);
+				CalcDataSlave(0, hist, status, count * 45 / 100, damage_count);
+				CalcDataSlave(1, hist, status, count * 30 / 100, damage_count);
+				CalcDataSlave(2, hist, status, count * 15 / 100, damage_count);
+				CalcDataSlave(3, hist, status, count * 10 / 100, damage_count);
 				break;
 			default:
-				CalcDataSlave(comboBox_Position.SelectedIndex, hist, status, count);
+				CalcDataSlave(comboBox_Position.SelectedIndex, hist, status, count, damage_count);
 				break;
 			}
 			//ソート
@@ -677,14 +703,20 @@ namespace BindableWinFormsControl {
 			bindData.StatusMessage = "平均ダメージ：" + Math.Round(averageDamage, 3) + "\n";
 			if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
 				bindData.StatusMessage += "通常ダメージ(80%)：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+				bindData.StatusMessage += "(割合ダメージ：" + Math.Round(100.0 * status[(int)StatusIndex.NormalPerDamage] / damage_count[0], 3) + "％)\n";
 				bindData.StatusMessage += "クリティカル(80%)：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
+				bindData.StatusMessage += "(割合ダメージ：" + Math.Round(100.0 * status[(int)StatusIndex.CriticalPerDamage] / damage_count[1], 3) + "％)\n";
 				bindData.StatusMessage += "通常ダメージ(150%)：" + status[(int)StatusIndex.NormalMinBig] + "～" + status[(int)StatusIndex.NormalMaxBig] + "\n";
+				bindData.StatusMessage += "(割合ダメージ：" + Math.Round(100.0 * status[(int)StatusIndex.NormalPerDamageBig] / damage_count[2], 3) + "％)\n";
 				bindData.StatusMessage += "クリティカル(150%)：" + status[(int)StatusIndex.CriticalMinBig] + "～" + status[(int)StatusIndex.CriticalMaxBig] + "\n";
+				bindData.StatusMessage += "(割合ダメージ：" + Math.Round(100.0 * status[(int)StatusIndex.CriticalPerDamageBig] / damage_count[3], 3) + "％)\n";
 			} else if(GetAttackCount() == 2) {
 				bindData.StatusMessage += "ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
 			} else {
 				bindData.StatusMessage += "通常ダメージ：" + status[(int)StatusIndex.NormalMin] + "～" + status[(int)StatusIndex.NormalMax] + "\n";
+				bindData.StatusMessage += "(割合ダメージ：" + Math.Round(100.0 * status[(int)StatusIndex.NormalPerDamage] / damage_count[0], 3) + "％)\n";
 				bindData.StatusMessage += "クリティカル：" + status[(int)StatusIndex.CriticalMin] + "～" + status[(int)StatusIndex.CriticalMax] + "\n";
+				bindData.StatusMessage += "(割合ダメージ：" + Math.Round(100.0 * status[(int)StatusIndex.CriticalPerDamage] / damage_count[1], 3) + "％)\n";
 			}
 			bindData.StatusMessage += "無傷率：" + Math.Round(100.0 * status[(int)StatusIndex.NoDamage] / count, 1) + "%\n";
 			bindData.StatusMessage += "カスダメ率：" + Math.Round(100.0 * status[(int)StatusIndex.TooSmall] / count, 1) + "%\n";
@@ -696,7 +728,7 @@ namespace BindableWinFormsControl {
 		/// <summary>
 		/// 計算処理(分割後)
 		/// </summary>
-		private void CalcDataSlave(int type, Dictionary<int, int> hist, int[] status, int loops) {
+		private void CalcDataSlave(int type, Dictionary<int, int> hist, int[] status, int loops, int[] damage_count) {
 			// baseAttackValue～attackValueAfterCapまでは{ダメージ小, ダメージ大}、
 			// lastAttackValueは{ダメージ小, ダメージ大, ダメージ小クリティカル, ダメージ大クリティカル}
 			// 基本攻撃力を算出する
@@ -708,7 +740,7 @@ namespace BindableWinFormsControl {
 			// 最終攻撃力を出す
 			var lastAttackValue = CalcLastAttack(attackValueAfterCap);
 			// ダメージを算出し、ヒストグラムを取る
-			CalcHistogram(lastAttackValue, hist, status, loops);
+			CalcHistogram(lastAttackValue, hist, status, loops, damage_count);
 		}
 		/// <summary>
 		/// 基本攻撃力を出す
@@ -1200,14 +1232,26 @@ namespace BindableWinFormsControl {
 		/// <summary>
 		/// ヒストグラムを出す
 		/// </summary>
-		private void CalcHistogram(double[] lastAttackValue, Dictionary<int, int> hist, int[] status, int loops) {
+		private void CalcHistogram(double[] lastAttackValue, Dictionary<int, int> hist, int[] status, int loops, int[] damage_count) {
 			var bindData = DataContext as TestBindObject;
 			// 初期設定
 			var defense = bindData.Defense;
 			var nowHP = bindData.NowHP;
 			var maxHP = bindData.MaxHP;
-			double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
-			var ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
+			double ammo;
+			{
+				double[] ammoWeight = { 1.0, 0.8, 0.4, 0.0 };
+				if(comboBox_AmmoPer.SelectedIndex != ammoWeight.Count()) {
+					ammo = ammoWeight[comboBox_AmmoPer.SelectedIndex];
+				}else {
+					var ammo_int = bindData.AmmoParam;
+					if(ammo_int < 0)
+						ammo_int = 0;
+					if(ammo_int > 50)
+						ammo_int = 50;
+					ammo = 1.0 * ammo_int / 50;
+				}
+			}
 			// 攻撃回数を決定する
 			var attackCount = GetAttackCount();
 			// ループ
@@ -1229,11 +1273,14 @@ namespace BindableWinFormsControl {
 						if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
 							if(rand.Next(2) == 1) {
 								bigDamageFlg = true;
+								++damage_count[3];
 								damage = (int)((lastAttackValue[3] - defenseValue) * ammo);
 							} else {
+								++damage_count[1];
 								damage = (int)((lastAttackValue[2] - defenseValue) * ammo);
 							}
 						} else {
+							++damage_count[1];
 							damage = (int)((lastAttackValue[2] - defenseValue) * ammo);
 						}
 					} else {
@@ -1241,16 +1288,30 @@ namespace BindableWinFormsControl {
 						if(tabControl.SelectedIndex == TabIndexAir && comboBox_Air_Type.SelectedIndex == 0) {
 							if(rand.Next(2) == 1) {
 								bigDamageFlg = true;
+								++damage_count[2];
 								damage = (int)((lastAttackValue[1] - defenseValue) * ammo);
 							} else {
+								++damage_count[0];
 								damage = (int)((lastAttackValue[0] - defenseValue) * ammo);
 							}
 						} else {
+							++damage_count[0];
 							damage = (int)((lastAttackValue[0] - defenseValue) * ammo);
 						}
 					}
 					//0以下の際の処理(カスダメ)
 					if(damage <= 0) {
+						if(criticalFlg) {
+							if(bigDamageFlg)
+								++status[(int)StatusIndex.CriticalPerDamageBig];
+							else
+								++status[(int)StatusIndex.CriticalPerDamage];
+						} else {
+							if(bigDamageFlg)
+								++status[(int)StatusIndex.NormalPerDamageBig];
+							else
+								++status[(int)StatusIndex.NormalPerDamage];
+						}
 						damage = (int)(nowHP2 * 0.06 + rand.Next(nowHP2) * 0.08);
 					}
 					//艦娘で、更に現在耐久以上だった際の処理(大破ストッパー)

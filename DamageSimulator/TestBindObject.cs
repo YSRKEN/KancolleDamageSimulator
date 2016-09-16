@@ -161,6 +161,22 @@ namespace BindableWinFormsControl {
 				NotifyPropertyChanged("ShipNameList");
 			}
 		}
+		private string hunterName;
+		public string HunterName {
+			get { return hunterName; }
+			set {
+				hunterName = value;
+				NotifyPropertyChanged("HunterName");
+			}
+		}
+		private string targetName;
+		public string TargetName {
+			get { return targetName; }
+			set {
+				targetName = value;
+				NotifyPropertyChanged("TargetName");
+			}
+		}
 
 		/* ‚»‚Ì‘¼ */
 		private int critical;
@@ -180,6 +196,14 @@ namespace BindableWinFormsControl {
 			set {
 				statusMessage = value;
 				NotifyPropertyChanged("StatusMessage");
+			}
+		}
+		private int ammoParam;
+		public int AmmoParam {
+			get { return ammoParam; }
+			set {
+				ammoParam = value;
+				NotifyPropertyChanged("AmmoParam");
 			}
 		}
 
