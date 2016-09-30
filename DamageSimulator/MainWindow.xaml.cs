@@ -1052,6 +1052,13 @@ namespace BindableWinFormsControl {
 					if((bool)checkBox_AntiSubSynergy.IsChecked)
 						attackValueBeforeCap[i] *= 1.15;
 				}
+				//軽巡軽量砲補正
+				if(tabControl.SelectedIndex == TabIndexGun) {
+					attackValueBeforeCap[i] += Math.Sqrt(comboBox_One_LightLight.SelectedIndex) + 2.0 * Math.Sqrt(comboBox_Two_LightLight.SelectedIndex);
+				}
+				if(tabControl.SelectedIndex == TabIndexNight) {
+					attackValueBeforeCap[i] += Math.Sqrt(comboBox_One_LightLight_Night.SelectedIndex) + 2.0 * Math.Sqrt(comboBox_Two_LightLight_Night.SelectedIndex);
+				}
 			}
 			return attackValueBeforeCap;
 		}
