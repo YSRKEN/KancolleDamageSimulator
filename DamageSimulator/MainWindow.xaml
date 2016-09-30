@@ -211,6 +211,21 @@
 						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="80"/>
 						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="80"/>
 					</ComboBox>
+					<Label x:Name="label20_Copy" Content="軽巡軽量砲補正" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,-0.962" Margin="7,154,0,0"/>
+					<ComboBox x:Name="comboBox_One_LightLight" HorizontalAlignment="Left" Margin="106,154,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
+						<ComboBoxItem Content="単装砲の数" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="80"/>
+					</ComboBox>
+					<ComboBox x:Name="comboBox_Two_LightLight" HorizontalAlignment="Left" Margin="201,154,0,0" VerticalAlignment="Top" Width="90" SelectedIndex="0" SelectionChanged="GeneralSelectionChanged">
+						<ComboBoxItem Content="連装砲の数" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="1" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="2" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="3" HorizontalAlignment="Left" Width="80"/>
+						<ComboBoxItem Content="4" HorizontalAlignment="Left" Width="80"/>
+					</ComboBox>
 				</Grid>
 			</TabItem>
 			<TabItem Header="砲撃戦(空母)">
