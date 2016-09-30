@@ -18,7 +18,7 @@
 				<my:BindableNumericUpDown x:Name="NUD_Defense" Value="{Binding Path=Defense}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 				<my:BindableNumericUpDown x:Name="NUD_MaxHP" Value="{Binding Path=MaxHP}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_MaxHP_PropertyChanged"/>
 				<my:BindableNumericUpDown x:Name="NUD_NowHP" Value="{Binding Path=NowHP}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_NowHP_PropertyChanged"/>
-				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘フラグ" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
+				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘フラグ" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="checkBox_Kammusu_Checked" Unchecked="checkBox_Kammusu_Unchecked"/>
 				<TextBox x:Name="textBox_TargetName" HorizontalAlignment="Left" Height="23" Margin="10,134,0,0" TextWrapping="Wrap" Text="{Binding TargetName}" VerticalAlignment="Top" Width="99" VerticalScrollBarVisibility="Auto" RenderTransformOrigin="0.545,2.391"/>
 				<CheckBox x:Name="checkBox_Gimmick" Content="ギミックフラグ" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 			</Grid>
