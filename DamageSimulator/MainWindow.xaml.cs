@@ -603,6 +603,17 @@ namespace BindableWinFormsControl {
 					bindData.TargetName += "(ケッコン)";
 			}
 		}
+		/// <summary>
+		/// 艦娘フラグを切り替える処理
+		/// </summary>
+		private void checkBox_Kammusu_Checked(object sender, RoutedEventArgs e) {
+			checkBox_Gimmick.IsEnabled = false;
+			GeneralRouted(sender, e);
+		}
+		private void checkBox_Kammusu_Unchecked(object sender, RoutedEventArgs e) {
+			checkBox_Gimmick.IsEnabled = true;
+			GeneralRouted(sender, e);
+		}
 
 		/* 右クリック時の動作 */
 		private void CopyHistText_Click(object sender, RoutedEventArgs e) {
@@ -1041,6 +1052,13 @@ namespace BindableWinFormsControl {
 					if((bool)checkBox_AntiSubSynergy.IsChecked)
 						attackValueBeforeCap[i] *= 1.15;
 				}
+				//軽巡軽量砲補正
+				if(tabControl.SelectedIndex == TabIndexGun) {
+					attackValueBeforeCap[i] += Math.Sqrt(comboBox_One_LightLight.SelectedIndex) + 2.0 * Math.Sqrt(comboBox_Two_LightLight.SelectedIndex);
+				}
+				if(tabControl.SelectedIndex == TabIndexNight) {
+					attackValueBeforeCap[i] += Math.Sqrt(comboBox_One_LightLight_Night.SelectedIndex) + 2.0 * Math.Sqrt(comboBox_Two_LightLight_Night.SelectedIndex);
+				}
 			}
 			return attackValueBeforeCap;
 		}
@@ -1254,6 +1272,11 @@ namespace BindableWinFormsControl {
 			}
 			// 攻撃回数を決定する
 			var attackCount = GetAttackCount();
+			// ギミックによる防御力減少量を決定
+			var defenseGain = 0.0;
+			if(!(bool)checkBox_Kammusu.IsChecked && (bool)checkBox_Gimmick.IsChecked) {
+				defenseGain = -23.0;
+			}
 			// ループ
 			bool stopper_flg = (nowHP * 4 > maxHP);
 			for(int i = 0; i < loops; ++i) {
@@ -1263,7 +1286,7 @@ namespace BindableWinFormsControl {
 				bool bigDamageFlg = false;
 				for(var j = 0; j < attackCount; ++j) {
 					// ダメージ計算
-					var defenseValue = defense * 0.7 + rand.Next(defense) * 0.6;
+					var defenseValue = defense * 0.7 + rand.Next(defense) * 0.6 + defenseGain;
 					int damage;
 					criticalFlg = false;
 					bigDamageFlg = false;
