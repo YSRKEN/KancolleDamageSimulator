@@ -35,7 +35,6 @@
 - **このソフトによる計算結果には一切責任を持ちません**
 - 航空戦で交戦形態・攻撃陣形・損傷状態が、夜戦で交戦形態・攻撃陣形が無視されるのは**仕様です**
 - 本家の[ダメージ計算機](http://kancollecalc.web.fc2.com/damage.html)と同じく、以下の項目には対応していません
- - [軽巡軽量砲補正](http://ja.kancolle.wikia.com/wiki/%E3%83%80%E3%83%A1%E3%83%BC%E3%82%B8%E5%BC%8F#.E8.BB.BD.E5.B7.A1.E8.BB.BD.E9.87.8F.E7.A0.B2.E8.A3.9C.E6.AD.A3)
  - 支援艦隊
  - [PT小鬼群特効](http://ja.kancolle.wikia.com/wiki/%E7%89%B9%E5%8A%B9%E8%A3%85%E5%82%99#PT.E5.B0.8F.E9.AC.BC.E7.BE.A4.E7.89.B9.E5.8A.B9)
 - また、本家の[ダメージ計算機](http://kancollecalc.web.fc2.com/damage.html)とは以下の点が異なります
