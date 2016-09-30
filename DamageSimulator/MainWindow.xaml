@@ -7,19 +7,20 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:BindableWinFormsControl"
 		mc:Ignorable="d"
-		Title="KancolleDamageSimulator" Height="500" Width="600"
+		Title="KancolleDamageSimulator" Height="525" Width="600"
 		ResizeMode="NoResize">
 	<Grid ToolTip="{Binding Path=StatusMessage}">
-		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,296,0,0" VerticalAlignment="Top" Height="165" Width="129">
-			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="119" Margin="0,0,0,0">
+		<GroupBox x:Name="groupBox2" Header="防御側設定" HorizontalAlignment="Left" Margin="10,296,0,0" VerticalAlignment="Top" Height="192" Width="129">
+			<Grid x:Name="grid_Defense" HorizontalAlignment="Left" Width="119" Margin="0,0,-2,0">
 				<Label x:Name="label1" Content="敵装甲値" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
 				<Label x:Name="label2" Content="最大耐久" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.638,1.308"/>
 				<Label x:Name="label3" Content="現在耐久" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,66,0,0"/>
 				<my:BindableNumericUpDown x:Name="NUD_Defense" Value="{Binding Path=Defense}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="GeneralPropertyChanged"/>
 				<my:BindableNumericUpDown x:Name="NUD_MaxHP" Value="{Binding Path=MaxHP}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_MaxHP_PropertyChanged"/>
 				<my:BindableNumericUpDown x:Name="NUD_NowHP" Value="{Binding Path=NowHP}" HorizontalAlignment="Left" Height="23" Width="45" Margin="73,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.733,0.913" PropertyChanged="NUD_NowHP_PropertyChanged"/>
-				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘フラグ" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
-				<TextBox x:Name="textBox_TargetName" HorizontalAlignment="Left" Height="23" Margin="10,116,0,-9" TextWrapping="Wrap" Text="{Binding TargetName}" VerticalAlignment="Top" Width="99" VerticalScrollBarVisibility="Auto"/>
+				<CheckBox x:Name="checkBox_Kammusu" Content="艦娘フラグ" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Checked="checkBox_Kammusu_Checked" Unchecked="checkBox_Kammusu_Unchecked"/>
+				<TextBox x:Name="textBox_TargetName" HorizontalAlignment="Left" Height="23" Margin="10,134,0,0" TextWrapping="Wrap" Text="{Binding TargetName}" VerticalAlignment="Top" Width="99" VerticalScrollBarVisibility="Auto" RenderTransformOrigin="0.545,2.391"/>
+				<CheckBox x:Name="checkBox_Gimmick" Content="ギミックフラグ" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top" Checked="GeneralRouted" Unchecked="GeneralRouted"/>
 			</Grid>
 		</GroupBox>
 		<GroupBox x:Name="groupBox1" Header="攻撃側設定" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="252" Width="572">
@@ -633,16 +634,16 @@
 				</Grid>
 			</TabItem>
 		</TabControl>
-		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="264,296,0,0" VerticalAlignment="Top" Width="313" Height="165">
+		<GroupBox x:Name="groupBox4" Header="シミュレーション結果" HorizontalAlignment="Left" Margin="264,296,0,0" VerticalAlignment="Top" Width="313" Height="190">
 			<Grid x:Name="grid_Graph" HorizontalAlignment="Left" Height="118" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="293">
-				<WindowsFormsHost Margin="0,0,0,0">
+				<WindowsFormsHost Margin="0,-42,0,0">
 					<wfc:Chart Name="Chart_Histogram" />
 				</WindowsFormsHost>
 				<StackPanel HorizontalAlignment="Left" Height="118" VerticalAlignment="Top" Width="293"/>
 			</Grid>
 		</GroupBox>
-		<GroupBox x:Name="groupBox3" Header="計算条件" HorizontalAlignment="Left" Margin="139,296,0,0" VerticalAlignment="Top" Height="165" Width="120">
-			<Grid HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="110" Margin="0,0,-2,-1">
+		<GroupBox x:Name="groupBox3" Header="計算条件" HorizontalAlignment="Left" Margin="139,296,0,0" VerticalAlignment="Top" Height="192" Width="120">
+			<Grid HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="110" Margin="0,0,-2,0">
 				<Label x:Name="label13" Content="試行回数：" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.638,-0.692" Margin="5,5,0,0"/>
 				<ComboBox x:Name="comboBox_TryCount" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="74" SelectedIndex="3" SelectionChanged="GeneralSelectionChanged">
 					<ComboBoxItem Content="1000" HorizontalAlignment="Left" Width="118"/>
@@ -651,7 +652,7 @@
 					<ComboBoxItem Content="1000000" HorizontalAlignment="Left" Width="118"/>
 				</ComboBox>
 				<CheckBox x:Name="checkBox_AutoCalc" Content="自動で再計算" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.589,2.4" Checked="checkBox_AutoCalc_Checked" Unchecked="checkBox_AutoCalc_Unchecked"/>
-				<Button x:Name="button_Run" Content="計算開始" HorizontalAlignment="Left" Margin="10,78,0,-16" Width="90" RenderTransformOrigin="0.48,-0.1" Click="button_Run_Click">
+				<Button x:Name="button_Run" Content="計算開始" HorizontalAlignment="Left" Margin="10,78,0,0" Width="90" RenderTransformOrigin="0.48,-0.1" Click="button_Run_Click" Height="82" VerticalAlignment="Top">
 					<Button.ContextMenu>
 						<ContextMenu>
 							<MenuItem x:Name="CopyResult" Header="結果をコピー" Click="CopyResult_Click"/>
