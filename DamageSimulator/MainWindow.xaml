@@ -96,8 +96,8 @@
 					<ComboBox x:Name="comboBox_Shell" HorizontalAlignment="Left" Margin="80,38,0,0" VerticalAlignment="Top" Width="88" SelectedIndex="0" RenderTransformOrigin="0.591,-0.318" SelectionChanged="GeneralSelectionChanged">
 						<ComboBoxItem Content="無し" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="有り" HorizontalAlignment="Left" Width="118"/>
-						<ComboBoxItem Content="+副砲" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="+電探" HorizontalAlignment="Left" Width="118"/>
+						<ComboBoxItem Content="+副砲" HorizontalAlignment="Left" Width="118"/>
 						<ComboBoxItem Content="+副砲電探" HorizontalAlignment="Left" Width="118"/>
 					</ComboBox>
 					<CheckBox x:Name="checkBox_Sanshiki" Content="三式弾" HorizontalAlignment="Left" Margin="173,42,0,0" VerticalAlignment="Top" RenderTransformOrigin="2.059,-0.4" Checked="GeneralRouted" Unchecked="GeneralRouted" IsEnabled="False"/>
