@@ -1068,12 +1068,21 @@ namespace BindableWinFormsControl {
 		private double[] CalcAttackAfterCap(double[] attackValueBeforeCap) {
 			var attackValueAfterCap = attackValueBeforeCap;
 			for(var i = 0; i < 2; ++i) {
-				if(tabControl.SelectedIndex == TabIndexAntiSub) {
-					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 100.0);
-				} else if(tabControl.SelectedIndex == TabIndexNight) {
-					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 300.0);
-				} else {
+				switch (tabControl.SelectedIndex) {
+				case TabIndexGun:
+				case TabIndexGunAir:
+					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 180.0);
+					break;
+				case TabIndexTorpedo:
+				case TabIndexAir:
 					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 150.0);
+					break;
+				case TabIndexAntiSub:
+					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 100.0);
+					break;
+				case TabIndexNight:
+					attackValueAfterCap[i] = CalcCap(attackValueBeforeCap[i], 300.0);
+					break;
 				}
 			}
 			return attackValueAfterCap;
